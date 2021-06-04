@@ -6,6 +6,7 @@ import 'package:kt_dart/collection.dart';
 import 'package:teacher/core/errors/exeptions.dart';
 import 'package:teacher/core/util/handle_call.dart';
 import 'package:teacher/data/datasourse/api/teacher_api.dart';
+import 'package:teacher/data/datasourse/api/teacher_service.dart';
 import 'package:teacher/data/models/assignment_model.dart';
 import 'package:teacher/data/models/choice_model.dart';
 import 'package:teacher/data/models/course_model.dart';
@@ -150,8 +151,9 @@ abstract class RemoteDataSource {
 class RemoteDataSourceImpl implements RemoteDataSource {
   final TeacherService _teacher;
   final HandleNetworkCall _call;
+  final TeacherServiceApi _api;
 
-  RemoteDataSourceImpl(this._teacher, this._call);
+  RemoteDataSourceImpl(this._teacher, this._call, this._api);
 
   //*using flavors...if the flavor of the app is teacher call teachers api
   //* if the flavor is student call student api
@@ -272,7 +274,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         List<CourseModel> courses = [];
         Map<String, dynamic> body = jsonDecode(response.body);
         try {
-          courses = (body['course'] as List)
+          courses = (body['course']['data'] as List)
               .map((body) => CourseModel.fromJson(body))
               .toList();
         } catch (e) {
@@ -427,7 +429,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String accessToken,
   }) async {
     try {
-      final response = await _teacher.createCourse(
+      final response = await _api.createCourse(
         title: title,
         desc: desc,
         photo: photo,
@@ -455,7 +457,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String? photo,
   }) async {
     try {
-      final response = await _teacher.editCourse(
+      final response = await _api.editCourse(
         accessToken: 'Bearer $accessToken',
         courseId: courseId,
         title: title,

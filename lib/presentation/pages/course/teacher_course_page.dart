@@ -18,6 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teacher/presentation/components/error_card.dart';
+import 'package:teacher/presentation/pages/course/widgets/add_assignment_widget.dart';
 import 'package:teacher/presentation/pages/course/widgets/add_pdf_widget.dart';
 
 //* coursedetal//
@@ -468,6 +469,7 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                                 );
                               },
                             ),
+                            Divider(),
                             MaterialButton(
                               color: kBlackColor,
                               onPressed: () => showDialog(
@@ -519,7 +521,6 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                             BlocBuilder<GetAssignmentBloc, GetAssignmentState>(
                               builder: (context, state) {
                                 return state.maybeMap(
-                                  // initial: (_) => Container(),
                                   loading: (_) => Center(
                                     child: CircularProgressIndicator(
                                       valueColor:
@@ -527,7 +528,6 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                                     ),
                                   ),
                                   orElse: () {
-                                    // ass = state.assignment;
                                     return ListView.separated(
                                       //TODO fix scrolls
                                       shrinkWrap: true,
@@ -577,6 +577,31 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                                   ),
                                 );
                               },
+                            ),
+                            //TODO implement Shimmer
+                            Divider(),
+                            MaterialButton(
+                              color: kBlackColor,
+                              onPressed: () => showDialog(
+                                context: context,
+                                builder: (builder) => AddAssignmentWidget(),
+                              )
+                                  .then((value) => {
+                                        if (value != null)
+                                          {}
+                                        else
+                                          {
+                                            print(
+                                                "Everything you put your hands GO WORK!!")
+                                          }
+                                      })
+                                  .catchError((e, s) {
+                                print("ADD ASS ERROR: $e,$s");
+                              }),
+                              child: Text(
+                                "ADD NEW ASSIGNMENT",
+                                style: TextStyle(color: Colors.white),
+                              ),
                             )
                           ],
                         ),

@@ -49,19 +49,11 @@ class PdfViewPage extends StatelessWidget {
                       "Fetching pdf",
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 10),
                     CircularProgressIndicator(
-                      value: progress,
+                      value: progress / 100,
                       valueColor: AlwaysStoppedAnimation(kBlackColor),
                     )
-                    // Text(
-                    //   '$progress %',
-                    //   style: TextStyle(
-                    //     fontSize: 18,
-                    //     fontWeight: FontWeight.w600,
-                    //     color: kYellowColor,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

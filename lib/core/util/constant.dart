@@ -21,7 +21,8 @@ const kPrimarySwatch = MaterialColor(0xffffdf00, {
 });
 
 // const  BASE_URL = "eshue.herokuapp.com";
-const BASE_URL = "9007a95ff714.ngrok.io";
+const BASE_URL = "1950d7c90581.ngrok.io";
+const CHOPPER_BASE_URL = 'https://1950d7c90581.ngrok.io';
 const FILE_URL = "https://$BASE_URL/";
 
 const ACCESS_TOKEN = "ACCESS_TOKEN";

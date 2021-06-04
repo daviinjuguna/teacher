@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teacher/core/util/constant.dart';
 
 class ConfirmDialogue extends StatelessWidget {
   final String text;
@@ -15,11 +16,25 @@ class ConfirmDialogue extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(null),
-          child: Text("CANCEL"),
+          child: Text(
+            "CANCEL",
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              letterSpacing: 1.4,
+              color: kBlackColor,
+            ),
+          ),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(true),
-          child: Text("OK"),
+          child: Text(
+            "OK",
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              letterSpacing: 1.4,
+              color: kBlackColor,
+            ),
+          ),
         ),
       ],
     );

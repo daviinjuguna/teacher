@@ -217,6 +217,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                 success: (state) {
                   _refreshCompleter.complete();
                   _refreshCompleter = Completer();
+
                   course = state.course;
 
                   ScaffoldMessenger.maybeOf(context)?..hideCurrentSnackBar();
@@ -380,9 +381,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                       ),
                       child: SvgPicture.asset(
                         "assets/icons/cap_yellow.svg",
-                        color: kYellowColor,
                         fit: BoxFit.contain,
-                        colorBlendMode: BlendMode.dstATop,
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                       ),
                     ),

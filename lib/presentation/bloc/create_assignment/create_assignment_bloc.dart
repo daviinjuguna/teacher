@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:teacher/core/usecase/usecase.dart';
 import 'package:teacher/domain/usecase/teacher/create_assignment.dart';
 import 'package:teacher/domain/usecase/teacher/delete_assigment.dart';
 import 'package:teacher/domain/usecase/teacher/edit_assignment.dart';
@@ -24,6 +25,33 @@ class CreateAssignmentBloc
   Stream<CreateAssignmentState> mapEventToState(
     CreateAssignmentEvent event,
   ) async* {
-    // TODO: implement mapEventToState
+    yield* event.map(
+      create: (e) async* {
+        yield CreateAssignmentState.load();
+        final _res = await _create
+            .call(CreateAssignmentParams(id: e.courseId, title: e.title));
+        yield _res.fold(
+          (l) => CreateAssignmentState.error(l),
+          (r) => CreateAssignmentState.success(r.message),
+        );
+      },
+      edit: (e) async* {
+        yield CreateAssignmentState.load();
+        final _res = await _edit
+            .call(CreateAssignmentParams(id: e.assignmentId, title: e.title));
+        yield _res.fold(
+          (l) => CreateAssignmentState.error(l),
+          (r) => CreateAssignmentState.success(r.message),
+        );
+      },
+      delete: (e) async* {
+        yield CreateAssignmentState.load();
+        final _res = await _delete.call(ParamsId(id: e.assignmentId));
+        yield _res.fold(
+          (l) => CreateAssignmentState.error(l),
+          (r) => CreateAssignmentState.success(r.message),
+        );
+      },
+    );
   }
 }
