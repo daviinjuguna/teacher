@@ -166,10 +166,70 @@ abstract class TeacherServiceApi extends ChopperService {
   });
 
   @Post(path: "create_question")
+  @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
   Future<Response> createQuestions({
     @Header("Authorization") required String accessToken,
     @Field("assignment_id") required int assignmentId,
-    @Field("assignment_id") required String question,
-    @Field("assignment_id") required String answer,
+    @Field("question") required String question,
+    @Field("answer") required String answer,
   });
+
+  @Post(path: "edit_question")
+  @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
+  Future<Response> editQuestions({
+    @Header("Authorization") required String accessToken,
+    @Field("question_id") required int questionId,
+    @Field("question") String? question,
+    @Field("answer") String? answer,
+  });
+
+  @Post(path: "delete_question")
+  @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
+  Future<Response> deleteQuestions({
+    @Header("Authorization") required String accessToken,
+    @Field("question_id") required int questionId,
+  });
+
+  //*CHOICES
+  @Get(path: "get_choice/{question_id}")
+  Future<Response> getChoices({
+    @Header("Authorization") required String accessToken,
+    @Path("question_id") required int questionId,
+  });
+
+  @Post(path: "create_choice")
+  @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
+  Future<Response> createChoices({
+    @Header("Authorization") required String accessToken,
+    @Field("question_id") required int questionId,
+    @Field("title") required String title,
+  });
+
+  @Post(path: "edit_choice")
+  @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
+  Future<Response> editChoices({
+    @Header("Authorization") required String accessToken,
+    @Field("choice_id") required int choiceId,
+    @Field("title") required String title,
+  });
+
+  @Post(path: "delete_choice")
+  @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
+  Future<Response> deleteChoices({
+    @Header("Authorization") required String accessToken,
+    @Field("choice_id") required int choiceId,
+  });
+
+  @Post(path: "sortChoices")
+  @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
+  Future<Response> sortChoices({
+    @Header("Authorization") required String accessToken,
+    @Field("question_id") required int questionId,
+  });
+
+  //*FETCH FILE FROM URL
+  // @Get(path: "{url}")
+  // Future<Response> fetchFileFromUrl({
+  //   @Path('url') required String url,
+  // });
 }

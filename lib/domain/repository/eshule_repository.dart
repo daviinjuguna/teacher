@@ -46,6 +46,8 @@ abstract class Repository {
 
   //Fetch Course
   Future<Either<String, KtList<Course>>> getCourses();
+//Update
+  Future<Either<String, KtList<Course>>> updateCourse();
 
   Future<Either<String, KtList<Pdf>>> getPdf({required int courseId});
   Future<Either<String, KtList<Assignment>>> getAssignment({

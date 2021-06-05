@@ -161,12 +161,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<TokenModel> login(
       {required String email, required String password}) async {
     try {
-      http.Response? response;
-      response = await _teacher.login(email: email, password: password);
+      final response = await _api.login(email: email, password: password);
 
       final status = _call.checkStatusCode(response.statusCode);
       if (status) {
-        Map<String, dynamic> body = jsonDecode(response.body);
+        final body = response.body;
         return TokenModel.fromJson(body['token']);
       } else {
         throw ServerException();
@@ -184,9 +183,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String password,
     required String confirmPassword,
   }) async {
-    http.Response? response;
     try {
-      response = await _teacher.register(
+      final response = await _api.register(
         name: name,
         email: email,
         password: password,
@@ -195,7 +193,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
       final status = _call.checkStatusCode(response.statusCode);
       if (status) {
-        Map<String, dynamic> body = jsonDecode(response.body);
+        final body = response.body;
         return TokenModel.fromJson(body);
       } else {
         throw ServerException();
@@ -208,13 +206,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<TokenModel> refreshToken({required String refreshToken}) async {
-    http.Response? response;
     try {
-      response = await _teacher.refreshToken(refreshToken: refreshToken);
+      final response = await _api.refreshToken(refreshToken: refreshToken);
 
       final status = _call.checkStatusCode(response.statusCode);
       if (status) {
-        Map<String, dynamic> body = jsonDecode(response.body);
+        final body = response.body;
         return TokenModel.fromJson(body);
       } else {
         throw ServerException();
@@ -227,13 +224,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<UserModel> getUser({required String accessToken}) async {
-    http.Response? response;
     try {
-      response = await _teacher.getUser(accessToken: 'Bearer $accessToken');
+      final response = await _api.getUser(accessToken: 'Bearer $accessToken');
 
       final status = _call.checkStatusCode(response.statusCode);
       if (status) {
-        Map<String, dynamic> body = jsonDecode(response.body);
+        final body = response.body;
         return UserModel.fromJson(body['user']);
       } else {
         throw ServerException();
@@ -246,9 +242,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<void> logout({required String accessToken}) async {
-    http.Response? response;
     try {
-      response = await _teacher.logout(accessToken: 'Bearer $accessToken');
+      final response = await _api.logout(accessToken: 'Bearer $accessToken');
 
       final status = _call.checkStatusCode(response.statusCode);
       if (status) {
@@ -265,14 +260,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   //*studentis also teacher
   @override
   Future<KtList<CourseModel>> getCourses({required String accessToken}) async {
-    http.Response? response;
     try {
-      response = await _teacher.getCourses(accessToken: 'Bearer $accessToken');
+      final response =
+          await _api.getCourses(accessToken: 'Bearer $accessToken');
 
       final status = _call.checkStatusCode(response.statusCode);
       if (status) {
         List<CourseModel> courses = [];
-        Map<String, dynamic> body = jsonDecode(response.body);
+        final body = response.body;
         try {
           courses = (body['course']['data'] as List)
               .map((body) => CourseModel.fromJson(body))
@@ -296,9 +291,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required int courseId,
     required String accessToken,
   }) async {
-    http.Response? response;
     try {
-      response = await _teacher.getPdf(
+      final response = await _api.getPdf(
         accessToken: 'Bearer $accessToken',
         courseId: courseId,
       );
@@ -306,7 +300,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final status = _call.checkStatusCode(response.statusCode);
       if (status) {
         List<PdfModel> pdf = [];
-        Map<String, dynamic> body = jsonDecode(response.body);
+        final body = response.body;
         try {
           pdf = (body['pdf'] as List)
               .map((body) => PdfModel.fromJson(body))
@@ -328,9 +322,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<KtList<AssignmentModel>> getAssignment(
       {required int courseId, required String accessToken}) async {
-    http.Response? response;
     try {
-      response = await _teacher.getAssignment(
+      final response = await _api.getAssignment(
         accessToken: 'Bearer $accessToken',
         courseId: courseId,
       );
@@ -338,7 +331,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final status = _call.checkStatusCode(response.statusCode);
       if (status) {
         List<AssignmentModel> ass = [];
-        Map<String, dynamic> body = jsonDecode(response.body);
+        final body = response.body;
         try {
           ass = (body['assignment'] as List)
               .map((body) => AssignmentModel.fromJson(body))
@@ -360,9 +353,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<KtList<QuestionModel>> getQuestions(
       {required int assignmentId, required String accessToken}) async {
-    http.Response? response;
     try {
-      response = await _teacher.getQuestions(
+      final response = await _api.getQuestions(
         accessToken: 'Bearer $accessToken',
         assignmentId: assignmentId,
       );
@@ -370,7 +362,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final status = _call.checkStatusCode(response.statusCode);
       if (status) {
         List<QuestionModel> quest = [];
-        Map<String, dynamic> body = jsonDecode(response.body);
+        final body = response.body;
         try {
           quest = (body['question'] as List)
               .map((body) => QuestionModel.fromJson(body))
@@ -392,9 +384,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<KtList<ChoiceModel>> getChoices(
       {required int questionId, required String accessToken}) async {
-    http.Response? response;
     try {
-      response = await _teacher.getChoices(
+      final response = await _api.getChoices(
         accessToken: 'Bearer $accessToken',
         questionId: questionId,
       );
@@ -402,7 +393,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final status = _call.checkStatusCode(response.statusCode);
       if (status) {
         List<ChoiceModel> choice = [];
-        Map<String, dynamic> body = jsonDecode(response.body);
+        final body = response.body;
         try {
           choice = (body['choice'] as List)
               .map((body) => ChoiceModel.fromJson(body))
@@ -436,7 +427,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         accessToken: 'Bearer $accessToken',
       );
       final status = _call.checkStatusCode(response.statusCode);
-      // Map<String, dynamic> body = jsonDecode(response.body);
+      //final body = response.body;
       if (status) {
         return SuccessModel(success: true, message: "Created");
       } else {
@@ -465,7 +456,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         photo: photo,
       );
       final status = _call.checkStatusCode(response.statusCode);
-      // Map<String, dynamic> body = jsonDecode(response.body);
+      //final body = response.body;
       if (status) {
         return SuccessModel(success: true, message: "Edited");
       } else {
@@ -483,12 +474,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String accessToken,
   }) async {
     try {
-      final response = await _teacher.deleteCourse(
+      final response = await _api.deleteCourse(
         accessToken: 'Bearer $accessToken',
         courseId: courseId,
       );
       final status = _call.checkStatusCode(response.statusCode);
-      // Map<String, dynamic> body = jsonDecode(response.body);
+      //final body = response.body;
       if (status) {
         return SuccessModel(success: true, message: "Deleted");
       } else {
@@ -524,7 +515,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required int courseId,
   }) async {
     try {
-      final _resp = await _teacher.createPdf(
+      final _resp = await _api.createPdf(
         courseId: courseId,
         accessToken: 'Bearer $accessToken',
         link: pdf,
@@ -550,7 +541,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String? pdf,
   }) async {
     try {
-      final _resp = await _teacher.editPdf(
+      final _resp = await _api.editPdf(
         pdfId: pdfId,
         accessToken: 'Bearer $accessToken',
         link: pdf,
@@ -574,7 +565,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required int pdfId,
   }) async {
     try {
-      final _resp = await _teacher.deletePdf(
+      final _resp = await _api.deletePdf(
         pdfId: pdfId,
         accessToken: 'Bearer $accessToken',
       );
@@ -597,7 +588,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String title,
   }) async {
     try {
-      final _resp = await _teacher.createAssignment(
+      final _resp = await _api.createAssignment(
         courseId: courseId,
         accessToken: 'Bearer $accessToken',
         title: title,
@@ -621,7 +612,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String title,
   }) async {
     try {
-      final _resp = await _teacher.editAssignment(
+      final _resp = await _api.editAssignment(
         assignmentId: assignmentId,
         accessToken: 'Bearer $accessToken',
         title: title,
@@ -644,7 +635,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required int assignmentId,
   }) async {
     try {
-      final _resp = await _teacher.deleteAssignment(
+      final _resp = await _api.deleteAssignment(
         assignmentId: assignmentId,
         accessToken: 'Bearer $accessToken',
       );
@@ -668,7 +659,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String answer,
   }) async {
     try {
-      final _resp = await _teacher.createQuestions(
+      final _resp = await _api.createQuestions(
         assignmentId: assignmentId,
         accessToken: 'Bearer $accessToken',
         question: question,
@@ -694,7 +685,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String? answer,
   }) async {
     try {
-      final _resp = await _teacher.editQuestions(
+      final _resp = await _api.editQuestions(
         questionId: questionId,
         accessToken: 'Bearer $accessToken',
         question: question,
@@ -716,7 +707,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<SuccessModel> deleteQuestion(
       {required int questionId, required String accessToken}) async {
     try {
-      final _resp = await _teacher.deleteQuestions(
+      final _resp = await _api.deleteQuestions(
         questionId: questionId,
         accessToken: 'Bearer $accessToken',
       );
@@ -739,7 +730,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String title,
   }) async {
     try {
-      final _resp = await _teacher.createChoices(
+      final _resp = await _api.createChoices(
         questionId: questionId,
         accessToken: 'Bearer $accessToken',
         title: title,
@@ -762,7 +753,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       required String accessToken,
       required String title}) async {
     try {
-      final _resp = await _teacher.editChoices(
+      final _resp = await _api.editChoices(
         choiceId: choiceId,
         accessToken: 'Bearer $accessToken',
         title: title,
@@ -783,7 +774,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<SuccessModel> deleteChoice(
       {required int choiceId, required String accessToken}) async {
     try {
-      final _resp = await _teacher.deleteChoices(
+      final _resp = await _api.deleteChoices(
         choiceId: choiceId,
         accessToken: 'Bearer $accessToken',
       );
@@ -803,7 +794,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<KtList<ChoiceModel>> sortChoices(
       {required int questionId, required String accessToken}) async {
     try {
-      final _resp = await _teacher.sortChoices(
+      final _resp = await _api.sortChoices(
         questionId: questionId,
         accessToken: 'Bearer $accessToken',
       );

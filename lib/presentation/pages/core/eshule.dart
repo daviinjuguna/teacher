@@ -11,6 +11,7 @@ import 'package:teacher/presentation/bloc/clear_prefs/clear_prefs_bloc.dart';
 import 'package:teacher/presentation/bloc/network/ntwork_bloc.dart';
 import 'package:teacher/presentation/bloc/splash_bloc/splash_bloc.dart';
 import 'package:teacher/presentation/components/network_dialog.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 //!coreWidget the root widget
 //* this is the root widget of the app...first widget to run
@@ -131,7 +132,7 @@ Widget buildMaterialApp(BuildContext context) => MaterialApp.router(
         primarySwatch: kPrimarySwatch,
         brightness: Brightness.light,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        // textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
+        textTheme: GoogleFonts.montserratTextTheme(),
         appBarTheme: AppBarTheme(
           color: kBlackColor,
           iconTheme: IconThemeData(

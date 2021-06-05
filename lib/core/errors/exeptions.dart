@@ -29,3 +29,5 @@ class NotFoundExeption implements Exception {}
 class SelectImageException implements Exception {}
 
 class SelectImageFromCameraException implements Exception {}
+
+class DatabaseExeption implements Exception {}

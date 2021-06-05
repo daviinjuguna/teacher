@@ -21,8 +21,8 @@ const kPrimarySwatch = MaterialColor(0xffffdf00, {
 });
 
 // const  BASE_URL = "eshue.herokuapp.com";
-const BASE_URL = "1950d7c90581.ngrok.io";
-const CHOPPER_BASE_URL = 'https://1950d7c90581.ngrok.io';
+const BASE_URL = "922277c6692d.ngrok.io";
+const CHOPPER_BASE_URL = 'https://$BASE_URL';
 const FILE_URL = "https://$BASE_URL/";
 
 const ACCESS_TOKEN = "ACCESS_TOKEN";
@@ -65,6 +65,7 @@ const SELECT_FROM_CAMERA_FAILURE_MESSAGE =
     "Something went wrong with the camera";
 
 const SELECT_IMAGE_FAILURE_MESSAGE = "You did not pick an image";
+const DATABASE_FAILURE = "Database Failure";
 
 //exeption checketer
 String returnFailure(final exception) {
@@ -102,6 +103,8 @@ String returnFailure(final exception) {
     return SELECT_FROM_CAMERA_FAILURE_MESSAGE;
   } else if (exception is SelectImageFromGalleryException) {
     return SELECT_FROM_GALLERY_FAILURE_MESSAGE;
+  } else if (exception is DatabaseExeption) {
+    return DATABASE_FAILURE;
   } else {
     return SERVER_FAILURE_MESSAGE;
   }

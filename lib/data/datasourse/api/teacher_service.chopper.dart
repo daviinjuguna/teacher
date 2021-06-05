@@ -308,11 +308,125 @@ class _$TeacherServiceApi extends TeacherServiceApi {
 
     final $body = <String, dynamic>{
       'assignment_id': assignmentId,
-      'assignment_id': question,
-      'assignment_id': answer
+      'question': question,
+      'answer': answer
     };
     final $request =
         Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    return client.send<dynamic, dynamic>($request,
+        requestConverter: FormUrlEncodedConverter.requestFactory);
+  }
+
+  @override
+  Future<Response<dynamic>> editQuestions(
+      {required String accessToken,
+      required int questionId,
+      String? question,
+      String? answer}) {
+    final $url = '/teacher/edit_question';
+    final $headers = {
+      'Authorization': accessToken,
+    };
+
+    final $body = <String, dynamic>{
+      'question_id': questionId,
+      'question': question,
+      'answer': answer
+    };
+    final $request =
+        Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    return client.send<dynamic, dynamic>($request,
+        requestConverter: FormUrlEncodedConverter.requestFactory);
+  }
+
+  @override
+  Future<Response<dynamic>> deleteQuestions(
+      {required String accessToken, required int questionId}) {
+    final $url = '/teacher/delete_question';
+    final $headers = {
+      'Authorization': accessToken,
+    };
+
+    final $body = <String, dynamic>{'question_id': questionId};
+    final $request =
+        Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    return client.send<dynamic, dynamic>($request,
+        requestConverter: FormUrlEncodedConverter.requestFactory);
+  }
+
+  @override
+  Future<Response<dynamic>> getChoices(
+      {required String accessToken, required int questionId}) {
+    final $url = '/teacher/get_choice/$questionId';
+    final $headers = {
+      'Authorization': accessToken,
+    };
+
+    final $request = Request('GET', $url, client.baseUrl, headers: $headers);
     return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> createChoices(
+      {required String accessToken,
+      required int questionId,
+      required String title}) {
+    final $url = '/teacher/create_choice';
+    final $headers = {
+      'Authorization': accessToken,
+    };
+
+    final $body = <String, dynamic>{'question_id': questionId, 'title': title};
+    final $request =
+        Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    return client.send<dynamic, dynamic>($request,
+        requestConverter: FormUrlEncodedConverter.requestFactory);
+  }
+
+  @override
+  Future<Response<dynamic>> editChoices(
+      {required String accessToken,
+      required int choiceId,
+      required String title}) {
+    final $url = '/teacher/edit_choice';
+    final $headers = {
+      'Authorization': accessToken,
+    };
+
+    final $body = <String, dynamic>{'choice_id': choiceId, 'title': title};
+    final $request =
+        Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    return client.send<dynamic, dynamic>($request,
+        requestConverter: FormUrlEncodedConverter.requestFactory);
+  }
+
+  @override
+  Future<Response<dynamic>> deleteChoices(
+      {required String accessToken, required int choiceId}) {
+    final $url = '/teacher/delete_choice';
+    final $headers = {
+      'Authorization': accessToken,
+    };
+
+    final $body = <String, dynamic>{'choice_id': choiceId};
+    final $request =
+        Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    return client.send<dynamic, dynamic>($request,
+        requestConverter: FormUrlEncodedConverter.requestFactory);
+  }
+
+  @override
+  Future<Response<dynamic>> sortChoices(
+      {required String accessToken, required int questionId}) {
+    final $url = '/teacher/sortChoices';
+    final $headers = {
+      'Authorization': accessToken,
+    };
+
+    final $body = <String, dynamic>{'question_id': questionId};
+    final $request =
+        Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    return client.send<dynamic, dynamic>($request,
+        requestConverter: FormUrlEncodedConverter.requestFactory);
   }
 }

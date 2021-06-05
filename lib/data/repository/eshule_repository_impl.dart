@@ -263,10 +263,40 @@ class RepositoryImpl implements Repository {
     try {
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
+        KtList<CourseModel> model = emptyList();
+        final _localCourse = await _local.getCourse();
+        if (_localCourse.isNotEmpty) {
+          model = _localCourse.toImmutableList();
+        } else {
+          model = await _remote.getCourses(accessToken: tokenModel.accessToken);
+          await _local.insertCourse(model.asList());
+        }
+        final entities =
+            model.map((e) => e.toEntity()).asList().toImmutableList();
+        return right(entities);
+      } else {
+        await getIt<LocalDataSource>().clearPrefs();
+        throw UnAuthenticatedException();
+      }
+    } catch (e) {
+      print(e.toString());
+      final failure = returnFailure(e);
+      return left(failure);
+    }
+  }
+
+  //update
+  @override
+  Future<Either<String, KtList<Course>>> updateCourse() async {
+    try {
+      await _local.deleteCourse();
+      final tokenModel = await _local.getToken();
+      if (tokenModel != null) {
         final model =
             await _remote.getCourses(accessToken: tokenModel.accessToken);
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
+        await _local.insertCourse(model.asList());
         return right(entities);
       } else {
         await getIt<LocalDataSource>().clearPrefs();

@@ -4,20 +4,27 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teacher/core/errors/exeptions.dart';
 import 'package:teacher/core/util/constant.dart';
+import 'package:teacher/data/models/course_model.dart';
 import 'package:teacher/data/models/token_model.dart';
+import 'package:teacher/database/app_database.dart';
+import 'package:teacher/database/course/course_dao.dart';
 
 abstract class LocalDataSource {
   Future<void> cacheToken({required TokenModel? model});
   Future<TokenModel>? getToken();
   Future<void> clearPrefs();
   Future<bool> checkAuthenticatedUser();
+  Future<dynamic> insertCourse(List<CourseModel> course);
+  Future<List<CourseModel>> getCourse();
+  Future<dynamic> deleteCourse();
 }
 
 @LazySingleton(as: LocalDataSource)
 class LocalDataSourceImpl implements LocalDataSource {
   final SharedPreferences _prefs;
+  final CourseDao _courseDao;
 
-  LocalDataSourceImpl(this._prefs);
+  LocalDataSourceImpl(this._prefs, this._courseDao);
 
   @override
   Future<void> clearPrefs() {
@@ -66,6 +73,60 @@ class LocalDataSourceImpl implements LocalDataSource {
     } catch (e) {
       print(e.toString());
       throw CacheException();
+    }
+  }
+
+  @override
+  Future insertCourse(List<CourseModel> course) async {
+    try {
+      course.forEach((e) async {
+        await _courseDao.insertCourse(
+          CourseDataClass(
+            id: e.id,
+            title: e.title,
+            desc: e.desc,
+            photo: e.photo,
+            appCount: e.appCount,
+            applied: e.applied,
+            teachedBy: e.teachedBy,
+          ),
+        );
+      });
+    } catch (e) {
+      print(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<CourseModel>> getCourse() async {
+    try {
+      final _data = await _courseDao.getCourse();
+      List<CourseModel> _course = _data
+          .map((e) => CourseModel(
+                id: e.id,
+                title: e.title,
+                desc: e.desc,
+                photo: e.photo,
+                appCount: e.appCount,
+                applied: e.applied,
+                teachedBy: e.teachedBy,
+              ))
+          .toList();
+      return _course;
+    } catch (e) {
+      print(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future deleteCourse() async {
+    try {
+      await _courseDao.deleteAll();
+    } catch (e) {
+      print(e.toString());
+      rethrow;
     }
   }
 }
