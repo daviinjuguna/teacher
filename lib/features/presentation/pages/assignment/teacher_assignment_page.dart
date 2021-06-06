@@ -12,6 +12,9 @@ import 'package:teacher/di/injection.dart';
 import 'package:teacher/features/domain/entities/assignment.dart';
 import 'package:teacher/features/domain/entities/question.dart';
 import 'package:teacher/features/presentation/bloc/clear_prefs/clear_prefs_bloc.dart';
+import 'package:teacher/features/presentation/bloc/create_choice/create_choice_bloc.dart';
+import 'package:teacher/features/presentation/bloc/create_question/create_question_bloc.dart';
+import 'package:teacher/features/presentation/bloc/get_choice/get_choice_bloc.dart';
 import 'package:teacher/features/presentation/bloc/get_question/get_question_bloc.dart';
 import 'package:teacher/features/presentation/components/error_card.dart';
 import 'package:teacher/features/presentation/pages/assignment/widgets/add_question_widget.dart';
@@ -30,7 +33,9 @@ class TeacherAssignmentPage extends StatefulWidget {
 
 class _AssignmentPageState extends State<TeacherAssignmentPage> {
   final _getQuestionBloc = getIt<GetQuestionBloc>();
-  int _initialPage = 0;
+  final _createQUestionBloc = getIt<CreateQuestionBloc>();
+  final _createChoiceBloc = getIt<CreateChoiceBloc>();
+
   KtList<Question> _question = emptyList();
   Completer<void> _refreshCompleter = Completer();
 
@@ -44,6 +49,8 @@ class _AssignmentPageState extends State<TeacherAssignmentPage> {
   void dispose() {
     super.dispose();
     _getQuestionBloc.close();
+    _createQUestionBloc.close();
+    _createChoiceBloc.close();
   }
 
   @override
@@ -51,9 +58,82 @@ class _AssignmentPageState extends State<TeacherAssignmentPage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => _getQuestionBloc),
+        BlocProvider(create: (create) => _createQUestionBloc),
+        BlocProvider(create: (create) => _createChoiceBloc),
       ],
       child: MultiBlocListener(
         listeners: [
+          BlocListener<CreateChoiceBloc, CreateChoiceState>(
+            listener: (context, state) {
+              state.maybeMap(
+                  orElse: () {},
+                  success: (state) {
+                    ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                    _getQuestionBloc.add(
+                        GetQuestionEvent.update(id: widget._assignment.id));
+                  },
+                  error: (state) {
+                    ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                  },
+                  load: (state) {
+                    ScaffoldMessenger.maybeOf(context)!
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(
+                        SnackBar(
+                          duration: Duration(minutes: 10),
+                          backgroundColor: kBlackColor,
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircularProgressIndicator.adaptive(),
+                              Text(
+                                "Loading...",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                  });
+            },
+          ),
+          BlocListener<CreateQuestionBloc, CreateQuestionState>(
+            listener: (context, state) {
+              state.maybeMap(
+                orElse: () {},
+                success: (state) {
+                  ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                  _getQuestionBloc
+                      .add(GetQuestionEvent.update(id: widget._assignment.id));
+                },
+                error: (state) {
+                  ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                },
+                load: (state) {
+                  ScaffoldMessenger.maybeOf(context)!
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        duration: Duration(minutes: 10),
+                        backgroundColor: kBlackColor,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CircularProgressIndicator.adaptive(),
+                            Text(
+                              "Loading...",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                },
+              );
+            },
+          ),
           BlocListener<GetQuestionBloc, GetQuestionState>(
             listener: (context, state) {
               state.maybeMap(
@@ -199,6 +279,12 @@ class _AssignmentPageState extends State<TeacherAssignmentPage> {
                                 ).then((value) {
                                   if (value != null) {
                                     print(value);
+                                    _createQUestionBloc
+                                        .add(CreateQuestionEvent.create(
+                                      assignmentId: widget._assignment.id,
+                                      question: value.question,
+                                      answer: value.answer,
+                                    ));
                                   } else {
                                     print("NI KWA NEEMA");
                                   }

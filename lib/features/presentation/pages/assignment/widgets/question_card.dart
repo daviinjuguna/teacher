@@ -6,8 +6,10 @@ import 'package:teacher/di/injection.dart';
 import 'package:teacher/features/domain/entities/choice.dart';
 
 import 'package:teacher/features/domain/entities/question.dart';
+import 'package:teacher/features/presentation/bloc/create_choice/create_choice_bloc.dart';
 import 'package:teacher/features/presentation/bloc/get_choice/get_choice_bloc.dart';
 
+import 'add_choice_dialog.dart';
 import 'choice.dart';
 
 class QuestionCard extends StatefulWidget {
@@ -44,6 +46,16 @@ class _QuestionCardState extends State<QuestionCard> {
       ],
       child: MultiBlocListener(
         listeners: [
+          BlocListener<CreateChoiceBloc, CreateChoiceState>(
+            listener: (context, state) {
+              state.maybeMap(
+                  orElse: () {},
+                  success: (state) {
+                    _getChoiceBloc
+                        .add(GetChoiceEvent.update(id: widget._question.id));
+                  });
+            },
+          ),
           BlocListener<GetChoiceBloc, GetChoiceState>(
             listener: (context, state) {
               state.maybeMap(
@@ -54,6 +66,27 @@ class _QuestionCardState extends State<QuestionCard> {
                 },
                 error: (s) {
                   ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                },
+                updating: (state) {
+                  ScaffoldMessenger.maybeOf(context)!
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        duration: Duration(minutes: 10),
+                        backgroundColor: kBlackColor,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CircularProgressIndicator.adaptive(),
+                            Text(
+                              "Updating...",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                 },
                 loading: (state) {
                   ScaffoldMessenger.maybeOf(context)!
@@ -103,6 +136,8 @@ class _QuestionCardState extends State<QuestionCard> {
                     correct: _choice[index] == widget._question.answer,
                     press: () {},
                     name: _choice[index].title,
+                    delete: () {},
+                    edit: () {},
                   ),
                 );
               },
@@ -116,7 +151,22 @@ class _QuestionCardState extends State<QuestionCard> {
                           GetChoiceEvent.sort(questionId: widget._question.id));
                     },
                     child: Text("SORT")),
-                ElevatedButton(onPressed: () {}, child: Text("ADD")),
+                ElevatedButton(
+                    onPressed: () => showDialog(
+                          context: context,
+                          builder: (builder) => AddChoiceDialog(),
+                        ).then((value) {
+                          if (value != null) {
+                            context.read<CreateChoiceBloc>().add(
+                                CreateChoiceEvent.create(
+                                    questionId: widget._question.id,
+                                    title: value));
+                          }
+                          print(value);
+                        }).catchError((e, s) {
+                          print("ADD CHOICE ERROR: $e,$s");
+                        }),
+                    child: Text("ADD")),
               ],
             ),
           ],

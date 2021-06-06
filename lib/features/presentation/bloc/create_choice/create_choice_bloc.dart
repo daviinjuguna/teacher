@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:teacher/core/usecase/usecase.dart';
+import 'package:teacher/features/domain/usecase/teacher/create_assignment.dart';
 import 'package:teacher/features/domain/usecase/teacher/create_choice.dart';
 import 'package:teacher/features/domain/usecase/teacher/delete_choice.dart';
 import 'package:teacher/features/domain/usecase/teacher/edit_choice.dart';
@@ -23,6 +25,33 @@ class CreateChoiceBloc extends Bloc<CreateChoiceEvent, CreateChoiceState> {
   Stream<CreateChoiceState> mapEventToState(
     CreateChoiceEvent event,
   ) async* {
-    // TODO: implement mapEventToState
+    yield* event.map(
+      create: (e) async* {
+        yield CreateChoiceState.load();
+        final _res = await _create
+            .call(CreateAssignmentParams(id: e.questionId, title: e.title));
+        yield _res.fold(
+          (l) => CreateChoiceState.error(l),
+          (r) => CreateChoiceState.success(r.message),
+        );
+      },
+      edit: (e) async* {
+        yield CreateChoiceState.load();
+        final _res = await _edit
+            .call(CreateAssignmentParams(id: e.choiceId, title: e.title));
+        yield _res.fold(
+          (l) => CreateChoiceState.error(l),
+          (r) => CreateChoiceState.success(r.message),
+        );
+      },
+      delete: (e) async* {
+        yield CreateChoiceState.load();
+        final _res = await _choice.call(ParamsId(id: e.choiceId));
+        yield _res.fold(
+          (l) => CreateChoiceState.error(l),
+          (r) => CreateChoiceState.success(r.message),
+        );
+      },
+    );
   }
 }

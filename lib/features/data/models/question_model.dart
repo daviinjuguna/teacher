@@ -16,6 +16,7 @@ class QuestionModel with _$QuestionModel {
     @JsonKey(name: "id", required: true) required int id,
     @JsonKey(name: "question", required: true) required String question,
     @JsonKey(name: "answer") required ChoiceModel answer,
+    // @JsonKey(name: "")requ
     @JsonKey(name: 'choices', required: true)
         required List<ChoiceModel> choices,
     @JsonKey(name: "assignment_id") int? assignmentId,

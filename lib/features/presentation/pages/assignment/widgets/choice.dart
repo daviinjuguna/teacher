@@ -6,12 +6,16 @@ class ChoiceCard extends StatelessWidget {
   final VoidCallback press;
   final String name;
   final bool correct;
+  final VoidCallback delete;
+  final VoidCallback edit;
 
   const ChoiceCard({
     Key? key,
     required this.press,
     required this.name,
     required this.correct,
+    required this.delete,
+    required this.edit,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -52,6 +56,49 @@ class ChoiceCard extends StatelessWidget {
               // child: getTheRightColor() == kGrayColor
               //     ? null
               //     : Icon(getTheRightIcon(), size: 16),
+            ),
+            IconButton(onPressed: edit, icon: Icon(Icons.edit)),
+            IconButton(
+              onPressed: correct
+                  ? () {
+                      ScaffoldMessenger.maybeOf(context)
+                        ?..hideCurrentSnackBar()
+                        ..showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.red,
+                            behavior: SnackBarBehavior.fixed,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(5),
+                              topRight: Radius.circular(5),
+                            )),
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "NOP",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                // SizedBox(height: 3),
+                                Text(
+                                  "You Cannot Delete The answer, Set a new Answer",
+                                  style: TextStyle(
+                                    // fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                    }
+                  : delete,
+              icon: Icon(Icons.delete),
+              color: Colors.red,
             )
           ],
         ),

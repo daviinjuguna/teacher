@@ -51,7 +51,7 @@ class _AddQuestionWidgetState extends State<AddQuestionWidget> {
           TextField(
             keyboardType: TextInputType.text,
             style: TextStyle(
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
               fontSize: 16,
             ),
             controller: _questionController,
@@ -65,10 +65,11 @@ class _AddQuestionWidgetState extends State<AddQuestionWidget> {
               _question = value;
             },
           ),
+          SizedBox(height: 5),
           TextField(
             keyboardType: TextInputType.text,
             style: TextStyle(
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
               fontSize: 16,
             ),
             controller: _answerController,
