@@ -11,7 +11,7 @@ part 'user_dao.g.dart';
 class UserDao extends DatabaseAccessor<AppDatabase> with _$UserDaoMixin {
   UserDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
-  Future insertPdf(UserDataClass user) =>
+  Future insertUser(UserDataClass user) =>
       into(userTable).insert(user).onError((error, stackTrace) {
         print("FAILED INSERT USER: $error, $stackTrace");
         throw DatabaseExeption();

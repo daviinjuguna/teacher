@@ -490,7 +490,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                         height: 30,
                                         alignment: Alignment.center,
                                         child: Text(
-                                          "EDIT",
+                                          "VIEW",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w800,
@@ -498,140 +498,111 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                           ),
                                         ),
                                       ),
-                                      onPressed: () => showDialog(
-                                        context: context,
-                                        builder: (builder) => AddCourseWidget(
-                                          title: "EDIT COURSE",
-                                          initDesc: course[index].desc,
-                                          initPic: course[index].photo,
-                                          initTitle: course[index].title,
-                                        ),
-                                      )
-                                          .then(
-                                        (value) => {
-                                          //*checks results of the dialogue
-                                          if (value != null)
-                                            {
-                                              print("TITLE: ${value.title}"),
-                                              print("TEXT: ${value.desc}"),
-                                              print("IMAGE: ${value.imgUrl}"),
-                                              _createCourseBloc
-                                                  .add(CreateCourseEvent.edit(
-                                                courseId: course[index].id,
-                                                title: value.title,
-                                                description: value.desc,
-                                                photo: value.imgUrl,
-                                              ))
-                                            }
-                                        },
-                                      )
-                                          .catchError((e, s) {
-                                        print("EDIT COURSE ERROR: $e,$s");
-                                      }),
+                                      onPressed: () => AutoRouter.of(context)
+                                          .push(TeacherCourseRoute(
+                                              course: course[index])),
                                     ),
-                                    MaterialButton(
-                                      color: Colors.red,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.edit),
+                                          onPressed: () => showDialog(
+                                            context: context,
+                                            builder: (builder) =>
+                                                AddCourseWidget(
+                                              title: "EDIT COURSE",
+                                              initDesc: course[index].desc,
+                                              initPic: course[index].photo,
+                                              initTitle: course[index].title,
+                                            ),
+                                          )
+                                              .then(
+                                            (value) => {
+                                              //*checks results of the dialogue
+                                              if (value != null)
+                                                {
+                                                  print(
+                                                      "TITLE: ${value.title}"),
+                                                  print("TEXT: ${value.desc}"),
+                                                  print(
+                                                      "IMAGE: ${value.imgUrl}"),
+                                                  _createCourseBloc.add(
+                                                      CreateCourseEvent.edit(
+                                                    courseId: course[index].id,
+                                                    title: value.title,
+                                                    description: value.desc,
+                                                    photo: value.imgUrl,
+                                                  ))
+                                                }
+                                            },
+                                          )
+                                              .catchError((e, s) {
+                                            print("EDIT COURSE ERROR: $e,$s");
+                                          }),
                                         ),
-                                        width: 90,
-                                        height: 30,
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "DELETE",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w800,
-                                            letterSpacing: 1.4,
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: () => showDialog(
-                                        context: context,
-                                        builder: (builder) => AlertDialog(
-                                          title: Text("DELETE COURSE"),
-                                          content: Text(
-                                              "Are you sure you want to delete course?"),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () =>
-                                                    Navigator.of(context)
-                                                        .pop(null),
-                                                child: Text(
-                                                  "NO",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w800,
-                                                    letterSpacing: 1.4,
-                                                    color: Colors.red,
+                                        IconButton(
+                                          icon: Icon(Icons.delete),
+                                          color: Colors.red,
+                                          onPressed: () => showDialog(
+                                            context: context,
+                                            builder: (builder) => AlertDialog(
+                                              title: Text("DELETE COURSE"),
+                                              content: Text(
+                                                  "Are you sure you want to delete course?"),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(null),
+                                                    child: Text(
+                                                      "NO",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        letterSpacing: 1.4,
+                                                        color: Colors.red,
+                                                      ),
+                                                    )),
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.of(context)
+                                                          .pop(true),
+                                                  child: Text(
+                                                    "YES",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      letterSpacing: 1.4,
+                                                      color: Colors.green,
+                                                    ),
                                                   ),
-                                                )),
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context)
-                                                      .pop(true),
-                                              child: Text(
-                                                "YES",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  letterSpacing: 1.4,
-                                                  color: Colors.green,
-                                                ),
-                                              ),
-                                            )
-                                          ],
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                              .then((value) => {
+                                                    if (value != null && value)
+                                                      {
+                                                        _createCourseBloc.add(
+                                                          CreateCourseEvent.delete(
+                                                              courseId:
+                                                                  course[index]
+                                                                      .id),
+                                                        )
+                                                      }
+                                                  })
+                                              .catchError((e, s) {
+                                            print(
+                                                "DELETE DIALOGUE ERROR: $e,$s");
+                                          }),
                                         ),
-                                      )
-                                          .then((value) => {
-                                                if (value != null && value)
-                                                  {
-                                                    _createCourseBloc.add(
-                                                      CreateCourseEvent.delete(
-                                                          courseId:
-                                                              course[index].id),
-                                                    )
-                                                  }
-                                              })
-                                          .catchError((e, s) {
-                                        print("DELETE DIALOGUE ERROR: $e,$s");
-                                      }),
+                                      ],
                                     ),
                                   ],
                                 )
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 50,
-                              vertical: 5,
-                            ),
-                            child: Container(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: MaterialButton(
-                                color: kBlackColor,
-                                child: Container(
-                                  height: 30,
-                                  width: double.infinity,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "VIEW",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w800,
-                                      letterSpacing: 1.4,
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () => AutoRouter.of(context).push(
-                                    TeacherCourseRoute(course: course[index])),
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),

@@ -157,8 +157,12 @@ Widget _buildSplashMaterialScaffold({
                         ),
                       ),
                     ),
-                    //TODO implment error container
-                    error: (_) => Container(),
+                    error: (_) => Center(
+                        child: ElevatedButton(
+                      onPressed: () =>
+                          context.read<SplashBloc>().add(SplashEvent.refresh()),
+                      child: Text("RETRY"),
+                    )),
                   );
                 },
               ),

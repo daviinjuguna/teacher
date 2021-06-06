@@ -22,10 +22,14 @@ class _$ChoiceModelTearOff {
 
   _ChoiceModel call(
       {@JsonKey(name: "id", required: true) required int id,
-      @JsonKey(name: "title", required: true) required String title}) {
+      @JsonKey(name: "title", required: true) required String title,
+      @JsonKey(name: "sort") int? sort,
+      @JsonKey(name: "question_id") int? questionId}) {
     return _ChoiceModel(
       id: id,
       title: title,
+      sort: sort,
+      questionId: questionId,
     );
   }
 
@@ -43,6 +47,10 @@ mixin _$ChoiceModel {
   int get id => throw _privateConstructorUsedError;
   @JsonKey(name: "title", required: true)
   String get title => throw _privateConstructorUsedError;
+  @JsonKey(name: "sort")
+  int? get sort => throw _privateConstructorUsedError;
+  @JsonKey(name: "question_id")
+  int? get questionId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -57,7 +65,9 @@ abstract class $ChoiceModelCopyWith<$Res> {
       _$ChoiceModelCopyWithImpl<$Res>;
   $Res call(
       {@JsonKey(name: "id", required: true) int id,
-      @JsonKey(name: "title", required: true) String title});
+      @JsonKey(name: "title", required: true) String title,
+      @JsonKey(name: "sort") int? sort,
+      @JsonKey(name: "question_id") int? questionId});
 }
 
 /// @nodoc
@@ -72,6 +82,8 @@ class _$ChoiceModelCopyWithImpl<$Res> implements $ChoiceModelCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? title = freezed,
+    Object? sort = freezed,
+    Object? questionId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -82,6 +94,14 @@ class _$ChoiceModelCopyWithImpl<$Res> implements $ChoiceModelCopyWith<$Res> {
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      sort: sort == freezed
+          ? _value.sort
+          : sort // ignore: cast_nullable_to_non_nullable
+              as int?,
+      questionId: questionId == freezed
+          ? _value.questionId
+          : questionId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -95,7 +115,9 @@ abstract class _$ChoiceModelCopyWith<$Res>
   @override
   $Res call(
       {@JsonKey(name: "id", required: true) int id,
-      @JsonKey(name: "title", required: true) String title});
+      @JsonKey(name: "title", required: true) String title,
+      @JsonKey(name: "sort") int? sort,
+      @JsonKey(name: "question_id") int? questionId});
 }
 
 /// @nodoc
@@ -112,6 +134,8 @@ class __$ChoiceModelCopyWithImpl<$Res> extends _$ChoiceModelCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? title = freezed,
+    Object? sort = freezed,
+    Object? questionId = freezed,
   }) {
     return _then(_ChoiceModel(
       id: id == freezed
@@ -122,6 +146,14 @@ class __$ChoiceModelCopyWithImpl<$Res> extends _$ChoiceModelCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      sort: sort == freezed
+          ? _value.sort
+          : sort // ignore: cast_nullable_to_non_nullable
+              as int?,
+      questionId: questionId == freezed
+          ? _value.questionId
+          : questionId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -131,7 +163,9 @@ class __$ChoiceModelCopyWithImpl<$Res> extends _$ChoiceModelCopyWithImpl<$Res>
 class _$_ChoiceModel extends _ChoiceModel {
   _$_ChoiceModel(
       {@JsonKey(name: "id", required: true) required this.id,
-      @JsonKey(name: "title", required: true) required this.title})
+      @JsonKey(name: "title", required: true) required this.title,
+      @JsonKey(name: "sort") this.sort,
+      @JsonKey(name: "question_id") this.questionId})
       : super._();
 
   factory _$_ChoiceModel.fromJson(Map<String, dynamic> json) =>
@@ -143,10 +177,16 @@ class _$_ChoiceModel extends _ChoiceModel {
   @override
   @JsonKey(name: "title", required: true)
   final String title;
+  @override
+  @JsonKey(name: "sort")
+  final int? sort;
+  @override
+  @JsonKey(name: "question_id")
+  final int? questionId;
 
   @override
   String toString() {
-    return 'ChoiceModel(id: $id, title: $title)';
+    return 'ChoiceModel(id: $id, title: $title, sort: $sort, questionId: $questionId)';
   }
 
   @override
@@ -156,14 +196,21 @@ class _$_ChoiceModel extends _ChoiceModel {
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)));
+                const DeepCollectionEquality().equals(other.title, title)) &&
+            (identical(other.sort, sort) ||
+                const DeepCollectionEquality().equals(other.sort, sort)) &&
+            (identical(other.questionId, questionId) ||
+                const DeepCollectionEquality()
+                    .equals(other.questionId, questionId)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(title);
+      const DeepCollectionEquality().hash(title) ^
+      const DeepCollectionEquality().hash(sort) ^
+      const DeepCollectionEquality().hash(questionId);
 
   @JsonKey(ignore: true)
   @override
@@ -178,9 +225,10 @@ class _$_ChoiceModel extends _ChoiceModel {
 
 abstract class _ChoiceModel extends ChoiceModel {
   factory _ChoiceModel(
-          {@JsonKey(name: "id", required: true) required int id,
-          @JsonKey(name: "title", required: true) required String title}) =
-      _$_ChoiceModel;
+      {@JsonKey(name: "id", required: true) required int id,
+      @JsonKey(name: "title", required: true) required String title,
+      @JsonKey(name: "sort") int? sort,
+      @JsonKey(name: "question_id") int? questionId}) = _$_ChoiceModel;
   _ChoiceModel._() : super._();
 
   factory _ChoiceModel.fromJson(Map<String, dynamic> json) =
@@ -192,6 +240,12 @@ abstract class _ChoiceModel extends ChoiceModel {
   @override
   @JsonKey(name: "title", required: true)
   String get title => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: "sort")
+  int? get sort => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: "question_id")
+  int? get questionId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ChoiceModelCopyWith<_ChoiceModel> get copyWith =>

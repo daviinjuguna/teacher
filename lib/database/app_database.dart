@@ -3,11 +3,13 @@ import 'package:moor/moor.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:teacher/database/assignment/assignment_dao.dart';
 import 'package:teacher/database/assignment/assignment_table.dart';
+import 'package:teacher/database/choice/choice_dao.dart';
 import 'package:teacher/database/choice/choice_table.dart';
 import 'package:teacher/database/course/course_dao.dart';
 import 'package:teacher/database/course/course_table.dart';
 import 'package:teacher/database/pdf/pdf_dao.dart';
 import 'package:teacher/database/pdf/pdf_table.dart';
+import 'package:teacher/database/question/question_dao.dart';
 import 'package:teacher/database/question/question_table.dart';
 import 'package:teacher/database/user/user_dao.dart';
 import 'package:teacher/database/user/user_table.dart';
@@ -27,7 +29,7 @@ part 'app_database.g.dart';
     QuestionTable,
     ChoiceTable,
   ],
-  daos: [CourseDao, UserDao, AssignmentDao, PdfDao],
+  daos: [CourseDao, UserDao, AssignmentDao, PdfDao, QuestionDao, ChoiceDao],
 )
 @lazySingleton
 class AppDatabase extends _$AppDatabase {

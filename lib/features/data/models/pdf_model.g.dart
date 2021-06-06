@@ -12,6 +12,7 @@ _$_PdfModel _$_$_PdfModelFromJson(Map<String, dynamic> json) {
     id: json['id'] as int,
     name: json['name'] as String,
     pdfDoc: json['link'] as String,
+    courseId: json['course_id'] as int?,
   );
 }
 
@@ -20,4 +21,5 @@ Map<String, dynamic> _$_$_PdfModelToJson(_$_PdfModel instance) =>
       'id': instance.id,
       'name': instance.name,
       'link': instance.pdfDoc,
+      'course_id': instance.courseId,
     };

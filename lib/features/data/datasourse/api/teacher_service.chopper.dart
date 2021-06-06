@@ -418,7 +418,7 @@ class _$TeacherServiceApi extends TeacherServiceApi {
   @override
   Future<Response<dynamic>> sortChoices(
       {required String accessToken, required int questionId}) {
-    final $url = '/teacher/sortChoices';
+    final $url = '/teacher/sort_random';
     final $headers = {
       'Authorization': accessToken,
     };

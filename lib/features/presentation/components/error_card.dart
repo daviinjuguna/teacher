@@ -12,8 +12,8 @@ class ErrorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: double.infinity,
-      width: double.infinity,
+      // height: double.infinity,
+      width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

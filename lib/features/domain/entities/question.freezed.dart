@@ -19,10 +19,12 @@ class _$QuestionTearOff {
   _Question call(
       {required int id,
       required String question,
+      required Choice answer,
       required KtList<Choice> choices}) {
     return _Question(
       id: id,
       question: question,
+      answer: answer,
       choices: choices,
     );
   }
@@ -35,6 +37,7 @@ const $Question = _$QuestionTearOff();
 mixin _$Question {
   int get id => throw _privateConstructorUsedError;
   String get question => throw _privateConstructorUsedError;
+  Choice get answer => throw _privateConstructorUsedError;
   KtList<Choice> get choices => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -46,7 +49,9 @@ mixin _$Question {
 abstract class $QuestionCopyWith<$Res> {
   factory $QuestionCopyWith(Question value, $Res Function(Question) then) =
       _$QuestionCopyWithImpl<$Res>;
-  $Res call({int id, String question, KtList<Choice> choices});
+  $Res call({int id, String question, Choice answer, KtList<Choice> choices});
+
+  $ChoiceCopyWith<$Res> get answer;
 }
 
 /// @nodoc
@@ -61,6 +66,7 @@ class _$QuestionCopyWithImpl<$Res> implements $QuestionCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? question = freezed,
+    Object? answer = freezed,
     Object? choices = freezed,
   }) {
     return _then(_value.copyWith(
@@ -72,11 +78,22 @@ class _$QuestionCopyWithImpl<$Res> implements $QuestionCopyWith<$Res> {
           ? _value.question
           : question // ignore: cast_nullable_to_non_nullable
               as String,
+      answer: answer == freezed
+          ? _value.answer
+          : answer // ignore: cast_nullable_to_non_nullable
+              as Choice,
       choices: choices == freezed
           ? _value.choices
           : choices // ignore: cast_nullable_to_non_nullable
               as KtList<Choice>,
     ));
+  }
+
+  @override
+  $ChoiceCopyWith<$Res> get answer {
+    return $ChoiceCopyWith<$Res>(_value.answer, (value) {
+      return _then(_value.copyWith(answer: value));
+    });
   }
 }
 
@@ -85,7 +102,10 @@ abstract class _$QuestionCopyWith<$Res> implements $QuestionCopyWith<$Res> {
   factory _$QuestionCopyWith(_Question value, $Res Function(_Question) then) =
       __$QuestionCopyWithImpl<$Res>;
   @override
-  $Res call({int id, String question, KtList<Choice> choices});
+  $Res call({int id, String question, Choice answer, KtList<Choice> choices});
+
+  @override
+  $ChoiceCopyWith<$Res> get answer;
 }
 
 /// @nodoc
@@ -101,6 +121,7 @@ class __$QuestionCopyWithImpl<$Res> extends _$QuestionCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? question = freezed,
+    Object? answer = freezed,
     Object? choices = freezed,
   }) {
     return _then(_Question(
@@ -112,6 +133,10 @@ class __$QuestionCopyWithImpl<$Res> extends _$QuestionCopyWithImpl<$Res>
           ? _value.question
           : question // ignore: cast_nullable_to_non_nullable
               as String,
+      answer: answer == freezed
+          ? _value.answer
+          : answer // ignore: cast_nullable_to_non_nullable
+              as Choice,
       choices: choices == freezed
           ? _value.choices
           : choices // ignore: cast_nullable_to_non_nullable
@@ -123,7 +148,11 @@ class __$QuestionCopyWithImpl<$Res> extends _$QuestionCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Question extends _Question {
-  _$_Question({required this.id, required this.question, required this.choices})
+  _$_Question(
+      {required this.id,
+      required this.question,
+      required this.answer,
+      required this.choices})
       : super._();
 
   @override
@@ -131,11 +160,13 @@ class _$_Question extends _Question {
   @override
   final String question;
   @override
+  final Choice answer;
+  @override
   final KtList<Choice> choices;
 
   @override
   String toString() {
-    return 'Question(id: $id, question: $question, choices: $choices)';
+    return 'Question(id: $id, question: $question, answer: $answer, choices: $choices)';
   }
 
   @override
@@ -147,6 +178,8 @@ class _$_Question extends _Question {
             (identical(other.question, question) ||
                 const DeepCollectionEquality()
                     .equals(other.question, question)) &&
+            (identical(other.answer, answer) ||
+                const DeepCollectionEquality().equals(other.answer, answer)) &&
             (identical(other.choices, choices) ||
                 const DeepCollectionEquality().equals(other.choices, choices)));
   }
@@ -156,6 +189,7 @@ class _$_Question extends _Question {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(question) ^
+      const DeepCollectionEquality().hash(answer) ^
       const DeepCollectionEquality().hash(choices);
 
   @JsonKey(ignore: true)
@@ -168,6 +202,7 @@ abstract class _Question extends Question {
   factory _Question(
       {required int id,
       required String question,
+      required Choice answer,
       required KtList<Choice> choices}) = _$_Question;
   _Question._() : super._();
 
@@ -175,6 +210,8 @@ abstract class _Question extends Question {
   int get id => throw _privateConstructorUsedError;
   @override
   String get question => throw _privateConstructorUsedError;
+  @override
+  Choice get answer => throw _privateConstructorUsedError;
   @override
   KtList<Choice> get choices => throw _privateConstructorUsedError;
   @override

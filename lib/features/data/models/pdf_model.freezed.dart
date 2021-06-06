@@ -23,11 +23,13 @@ class _$PdfModelTearOff {
   _PdfModel call(
       {@JsonKey(name: "id", required: true) required int id,
       @JsonKey(name: "name", required: true) required String name,
-      @JsonKey(name: "link", required: true) required String pdfDoc}) {
+      @JsonKey(name: "link", required: true) required String pdfDoc,
+      @JsonKey(name: "course_id") int? courseId}) {
     return _PdfModel(
       id: id,
       name: name,
       pdfDoc: pdfDoc,
+      courseId: courseId,
     );
   }
 
@@ -47,6 +49,8 @@ mixin _$PdfModel {
   String get name => throw _privateConstructorUsedError;
   @JsonKey(name: "link", required: true)
   String get pdfDoc => throw _privateConstructorUsedError;
+  @JsonKey(name: "course_id")
+  int? get courseId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -61,7 +65,8 @@ abstract class $PdfModelCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: "id", required: true) int id,
       @JsonKey(name: "name", required: true) String name,
-      @JsonKey(name: "link", required: true) String pdfDoc});
+      @JsonKey(name: "link", required: true) String pdfDoc,
+      @JsonKey(name: "course_id") int? courseId});
 }
 
 /// @nodoc
@@ -77,6 +82,7 @@ class _$PdfModelCopyWithImpl<$Res> implements $PdfModelCopyWith<$Res> {
     Object? id = freezed,
     Object? name = freezed,
     Object? pdfDoc = freezed,
+    Object? courseId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -91,6 +97,10 @@ class _$PdfModelCopyWithImpl<$Res> implements $PdfModelCopyWith<$Res> {
           ? _value.pdfDoc
           : pdfDoc // ignore: cast_nullable_to_non_nullable
               as String,
+      courseId: courseId == freezed
+          ? _value.courseId
+          : courseId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -103,7 +113,8 @@ abstract class _$PdfModelCopyWith<$Res> implements $PdfModelCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: "id", required: true) int id,
       @JsonKey(name: "name", required: true) String name,
-      @JsonKey(name: "link", required: true) String pdfDoc});
+      @JsonKey(name: "link", required: true) String pdfDoc,
+      @JsonKey(name: "course_id") int? courseId});
 }
 
 /// @nodoc
@@ -120,6 +131,7 @@ class __$PdfModelCopyWithImpl<$Res> extends _$PdfModelCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? pdfDoc = freezed,
+    Object? courseId = freezed,
   }) {
     return _then(_PdfModel(
       id: id == freezed
@@ -134,6 +146,10 @@ class __$PdfModelCopyWithImpl<$Res> extends _$PdfModelCopyWithImpl<$Res>
           ? _value.pdfDoc
           : pdfDoc // ignore: cast_nullable_to_non_nullable
               as String,
+      courseId: courseId == freezed
+          ? _value.courseId
+          : courseId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -144,7 +160,8 @@ class _$_PdfModel extends _PdfModel {
   _$_PdfModel(
       {@JsonKey(name: "id", required: true) required this.id,
       @JsonKey(name: "name", required: true) required this.name,
-      @JsonKey(name: "link", required: true) required this.pdfDoc})
+      @JsonKey(name: "link", required: true) required this.pdfDoc,
+      @JsonKey(name: "course_id") this.courseId})
       : super._();
 
   factory _$_PdfModel.fromJson(Map<String, dynamic> json) =>
@@ -159,10 +176,13 @@ class _$_PdfModel extends _PdfModel {
   @override
   @JsonKey(name: "link", required: true)
   final String pdfDoc;
+  @override
+  @JsonKey(name: "course_id")
+  final int? courseId;
 
   @override
   String toString() {
-    return 'PdfModel(id: $id, name: $name, pdfDoc: $pdfDoc)';
+    return 'PdfModel(id: $id, name: $name, pdfDoc: $pdfDoc, courseId: $courseId)';
   }
 
   @override
@@ -174,7 +194,10 @@ class _$_PdfModel extends _PdfModel {
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.pdfDoc, pdfDoc) ||
-                const DeepCollectionEquality().equals(other.pdfDoc, pdfDoc)));
+                const DeepCollectionEquality().equals(other.pdfDoc, pdfDoc)) &&
+            (identical(other.courseId, courseId) ||
+                const DeepCollectionEquality()
+                    .equals(other.courseId, courseId)));
   }
 
   @override
@@ -182,7 +205,8 @@ class _$_PdfModel extends _PdfModel {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(pdfDoc);
+      const DeepCollectionEquality().hash(pdfDoc) ^
+      const DeepCollectionEquality().hash(courseId);
 
   @JsonKey(ignore: true)
   @override
@@ -197,10 +221,10 @@ class _$_PdfModel extends _PdfModel {
 
 abstract class _PdfModel extends PdfModel {
   factory _PdfModel(
-          {@JsonKey(name: "id", required: true) required int id,
-          @JsonKey(name: "name", required: true) required String name,
-          @JsonKey(name: "link", required: true) required String pdfDoc}) =
-      _$_PdfModel;
+      {@JsonKey(name: "id", required: true) required int id,
+      @JsonKey(name: "name", required: true) required String name,
+      @JsonKey(name: "link", required: true) required String pdfDoc,
+      @JsonKey(name: "course_id") int? courseId}) = _$_PdfModel;
   _PdfModel._() : super._();
 
   factory _PdfModel.fromJson(Map<String, dynamic> json) = _$_PdfModel.fromJson;
@@ -214,6 +238,9 @@ abstract class _PdfModel extends PdfModel {
   @override
   @JsonKey(name: "link", required: true)
   String get pdfDoc => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: "course_id")
+  int? get courseId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$PdfModelCopyWith<_PdfModel> get copyWith =>

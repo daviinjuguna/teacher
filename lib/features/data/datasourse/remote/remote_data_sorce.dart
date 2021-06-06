@@ -801,7 +801,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final status = _call.checkStatusCode(_resp.statusCode);
       if (status) {
         List<ChoiceModel> choice = [];
-        Map<String, dynamic> body = jsonDecode(_resp.body);
+        final body = _resp.body;
         try {
           choice = (body['choice'] as List)
               .map((body) => ChoiceModel.fromJson(body))

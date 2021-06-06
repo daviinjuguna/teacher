@@ -13,7 +13,7 @@ String parseUniqueDate(int date) {
   DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(date * 1000);
   String weekDay = fetchWeekDay(dateTime.weekday);
   String month = fetchMonth(dateTime.month);
-  return "$weekDay ${dateTime.day} $month";
+  return "$weekDay ${dateTime.day} $month (${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')})";
 }
 
 String timeToHrsMinsSec({int? time}) {

@@ -17,6 +17,7 @@ class AssignmentModel with _$AssignmentModel {
     // @JsonKey(name: "total_attempts", ignore: true, includeIfNull: false)
     //     int attempts,
     @JsonKey(name: "attempted", includeIfNull: false) AttemptedModel? attempted,
+    @JsonKey(name: "course_id") int? courseId,
     //TODO add graged
   }) = _AssignmentModel;
 

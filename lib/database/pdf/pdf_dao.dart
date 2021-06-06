@@ -19,13 +19,23 @@ class PdfDao extends DatabaseAccessor<AppDatabase> with _$PdfDaoMixin {
         throw DatabaseExeption();
       });
 
-  Future<List<PdfDataClass>> getPdf() =>
-      select(pdfTable).get().onError((error, stackTrace) {
+  Future<List<PdfDataClass>> getPdf(int id) =>
+      (select(pdfTable)..where((tbl) => tbl.courseId.equals(id)))
+          .get()
+          .onError((error, stackTrace) {
         print("FAILED GET PDF: $error, $stackTrace");
         throw DatabaseExeption();
       });
 
   Future deleteAll() => delete(pdfTable).go().onError((error, stackTrace) {
+        print("FAILED DELETE PDF: $error, $stackTrace");
+        throw DatabaseExeption();
+      });
+
+  Future deleteWhere(int id) =>
+      (delete(pdfTable)..where((tbl) => tbl.courseId.equals(id)))
+          .go()
+          .onError((error, stackTrace) {
         print("FAILED DELETE PDF: $error, $stackTrace");
         throw DatabaseExeption();
       });

@@ -28,12 +28,15 @@ class _$AssignmentModelTearOff {
       @JsonKey(name: "question_count", required: true)
           required int questions,
       @JsonKey(name: "attempted", includeIfNull: false)
-          AttemptedModel? attempted}) {
+          AttemptedModel? attempted,
+      @JsonKey(name: "course_id")
+          int? courseId}) {
     return _AssignmentModel(
       id: id,
       title: title,
       questions: questions,
       attempted: attempted,
+      courseId: courseId,
     );
   }
 
@@ -57,6 +60,8 @@ mixin _$AssignmentModel {
 //     int attempts,
   @JsonKey(name: "attempted", includeIfNull: false)
   AttemptedModel? get attempted => throw _privateConstructorUsedError;
+  @JsonKey(name: "course_id")
+  int? get courseId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -77,7 +82,9 @@ abstract class $AssignmentModelCopyWith<$Res> {
       @JsonKey(name: "question_count", required: true)
           int questions,
       @JsonKey(name: "attempted", includeIfNull: false)
-          AttemptedModel? attempted});
+          AttemptedModel? attempted,
+      @JsonKey(name: "course_id")
+          int? courseId});
 
   $AttemptedModelCopyWith<$Res>? get attempted;
 }
@@ -97,6 +104,7 @@ class _$AssignmentModelCopyWithImpl<$Res>
     Object? title = freezed,
     Object? questions = freezed,
     Object? attempted = freezed,
+    Object? courseId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -115,6 +123,10 @@ class _$AssignmentModelCopyWithImpl<$Res>
           ? _value.attempted
           : attempted // ignore: cast_nullable_to_non_nullable
               as AttemptedModel?,
+      courseId: courseId == freezed
+          ? _value.courseId
+          : courseId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 
@@ -145,7 +157,9 @@ abstract class _$AssignmentModelCopyWith<$Res>
       @JsonKey(name: "question_count", required: true)
           int questions,
       @JsonKey(name: "attempted", includeIfNull: false)
-          AttemptedModel? attempted});
+          AttemptedModel? attempted,
+      @JsonKey(name: "course_id")
+          int? courseId});
 
   @override
   $AttemptedModelCopyWith<$Res>? get attempted;
@@ -168,6 +182,7 @@ class __$AssignmentModelCopyWithImpl<$Res>
     Object? title = freezed,
     Object? questions = freezed,
     Object? attempted = freezed,
+    Object? courseId = freezed,
   }) {
     return _then(_AssignmentModel(
       id: id == freezed
@@ -186,6 +201,10 @@ class __$AssignmentModelCopyWithImpl<$Res>
           ? _value.attempted
           : attempted // ignore: cast_nullable_to_non_nullable
               as AttemptedModel?,
+      courseId: courseId == freezed
+          ? _value.courseId
+          : courseId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -197,7 +216,8 @@ class _$_AssignmentModel extends _AssignmentModel {
       {@JsonKey(name: "id", required: true) required this.id,
       @JsonKey(name: "title", required: true) required this.title,
       @JsonKey(name: "question_count", required: true) required this.questions,
-      @JsonKey(name: "attempted", includeIfNull: false) this.attempted})
+      @JsonKey(name: "attempted", includeIfNull: false) this.attempted,
+      @JsonKey(name: "course_id") this.courseId})
       : super._();
 
   factory _$_AssignmentModel.fromJson(Map<String, dynamic> json) =>
@@ -216,10 +236,13 @@ class _$_AssignmentModel extends _AssignmentModel {
 //     int attempts,
   @JsonKey(name: "attempted", includeIfNull: false)
   final AttemptedModel? attempted;
+  @override
+  @JsonKey(name: "course_id")
+  final int? courseId;
 
   @override
   String toString() {
-    return 'AssignmentModel(id: $id, title: $title, questions: $questions, attempted: $attempted)';
+    return 'AssignmentModel(id: $id, title: $title, questions: $questions, attempted: $attempted, courseId: $courseId)';
   }
 
   @override
@@ -235,7 +258,10 @@ class _$_AssignmentModel extends _AssignmentModel {
                     .equals(other.questions, questions)) &&
             (identical(other.attempted, attempted) ||
                 const DeepCollectionEquality()
-                    .equals(other.attempted, attempted)));
+                    .equals(other.attempted, attempted)) &&
+            (identical(other.courseId, courseId) ||
+                const DeepCollectionEquality()
+                    .equals(other.courseId, courseId)));
   }
 
   @override
@@ -244,7 +270,8 @@ class _$_AssignmentModel extends _AssignmentModel {
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(questions) ^
-      const DeepCollectionEquality().hash(attempted);
+      const DeepCollectionEquality().hash(attempted) ^
+      const DeepCollectionEquality().hash(courseId);
 
   @JsonKey(ignore: true)
   @override
@@ -266,7 +293,9 @@ abstract class _AssignmentModel extends AssignmentModel {
       @JsonKey(name: "question_count", required: true)
           required int questions,
       @JsonKey(name: "attempted", includeIfNull: false)
-          AttemptedModel? attempted}) = _$_AssignmentModel;
+          AttemptedModel? attempted,
+      @JsonKey(name: "course_id")
+          int? courseId}) = _$_AssignmentModel;
   _AssignmentModel._() : super._();
 
   factory _AssignmentModel.fromJson(Map<String, dynamic> json) =
@@ -285,6 +314,9 @@ abstract class _AssignmentModel extends AssignmentModel {
 //     int attempts,
   @JsonKey(name: "attempted", includeIfNull: false)
   AttemptedModel? get attempted => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: "course_id")
+  int? get courseId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$AssignmentModelCopyWith<_AssignmentModel> get copyWith =>

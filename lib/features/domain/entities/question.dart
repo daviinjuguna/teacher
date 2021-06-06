@@ -11,6 +11,7 @@ class Question with _$Question {
   factory Question({
     required int id,
     required String question,
+    required Choice answer,
     required KtList<Choice> choices,
   }) = _Question;
 }

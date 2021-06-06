@@ -18,6 +18,7 @@ import 'package:teacher/features/presentation/bloc/create_pdf/create_pdf_bloc.da
 import 'package:teacher/features/presentation/bloc/get_assignment/get_assignment_bloc.dart';
 import 'package:teacher/features/presentation/bloc/get_pdf/get_pdf_bloc.dart';
 import 'package:teacher/features/presentation/components/error_card.dart';
+import 'package:teacher/core/routes/app_router.gr.dart';
 
 import 'widgets/add_assignment_widget.dart';
 import 'widgets/add_pdf_widget.dart';
@@ -71,15 +72,90 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
       child: MultiBlocListener(
         listeners: [
           BlocListener<CreateAssignmentBloc, CreateAssignmentState>(
-            listener: (context, state) {},
+            listener: (context, state) {
+              state.maybeMap(
+                  orElse: () {},
+                  success: (_) {
+                    _assignmentBloc
+                        .add(GetAssignmentEvent.update(id: widget._course.id));
+                    ScaffoldMessenger.maybeOf(context)!
+                      ..hideCurrentSnackBar()
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(
+                        SnackBar(
+                          duration: Duration(minutes: 10),
+                          backgroundColor: kBlackColor,
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircularProgressIndicator.adaptive(
+                                valueColor:
+                                    AlwaysStoppedAnimation(kYellowColor),
+                              ),
+                              Text(
+                                "Updating...",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                  },
+                  load: (_) {
+                    ScaffoldMessenger.maybeOf(context)!
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(
+                        SnackBar(
+                          duration: Duration(minutes: 10),
+                          backgroundColor: kBlackColor,
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircularProgressIndicator.adaptive(
+                                valueColor:
+                                    AlwaysStoppedAnimation(kYellowColor),
+                              ),
+                              Text(
+                                "Loading...",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                  });
+            },
           ),
           BlocListener<CreatePdfBloc, CreatePdfState>(
             listener: (context, state) {
               state.maybeMap(
                 orElse: () {},
                 success: (value) {
-                  ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
-                  _pdfBloc.add(GetPdfEvent.started(id: widget._course.id));
+                  _pdfBloc.add(GetPdfEvent.update(id: widget._course.id));
+                  ScaffoldMessenger.maybeOf(context)!
+                    ..hideCurrentSnackBar()
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        duration: Duration(minutes: 10),
+                        backgroundColor: kBlackColor,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CircularProgressIndicator.adaptive(
+                              valueColor: AlwaysStoppedAnimation(kYellowColor),
+                            ),
+                            Text(
+                              "Updating...",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                 },
                 load: (value) {
                   ScaffoldMessenger.maybeOf(context)!
@@ -173,6 +249,7 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                   _refreshCompleter.complete();
                   _refreshCompleter = Completer();
                   ass = state.assignment;
+                  ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
                 },
                 error: (state) {
                   _refreshCompleter.complete();
@@ -252,7 +329,7 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                       elevation: 0,
                       child: Container(
                         constraints: BoxConstraints(minHeight: height / 2),
-                        width: double.infinity,
+                        width: width,
                         child: Column(
                           children: [
                             Text(
@@ -289,7 +366,9 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text("${pdf[index].name}"),
+                                            Expanded(
+                                              child: Text("${pdf[index].name}"),
+                                            ),
                                             Row(
                                               children: [
                                                 IconButton(
@@ -425,8 +504,8 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                                     );
                                   },
                                   error: (state) => Container(
-                                    height: double.infinity,
-                                    width: double.infinity,
+                                    // height: ,
+                                    width: width,
                                     alignment: Alignment.center,
                                     child: Column(
                                       crossAxisAlignment:
@@ -508,7 +587,7 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                     Card(
                       elevation: 0,
                       child: Container(
-                        width: double.infinity,
+                        width: width,
                         constraints: BoxConstraints(minHeight: height / 2),
                         child: Column(
                           children: [
@@ -546,23 +625,111 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text("${ass[index].title}"),
-                                            MaterialButton(
-                                              elevation: 0,
-                                              color: kYellowColor,
-                                              child: Container(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  "VIEW",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w800,
-                                                    letterSpacing: 1.4,
-                                                  ),
-                                                ),
-                                              ),
-                                              onPressed: () => {},
+                                            Expanded(
+                                              child:
+                                                  Text("${ass[index].title}"),
                                             ),
+                                            IconButton(
+                                              icon: Icon(Icons.view_list),
+                                              color: kYellowColor,
+                                              onPressed: () =>
+                                                  AutoRouter.of(context).push(
+                                                TeacherAssignmentRoute(
+                                                    assignment: ass[index]),
+                                              ),
+                                            ),
+                                            IconButton(
+                                              onPressed: () => showDialog(
+                                                context: context,
+                                                builder: (builder) =>
+                                                    AddAssignmentWidget(
+                                                  initTitle:
+                                                      "${ass[index].title}",
+                                                ),
+                                              )
+                                                  .then((value) => {
+                                                        if (value != null)
+                                                          {
+                                                            print(value),
+                                                            _createAssignmentBloc.add(
+                                                                CreateAssignmentEvent.edit(
+                                                                    assignmentId:
+                                                                        ass[index]
+                                                                            .id,
+                                                                    title:
+                                                                        value)),
+                                                          }
+                                                        else
+                                                          {
+                                                            print(
+                                                                "Everything you put your hands GO WORK!!")
+                                                          }
+                                                      })
+                                                  .catchError((e, s) {
+                                                print("EDIT ASS ERROR: $e,$s");
+                                              }),
+                                              icon: Icon(Icons.edit),
+                                              color: Colors.black,
+                                            ),
+                                            IconButton(
+                                              onPressed: () => showDialog(
+                                                context: context,
+                                                builder: (builder) =>
+                                                    AlertDialog(
+                                                  title:
+                                                      Text("DELETE ASSIGNEMNT"),
+                                                  content: Text(
+                                                      "Are you sure you want to delete Assignment?"),
+                                                  actions: [
+                                                    TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(null),
+                                                        child: Text(
+                                                          "NO",
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w800,
+                                                            letterSpacing: 1.4,
+                                                            color: Colors.red,
+                                                          ),
+                                                        )),
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(true),
+                                                      child: Text(
+                                                        "YES",
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          letterSpacing: 1.4,
+                                                          color: Colors.green,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                                  .then((value) => {
+                                                        if (value != null &&
+                                                            value)
+                                                          {
+                                                            _createAssignmentBloc.add(
+                                                                CreateAssignmentEvent.delete(
+                                                                    assignmentId:
+                                                                        ass[index]
+                                                                            .id))
+                                                          }
+                                                      })
+                                                  .catchError((e, s) {
+                                                print(
+                                                    "DELETE ASS ERROR: $e,$s");
+                                              }),
+                                              icon: Icon(Icons.delete),
+                                              color: Colors.red,
+                                            )
                                           ],
                                         ),
                                       ),
@@ -589,7 +756,14 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
                               )
                                   .then((value) => {
                                         if (value != null)
-                                          {}
+                                          {
+                                            print(value),
+                                            _createAssignmentBloc.add(
+                                                CreateAssignmentEvent.create(
+                                              courseId: widget._course.id,
+                                              title: value,
+                                            ))
+                                          }
                                         else
                                           {
                                             print(

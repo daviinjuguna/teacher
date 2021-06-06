@@ -11,6 +11,7 @@ class PdfModel with _$PdfModel {
     @JsonKey(name: "id", required: true) required int id,
     @JsonKey(name: "name", required: true) required String name,
     @JsonKey(name: "link", required: true) required String pdfDoc,
+    @JsonKey(name: "course_id") int? courseId,
   }) = _PdfModel;
 
   factory PdfModel.fromJson(Map<String, dynamic> json) =>

@@ -20,14 +20,24 @@ class AssignmentDao extends DatabaseAccessor<AppDatabase>
         throw DatabaseExeption();
       });
 
-  Future<List<AssignmentDataClass>> getAss() =>
-      select(assignmentTable).get().onError((error, stackTrace) {
+  Future<List<AssignmentDataClass>> getAss(int id) =>
+      (select(assignmentTable)..where((tbl) => tbl.courseId.equals(id)))
+          .get()
+          .onError((error, stackTrace) {
         print("FAILED GET ASS: $error, $stackTrace");
         throw DatabaseExeption();
       });
 
   Future deleteAll() =>
       delete(assignmentTable).go().onError((error, stackTrace) {
+        print("FAILED DELETE ASS: $error, $stackTrace");
+        throw DatabaseExeption();
+      });
+
+  Future deleteWhere(int id) =>
+      (delete(assignmentTable)..where((tbl) => tbl.courseId.equals(id)))
+          .go()
+          .onError((error, stackTrace) {
         print("FAILED DELETE ASS: $error, $stackTrace");
         throw DatabaseExeption();
       });

@@ -225,7 +225,15 @@ class RepositoryImpl implements Repository {
     try {
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
-        final user = await _remote.getUser(accessToken: tokenModel.accessToken);
+        dynamic user;
+        final _localUser = await _local.getUser();
+        if (_localUser != null) {
+          user = _localUser;
+        } else {
+          user = await _remote.getUser(accessToken: tokenModel.accessToken);
+          await _local.insertUser(user);
+        }
+
         return right(user.toEntity());
       } else {
         await getIt<LocalDataSource>().clearPrefs();
@@ -315,12 +323,45 @@ class RepositoryImpl implements Repository {
     try {
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
+        KtList<AssignmentModel> model = emptyList();
+        final _localModel = await _local.getAss(courseId);
+        if (_localModel.isNotEmpty) {
+          model = _localModel.toImmutableList();
+        } else {
+          model = await _remote.getAssignment(
+            courseId: courseId,
+            accessToken: tokenModel.accessToken,
+          );
+          await _local.insertAss(model.asList());
+        }
+
+        final entities =
+            model.map((e) => e.toEntity()).asList().toImmutableList();
+        return right(entities);
+      } else {
+        throw UnAuthenticatedException();
+      }
+    } catch (e) {
+      print(e.toString());
+      final failure = returnFailure(e);
+      return left(failure);
+    }
+  }
+
+  @override
+  Future<Either<String, KtList<Assignment>>> updateAssignment(
+      {required int courseId}) async {
+    try {
+      await _local.deleteAssWhere(courseId);
+      final tokenModel = await _local.getToken();
+      if (tokenModel != null) {
         final model = await _remote.getAssignment(
           courseId: courseId,
           accessToken: tokenModel.accessToken,
         );
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
+        await _local.insertAss(model.asList());
         return right(entities);
       } else {
         throw UnAuthenticatedException();
@@ -337,12 +378,43 @@ class RepositoryImpl implements Repository {
     try {
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
+        KtList<PdfModel> model = emptyList();
+        final _localModel = await _local.getPdf(courseId);
+        if (_localModel.isNotEmpty) {
+          model = _localModel.toImmutableList();
+        } else {
+          model = await _remote.getPdf(
+            courseId: courseId,
+            accessToken: tokenModel.accessToken,
+          );
+          await _local.insertPdf(model.asList());
+        }
+        final entities =
+            model.map((e) => e.toEntity()).asList().toImmutableList();
+        return right(entities);
+      } else {
+        throw UnAuthenticatedException();
+      }
+    } catch (e) {
+      print(e.toString());
+      final failure = returnFailure(e);
+      return left(failure);
+    }
+  }
+
+  @override
+  Future<Either<String, KtList<Pdf>>> updatePdf({required int courseId}) async {
+    try {
+      await _local.deletePdfWhere(courseId);
+      final tokenModel = await _local.getToken();
+      if (tokenModel != null) {
         final model = await _remote.getPdf(
           courseId: courseId,
           accessToken: tokenModel.accessToken,
         );
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
+        await _local.insertPdf(model.asList());
         return right(entities);
       } else {
         throw UnAuthenticatedException();
@@ -360,12 +432,44 @@ class RepositoryImpl implements Repository {
     try {
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
+        KtList<QuestionModel> model = emptyList();
+        final _localModel = await _local.getQuestion(assignmentId);
+        if (_localModel.isNotEmpty) {
+          model = _localModel.toImmutableList();
+        } else {
+          model = await _remote.getQuestions(
+            assignmentId: assignmentId,
+            accessToken: tokenModel.accessToken,
+          );
+          await _local.insertQuestion(model.asList());
+        }
+        final entities =
+            model.map((e) => e.toEntity()).asList().toImmutableList();
+        return right(entities);
+      } else {
+        throw UnAuthenticatedException();
+      }
+    } catch (e) {
+      print(e.toString());
+      final failure = returnFailure(e);
+      return left(failure);
+    }
+  }
+
+  @override
+  Future<Either<String, KtList<Question>>> updateQuestion(
+      {required int assignmentId}) async {
+    try {
+      await _local.deleteQuestionWhere(assignmentId);
+      final tokenModel = await _local.getToken();
+      if (tokenModel != null) {
         final model = await _remote.getQuestions(
           assignmentId: assignmentId,
           accessToken: tokenModel.accessToken,
         );
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
+        await _local.insertQuestion(model.asList());
         return right(entities);
       } else {
         throw UnAuthenticatedException();
@@ -383,12 +487,44 @@ class RepositoryImpl implements Repository {
     try {
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
+        KtList<ChoiceModel> model = emptyList();
+        final _localModel = await _local.getChoice(questionId);
+        if (_localModel.isNotEmpty) {
+          model = _localModel.toImmutableList();
+        } else {
+          model = await _remote.getChoices(
+            questionId: questionId,
+            accessToken: tokenModel.accessToken,
+          );
+          await _local.insertChoice(model.asList());
+        }
+        final entities =
+            model.map((e) => e.toEntity()).asList().toImmutableList();
+        return right(entities);
+      } else {
+        throw UnAuthenticatedException();
+      }
+    } catch (e) {
+      print(e.toString());
+      final failure = returnFailure(e);
+      return left(failure);
+    }
+  }
+
+  @override
+  Future<Either<String, KtList<Choice>>> updateChoice(
+      {required int questionId}) async {
+    try {
+      await _local.deleteChoicesWhere(questionId);
+      final tokenModel = await _local.getToken();
+      if (tokenModel != null) {
         final model = await _remote.getChoices(
           questionId: questionId,
           accessToken: tokenModel.accessToken,
         );
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
+        await _local.insertChoice(model.asList());
         return right(entities);
       } else {
         throw UnAuthenticatedException();
@@ -774,12 +910,14 @@ class RepositoryImpl implements Repository {
   Future<Either<String, KtList<Choice>>> sortChoice(
       {required int questionId}) async {
     try {
+      await _local.deleteChoicesWhere(questionId);
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
         final model = await _remote.sortChoices(
             questionId: questionId, accessToken: tokenModel.accessToken);
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
+        await _local.insertChoice(model.asList());
         return right(entities);
       } else {
         throw UnAuthenticatedException();

@@ -50,13 +50,22 @@ abstract class Repository {
   Future<Either<String, KtList<Course>>> updateCourse();
 
   Future<Either<String, KtList<Pdf>>> getPdf({required int courseId});
+  Future<Either<String, KtList<Pdf>>> updatePdf({required int courseId});
   Future<Either<String, KtList<Assignment>>> getAssignment({
+    required int courseId,
+  });
+  Future<Either<String, KtList<Assignment>>> updateAssignment({
     required int courseId,
   });
   Future<Either<String, KtList<Question>>> getQuestion({
     required int assignmentId,
   });
+  Future<Either<String, KtList<Question>>> updateQuestion({
+    required int assignmentId,
+  });
   Future<Either<String, KtList<Choice>>> getChoice({required int questionId});
+  Future<Either<String, KtList<Choice>>> updateChoice(
+      {required int questionId});
 
   Future<Either<String, Success>> createCourse({
     required String title,

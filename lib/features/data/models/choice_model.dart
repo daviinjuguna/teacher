@@ -10,6 +10,8 @@ class ChoiceModel with _$ChoiceModel {
   factory ChoiceModel({
     @JsonKey(name: "id", required: true) required int id,
     @JsonKey(name: "title", required: true) required String title,
+    @JsonKey(name: "sort") int? sort,
+    @JsonKey(name: "question_id") int? questionId,
   }) = _ChoiceModel;
 
   factory ChoiceModel.fromJson(Map<String, dynamic> json) =>

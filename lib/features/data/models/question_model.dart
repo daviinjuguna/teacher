@@ -15,8 +15,10 @@ class QuestionModel with _$QuestionModel {
   factory QuestionModel({
     @JsonKey(name: "id", required: true) required int id,
     @JsonKey(name: "question", required: true) required String question,
+    @JsonKey(name: "answer") required ChoiceModel answer,
     @JsonKey(name: 'choices', required: true)
         required List<ChoiceModel> choices,
+    @JsonKey(name: "assignment_id") int? assignmentId,
   }) = _QuestionModel;
 
   factory QuestionModel.fromJson(Map<String, dynamic> json) =>
@@ -26,6 +28,7 @@ class QuestionModel with _$QuestionModel {
         id: question.id,
         question: question.question,
         choices: question.choices.map((e) => e.toModel()).asList(),
+        answer: question.answer.toModel(),
       );
 }
 
@@ -34,5 +37,6 @@ extension QuestionModelX on QuestionModel {
         id: id,
         question: question,
         choices: choices.map((e) => e.toEntity()).toImmutableList(),
+        answer: answer.toEntity(),
       );
 }

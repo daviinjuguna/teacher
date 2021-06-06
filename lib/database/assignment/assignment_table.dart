@@ -11,6 +11,7 @@ class AssignmentTable extends Table {
   IntColumn get questions => integer().nullable()();
   TextColumn get attempted =>
       text().map(const AttemptedModelConverter()).nullable()();
+  IntColumn get courseId => integer().nullable()();
   @override
   Set<Column> get primaryKey => {id};
 }

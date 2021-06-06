@@ -220,7 +220,7 @@ abstract class TeacherServiceApi extends ChopperService {
     @Field("choice_id") required int choiceId,
   });
 
-  @Post(path: "sortChoices")
+  @Post(path: "sort_random")
   @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
   Future<Response> sortChoices({
     @Header("Authorization") required String accessToken,

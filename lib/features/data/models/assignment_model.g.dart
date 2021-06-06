@@ -15,6 +15,7 @@ _$_AssignmentModel _$_$_AssignmentModelFromJson(Map<String, dynamic> json) {
     attempted: json['attempted'] == null
         ? null
         : AttemptedModel.fromJson(json['attempted'] as Map<String, dynamic>),
+    courseId: json['course_id'] as int?,
   );
 }
 
@@ -32,5 +33,6 @@ Map<String, dynamic> _$_$_AssignmentModelToJson(_$_AssignmentModel instance) {
   }
 
   writeNotNull('attempted', instance.attempted);
+  val['course_id'] = instance.courseId;
   return val;
 }
