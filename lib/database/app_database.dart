@@ -11,9 +11,9 @@ import 'package:teacher/database/pdf/pdf_table.dart';
 import 'package:teacher/database/question/question_table.dart';
 import 'package:teacher/database/user/user_dao.dart';
 import 'package:teacher/database/user/user_table.dart';
-import 'package:teacher/data/models/attempted_model.dart';
-import 'package:teacher/data/models/user_model.dart';
-import 'package:teacher/data/models/choice_model.dart';
+import 'package:teacher/features/data/models/attempted_model.dart';
+import 'package:teacher/features/data/models/user_model.dart';
+import 'package:teacher/features/data/models/choice_model.dart';
 
 part 'app_database.g.dart';
 

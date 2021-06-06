@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:moor/moor.dart';
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:teacher/data/models/attempted_model.dart';
+import 'package:teacher/features/data/models/attempted_model.dart';
 
 @DataClassName("AssignmentDataClass")
 class AssignmentTable extends Table {

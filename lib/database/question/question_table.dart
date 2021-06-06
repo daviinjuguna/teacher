@@ -1,6 +1,6 @@
 import 'package:moor/moor.dart';
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:teacher/data/models/choice_model.dart';
+import 'package:teacher/features/data/models/choice_model.dart';
 import 'dart:convert';
 
 class QuestionTable extends Table {

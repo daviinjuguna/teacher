@@ -1,11 +1,11 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:teacher/presentation/components/pdf_view.dart';
-import 'package:teacher/presentation/pages/auth/login_page.dart';
-import 'package:teacher/presentation/pages/auth/register_page.dart';
-import 'package:teacher/presentation/pages/core/splash.dart';
-import 'package:teacher/presentation/pages/course/teacher_course_page.dart';
-import 'package:teacher/presentation/pages/home/teacher_home.dart';
+import 'package:teacher/features/presentation/components/pdf_view.dart';
+import 'package:teacher/features/presentation/pages/auth/login_page.dart';
+import 'package:teacher/features/presentation/pages/auth/register_page.dart';
+import 'package:teacher/features/presentation/pages/core/splash.dart';
+import 'package:teacher/features/presentation/pages/course/teacher_course_page.dart';
+import 'package:teacher/features/presentation/pages/home/teacher_home.dart';
 
 @AdaptiveAutoRouter(
   replaceInRouteName: 'Page,Route',

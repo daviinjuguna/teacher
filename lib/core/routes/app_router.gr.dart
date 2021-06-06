@@ -6,15 +6,18 @@
 
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
-import 'package:teacher/domain/entities/course.dart' as _i10;
-import 'package:teacher/domain/entities/pdf.dart' as _i9;
-import 'package:teacher/presentation/components/pdf_view.dart' as _i6;
-import 'package:teacher/presentation/pages/auth/login_page.dart' as _i4;
-import 'package:teacher/presentation/pages/auth/register_page.dart' as _i5;
-import 'package:teacher/presentation/pages/core/splash.dart' as _i3;
-import 'package:teacher/presentation/pages/course/teacher_course_page.dart'
+import 'package:teacher/features/domain/entities/course.dart' as _i10;
+import 'package:teacher/features/domain/entities/pdf.dart' as _i9;
+import 'package:teacher/features/presentation/components/pdf_view.dart' as _i6;
+import 'package:teacher/features/presentation/pages/auth/login_page.dart'
+    as _i4;
+import 'package:teacher/features/presentation/pages/auth/register_page.dart'
+    as _i5;
+import 'package:teacher/features/presentation/pages/core/splash.dart' as _i3;
+import 'package:teacher/features/presentation/pages/course/teacher_course_page.dart'
     as _i8;
-import 'package:teacher/presentation/pages/home/teacher_home.dart' as _i7;
+import 'package:teacher/features/presentation/pages/home/teacher_home.dart'
+    as _i7;
 
 class AppRouter extends _i1.RootStackRouter {
   AppRouter([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
