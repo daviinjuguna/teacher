@@ -429,4 +429,24 @@ class _$TeacherServiceApi extends TeacherServiceApi {
     return client.send<dynamic, dynamic>($request,
         requestConverter: FormUrlEncodedConverter.requestFactory);
   }
+
+  @override
+  Future<Response<dynamic>> setAnswer(
+      {required String accessToken,
+      required int choiceId,
+      required int questionId}) {
+    final $url = '/teacher/set_ans';
+    final $params = <String, dynamic>{
+      'choice_id': choiceId,
+      'question_id': questionId
+    };
+    final $headers = {
+      'Authorization': accessToken,
+    };
+
+    final $request = Request('PUT', $url, client.baseUrl,
+        parameters: $params, headers: $headers);
+    return client.send<dynamic, dynamic>($request,
+        requestConverter: FormUrlEncodedConverter.requestFactory);
+  }
 }

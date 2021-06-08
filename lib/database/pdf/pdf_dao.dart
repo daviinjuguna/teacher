@@ -13,8 +13,9 @@ part 'pdf_dao.g.dart';
 class PdfDao extends DatabaseAccessor<AppDatabase> with _$PdfDaoMixin {
   PdfDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
-  Future insertPdf(PdfDataClass pdf) =>
-      into(pdfTable).insert(pdf).onError((error, stackTrace) {
+  Future insertPdf(PdfDataClass pdf) => into(pdfTable)
+          .insert(pdf, mode: InsertMode.insertOrIgnore)
+          .onError((error, stackTrace) {
         print("FAILED INSERT PDF: $error, $stackTrace");
         throw DatabaseExeption();
       });

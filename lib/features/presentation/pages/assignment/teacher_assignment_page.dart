@@ -255,9 +255,7 @@ class _AssignmentPageState extends State<TeacherAssignmentPage> {
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
-                                    child: QuestionCard(
-                                      question: _question[i],
-                                    ),
+                                    child: QuestionCard(question: _question[i]),
                                   ),
                                 ],
                               ),

@@ -55,7 +55,8 @@ mixin _$QuestionModel {
   @JsonKey(name: "question", required: true)
   String get question => throw _privateConstructorUsedError;
   @JsonKey(name: "answer")
-  ChoiceModel get answer => throw _privateConstructorUsedError;
+  ChoiceModel get answer =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "")requ
   @JsonKey(name: 'choices', required: true)
   List<ChoiceModel> get choices => throw _privateConstructorUsedError;
   @JsonKey(name: "assignment_id")
@@ -216,7 +217,7 @@ class _$_QuestionModel extends _QuestionModel {
   @override
   @JsonKey(name: "answer")
   final ChoiceModel answer;
-  @override
+  @override // @JsonKey(name: "")requ
   @JsonKey(name: 'choices', required: true)
   final List<ChoiceModel> choices;
   @override
@@ -293,7 +294,7 @@ abstract class _QuestionModel extends QuestionModel {
   @override
   @JsonKey(name: "answer")
   ChoiceModel get answer => throw _privateConstructorUsedError;
-  @override
+  @override // @JsonKey(name: "")requ
   @JsonKey(name: 'choices', required: true)
   List<ChoiceModel> get choices => throw _privateConstructorUsedError;
   @override

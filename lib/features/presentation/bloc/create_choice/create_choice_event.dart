@@ -13,4 +13,9 @@ class CreateChoiceEvent with _$CreateChoiceEvent {
   const factory CreateChoiceEvent.delete({
     required int choiceId,
   }) = _Delete;
+
+  const factory CreateChoiceEvent.setAnswer({
+    required int choiceId,
+    required int questionId,
+  }) = _SetAns;
 }

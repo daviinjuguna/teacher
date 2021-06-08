@@ -35,6 +35,13 @@ class _$CreateChoiceEventTearOff {
       choiceId: choiceId,
     );
   }
+
+  _SetAns setAnswer({required int choiceId, required int questionId}) {
+    return _SetAns(
+      choiceId: choiceId,
+      questionId: questionId,
+    );
+  }
 }
 
 /// @nodoc
@@ -47,6 +54,7 @@ mixin _$CreateChoiceEvent {
     required TResult Function(int questionId, String title) create,
     required TResult Function(int choiceId, String title) edit,
     required TResult Function(int choiceId) delete,
+    required TResult Function(int choiceId, int questionId) setAnswer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -54,6 +62,7 @@ mixin _$CreateChoiceEvent {
     TResult Function(int questionId, String title)? create,
     TResult Function(int choiceId, String title)? edit,
     TResult Function(int choiceId)? delete,
+    TResult Function(int choiceId, int questionId)? setAnswer,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -62,6 +71,7 @@ mixin _$CreateChoiceEvent {
     required TResult Function(_Started value) create,
     required TResult Function(_Edit value) edit,
     required TResult Function(_Delete value) delete,
+    required TResult Function(_SetAns value) setAnswer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -69,6 +79,7 @@ mixin _$CreateChoiceEvent {
     TResult Function(_Started value)? create,
     TResult Function(_Edit value)? edit,
     TResult Function(_Delete value)? delete,
+    TResult Function(_SetAns value)? setAnswer,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -168,6 +179,7 @@ class _$_Started implements _Started {
     required TResult Function(int questionId, String title) create,
     required TResult Function(int choiceId, String title) edit,
     required TResult Function(int choiceId) delete,
+    required TResult Function(int choiceId, int questionId) setAnswer,
   }) {
     return create(questionId, title);
   }
@@ -178,6 +190,7 @@ class _$_Started implements _Started {
     TResult Function(int questionId, String title)? create,
     TResult Function(int choiceId, String title)? edit,
     TResult Function(int choiceId)? delete,
+    TResult Function(int choiceId, int questionId)? setAnswer,
     required TResult orElse(),
   }) {
     if (create != null) {
@@ -192,6 +205,7 @@ class _$_Started implements _Started {
     required TResult Function(_Started value) create,
     required TResult Function(_Edit value) edit,
     required TResult Function(_Delete value) delete,
+    required TResult Function(_SetAns value) setAnswer,
   }) {
     return create(this);
   }
@@ -202,6 +216,7 @@ class _$_Started implements _Started {
     TResult Function(_Started value)? create,
     TResult Function(_Edit value)? edit,
     TResult Function(_Delete value)? delete,
+    TResult Function(_SetAns value)? setAnswer,
     required TResult orElse(),
   }) {
     if (create != null) {
@@ -299,6 +314,7 @@ class _$_Edit implements _Edit {
     required TResult Function(int questionId, String title) create,
     required TResult Function(int choiceId, String title) edit,
     required TResult Function(int choiceId) delete,
+    required TResult Function(int choiceId, int questionId) setAnswer,
   }) {
     return edit(choiceId, title);
   }
@@ -309,6 +325,7 @@ class _$_Edit implements _Edit {
     TResult Function(int questionId, String title)? create,
     TResult Function(int choiceId, String title)? edit,
     TResult Function(int choiceId)? delete,
+    TResult Function(int choiceId, int questionId)? setAnswer,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -323,6 +340,7 @@ class _$_Edit implements _Edit {
     required TResult Function(_Started value) create,
     required TResult Function(_Edit value) edit,
     required TResult Function(_Delete value) delete,
+    required TResult Function(_SetAns value) setAnswer,
   }) {
     return edit(this);
   }
@@ -333,6 +351,7 @@ class _$_Edit implements _Edit {
     TResult Function(_Started value)? create,
     TResult Function(_Edit value)? edit,
     TResult Function(_Delete value)? delete,
+    TResult Function(_SetAns value)? setAnswer,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -417,6 +436,7 @@ class _$_Delete implements _Delete {
     required TResult Function(int questionId, String title) create,
     required TResult Function(int choiceId, String title) edit,
     required TResult Function(int choiceId) delete,
+    required TResult Function(int choiceId, int questionId) setAnswer,
   }) {
     return delete(choiceId);
   }
@@ -427,6 +447,7 @@ class _$_Delete implements _Delete {
     TResult Function(int questionId, String title)? create,
     TResult Function(int choiceId, String title)? edit,
     TResult Function(int choiceId)? delete,
+    TResult Function(int choiceId, int questionId)? setAnswer,
     required TResult orElse(),
   }) {
     if (delete != null) {
@@ -441,6 +462,7 @@ class _$_Delete implements _Delete {
     required TResult Function(_Started value) create,
     required TResult Function(_Edit value) edit,
     required TResult Function(_Delete value) delete,
+    required TResult Function(_SetAns value) setAnswer,
   }) {
     return delete(this);
   }
@@ -451,6 +473,7 @@ class _$_Delete implements _Delete {
     TResult Function(_Started value)? create,
     TResult Function(_Edit value)? edit,
     TResult Function(_Delete value)? delete,
+    TResult Function(_SetAns value)? setAnswer,
     required TResult orElse(),
   }) {
     if (delete != null) {
@@ -466,6 +489,141 @@ abstract class _Delete implements CreateChoiceEvent {
   int get choiceId => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$DeleteCopyWith<_Delete> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$SetAnsCopyWith<$Res> {
+  factory _$SetAnsCopyWith(_SetAns value, $Res Function(_SetAns) then) =
+      __$SetAnsCopyWithImpl<$Res>;
+  $Res call({int choiceId, int questionId});
+}
+
+/// @nodoc
+class __$SetAnsCopyWithImpl<$Res> extends _$CreateChoiceEventCopyWithImpl<$Res>
+    implements _$SetAnsCopyWith<$Res> {
+  __$SetAnsCopyWithImpl(_SetAns _value, $Res Function(_SetAns) _then)
+      : super(_value, (v) => _then(v as _SetAns));
+
+  @override
+  _SetAns get _value => super._value as _SetAns;
+
+  @override
+  $Res call({
+    Object? choiceId = freezed,
+    Object? questionId = freezed,
+  }) {
+    return _then(_SetAns(
+      choiceId: choiceId == freezed
+          ? _value.choiceId
+          : choiceId // ignore: cast_nullable_to_non_nullable
+              as int,
+      questionId: questionId == freezed
+          ? _value.questionId
+          : questionId // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_SetAns implements _SetAns {
+  const _$_SetAns({required this.choiceId, required this.questionId});
+
+  @override
+  final int choiceId;
+  @override
+  final int questionId;
+
+  @override
+  String toString() {
+    return 'CreateChoiceEvent.setAnswer(choiceId: $choiceId, questionId: $questionId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _SetAns &&
+            (identical(other.choiceId, choiceId) ||
+                const DeepCollectionEquality()
+                    .equals(other.choiceId, choiceId)) &&
+            (identical(other.questionId, questionId) ||
+                const DeepCollectionEquality()
+                    .equals(other.questionId, questionId)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(choiceId) ^
+      const DeepCollectionEquality().hash(questionId);
+
+  @JsonKey(ignore: true)
+  @override
+  _$SetAnsCopyWith<_SetAns> get copyWith =>
+      __$SetAnsCopyWithImpl<_SetAns>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int questionId, String title) create,
+    required TResult Function(int choiceId, String title) edit,
+    required TResult Function(int choiceId) delete,
+    required TResult Function(int choiceId, int questionId) setAnswer,
+  }) {
+    return setAnswer(choiceId, questionId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int questionId, String title)? create,
+    TResult Function(int choiceId, String title)? edit,
+    TResult Function(int choiceId)? delete,
+    TResult Function(int choiceId, int questionId)? setAnswer,
+    required TResult orElse(),
+  }) {
+    if (setAnswer != null) {
+      return setAnswer(choiceId, questionId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) create,
+    required TResult Function(_Edit value) edit,
+    required TResult Function(_Delete value) delete,
+    required TResult Function(_SetAns value) setAnswer,
+  }) {
+    return setAnswer(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? create,
+    TResult Function(_Edit value)? edit,
+    TResult Function(_Delete value)? delete,
+    TResult Function(_SetAns value)? setAnswer,
+    required TResult orElse(),
+  }) {
+    if (setAnswer != null) {
+      return setAnswer(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _SetAns implements CreateChoiceEvent {
+  const factory _SetAns({required int choiceId, required int questionId}) =
+      _$_SetAns;
+
+  int get choiceId => throw _privateConstructorUsedError;
+  int get questionId => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$SetAnsCopyWith<_SetAns> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc

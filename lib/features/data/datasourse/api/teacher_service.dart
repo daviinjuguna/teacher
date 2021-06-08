@@ -227,6 +227,13 @@ abstract class TeacherServiceApi extends ChopperService {
     @Field("question_id") required int questionId,
   });
 
+  @Put(path: "set_ans")
+  @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
+  Future<Response> setAnswer({
+    @Header("Authorization") required String accessToken,
+    @Query("choice_id") required int choiceId,
+    @Query("question_id") required int questionId,
+  });
   //*FETCH FILE FROM URL
   // @Get(path: "{url}")
   // Future<Response> fetchFileFromUrl({

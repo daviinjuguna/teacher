@@ -134,4 +134,8 @@ abstract class Repository {
   Future<Either<String, KtList<Choice>>> sortChoice({
     required int questionId,
   });
+  Future<Either<String, Success>> selectAnswer({
+    required int choiceId,
+    required int questionId,
+  });
 }

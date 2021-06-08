@@ -132,13 +132,117 @@ class _QuestionCardState extends State<QuestionCard> {
                   itemCount: _choice.size,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) => ChoiceCard(
-                    correct: _choice[index] == widget._question.answer,
-                    press: () {},
-                    name: _choice[index].title,
-                    delete: () {},
-                    edit: () {},
-                  ),
+                  itemBuilder: (context, index) {
+                    return ChoiceCard(
+                      correct: _choice[index] == widget._question.answer,
+                      press: () => showDialog(
+                        context: context,
+                        builder: (builder) => AlertDialog(
+                          title: Text("SET ANSWER"),
+                          content: Text(
+                            "Are you sure you want to set ${_choice[index].title} as answer?",
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(null),
+                              child: Text(
+                                "CANCEL",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1.4,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: Text(
+                                "SUBMIT",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1.4,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ).then((value) {
+                        if (value != null && value) {
+                          context
+                              .read<CreateChoiceBloc>()
+                              .add(CreateChoiceEvent.setAnswer(
+                                choiceId: _choice[index].id,
+                                questionId: widget._question.id,
+                              ));
+                        }
+                      }).catchError((e, s) {
+                        print("ERROR SET ANSWER $e,$s");
+                      }),
+                      name: _choice[index].title,
+                      delete: () => showDialog(
+                        context: context,
+                        builder: (builder) => AlertDialog(
+                          title: Text("DELETE ANSWER"),
+                          content: Text(
+                            "Are you sure you want to delete ${_choice[index].title}?",
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(null),
+                              child: Text(
+                                "CANCEL",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1.4,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: Text(
+                                "SUBMIT",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1.4,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ).then((value) {
+                        if (value != null && value) {
+                          context
+                              .read<CreateChoiceBloc>()
+                              .add(CreateChoiceEvent.delete(
+                                choiceId: _choice[index].id,
+                              ));
+                        }
+                      }).catchError((e, s) {
+                        print("ERROR DELETE ANSWER $e,$s");
+                      }),
+                      edit: () => showDialog(
+                        context: context,
+                        builder: (builder) => AddChoiceDialog(
+                          isAdd: false,
+                          initTitle: _choice[index].title,
+                        ),
+                      ).then((value) {
+                        if (value != null) {
+                          context
+                              .read<CreateChoiceBloc>()
+                              .add(CreateChoiceEvent.edit(
+                                choiceId: _choice[index].id,
+                                title: value,
+                              ));
+                        }
+                      }).catchError((e, s) {
+                        print("ERROR EDIT ANSWER $e.$s");
+                      }),
+                    );
+                  },
                 );
               },
             ),

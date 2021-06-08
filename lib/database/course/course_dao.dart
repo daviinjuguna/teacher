@@ -12,8 +12,9 @@ part 'course_dao.g.dart';
 class CourseDao extends DatabaseAccessor<AppDatabase> with _$CourseDaoMixin {
   CourseDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
-  Future insertCourse(CourseDataClass course) =>
-      into(courseTable).insert(course).onError((error, stackTrace) {
+  Future insertCourse(CourseDataClass course) => into(courseTable)
+          .insert(course, mode: InsertMode.insertOrIgnore)
+          .onError((error, stackTrace) {
         print("FAILED INSERT COURSE: $error, $stackTrace");
         throw DatabaseExeption();
       });

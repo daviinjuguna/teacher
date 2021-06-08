@@ -13,8 +13,9 @@ class QuestionDao extends DatabaseAccessor<AppDatabase>
     with _$QuestionDaoMixin {
   QuestionDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
-  Future insertQuestion(QuestionDataClass quesion) =>
-      into(questionTable).insert(quesion).onError((error, stackTrace) {
+  Future insertQuestion(QuestionDataClass quesion) => into(questionTable)
+          .insert(quesion, mode: InsertMode.insertOrIgnore)
+          .onError((error, stackTrace) {
         print("FAILED INSERT QUESTION: $error, $stackTrace");
         throw DatabaseExeption();
       });

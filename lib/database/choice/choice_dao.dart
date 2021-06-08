@@ -12,8 +12,9 @@ part 'choice_dao.g.dart';
 class ChoiceDao extends DatabaseAccessor<AppDatabase> with _$ChoiceDaoMixin {
   ChoiceDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
-  Future insertChoice(ChoiceDataClass choice) =>
-      into(choiceTable).insert(choice).onError((error, stackTrace) {
+  Future insertChoice(ChoiceDataClass choice) => into(choiceTable)
+          .insert(choice, mode: InsertMode.insertOrIgnore)
+          .onError((error, stackTrace) {
         print("FAILED INSERT CHOICE: $error, $stackTrace");
         throw DatabaseExeption();
       });

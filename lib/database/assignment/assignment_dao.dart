@@ -14,8 +14,9 @@ class AssignmentDao extends DatabaseAccessor<AppDatabase>
     with _$AssignmentDaoMixin {
   AssignmentDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
-  Future insertAss(AssignmentDataClass ass) =>
-      into(assignmentTable).insert(ass).onError((error, stackTrace) {
+  Future insertAss(AssignmentDataClass ass) => into(assignmentTable)
+          .insert(ass, mode: InsertMode.insertOrIgnore)
+          .onError((error, stackTrace) {
         print("FAILED INSERT ASS: $error, $stackTrace");
         throw DatabaseExeption();
       });

@@ -144,6 +144,11 @@ abstract class RemoteDataSource {
     required int questionId,
     required String accessToken,
   });
+  Future<SuccessModel> selectAnswer({
+    required int choiceId,
+    required String accessToken,
+    required int questionId,
+  });
 }
 
 //* injecting the class with its abstract class
@@ -811,6 +816,29 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           // break;
         }
         return choice.toImmutableList();
+      } else {
+        throw ServerException();
+      }
+    } catch (e, s) {
+      print("$e,$s");
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SuccessModel> selectAnswer(
+      {required int choiceId,
+      required String accessToken,
+      required int questionId}) async {
+    try {
+      final _resp = await _api.setAnswer(
+        questionId: questionId,
+        choiceId: choiceId,
+        accessToken: 'Bearer $accessToken',
+      );
+      final _status = _call.checkStatusCode(_resp.statusCode);
+      if (_status) {
+        return SuccessModel(success: true, message: "answer selected");
       } else {
         throw ServerException();
       }

@@ -928,4 +928,27 @@ class RepositoryImpl implements Repository {
       return left(failure);
     }
   }
+
+  @override
+  Future<Either<String, Success>> selectAnswer(
+      {required int choiceId, required int questionId}) async {
+    try {
+      final tokenModel = await _local.getToken();
+      if (tokenModel != null) {
+        final model = await _remote.selectAnswer(
+          choiceId: choiceId,
+          accessToken: tokenModel.accessToken,
+          questionId: questionId,
+        );
+        final entities = model.toEntity();
+        return right(entities);
+      } else {
+        throw UnAuthenticatedException();
+      }
+    } catch (e) {
+      print(e.toString());
+      final failure = returnFailure(e);
+      return left(failure);
+    }
+  }
 }
