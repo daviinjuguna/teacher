@@ -225,7 +225,7 @@ class RepositoryImpl implements Repository {
     try {
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
-        dynamic user;
+        UserModel user;
         final _localUser = await _local.getUser();
         if (_localUser != null) {
           user = _localUser;

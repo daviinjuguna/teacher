@@ -70,22 +70,22 @@ import '../features/domain/usecase/teacher/edit_pdf.dart' as _i51;
 import '../features/domain/usecase/teacher/edit_question.dart' as _i52;
 import '../features/domain/usecase/teacher/set_answer.dart' as _i26;
 import '../features/domain/usecase/teacher/sort_choice.dart' as _i27;
-import '../features/presentation/bloc/auth/auth_bloc.dart' as _i74;
-import '../features/presentation/bloc/battery/battery_bloc.dart' as _i75;
+import '../features/presentation/bloc/auth/auth_bloc.dart' as _i75;
+import '../features/presentation/bloc/battery/battery_bloc.dart' as _i76;
 import '../features/presentation/bloc/clear_prefs/clear_prefs_bloc.dart'
     as _i37;
 import '../features/presentation/bloc/create_assignment/create_assignment_bloc.dart'
-    as _i76;
-import '../features/presentation/bloc/create_choice/create_choice_bloc.dart'
     as _i77;
-import '../features/presentation/bloc/create_course/create_course_bloc.dart'
+import '../features/presentation/bloc/create_choice/create_choice_bloc.dart'
     as _i78;
-import '../features/presentation/bloc/create_pdf/create_pdf_bloc.dart' as _i79;
+import '../features/presentation/bloc/create_course/create_course_bloc.dart'
+    as _i79;
+import '../features/presentation/bloc/create_pdf/create_pdf_bloc.dart' as _i80;
 import '../features/presentation/bloc/create_question/create_question_bloc.dart'
-    as _i80;
-import '../features/presentation/bloc/dashboard/dashboard_bloc.dart' as _i81;
+    as _i81;
+import '../features/presentation/bloc/dashboard/dashboard_bloc.dart' as _i82;
 import '../features/presentation/bloc/file_to_url/file_from_url_bloc.dart'
-    as _i82;
+    as _i83;
 import '../features/presentation/bloc/get_assignment/get_assignment_bloc.dart'
     as _i54;
 import '../features/presentation/bloc/get_choice/get_choice_bloc.dart' as _i56;
@@ -95,7 +95,8 @@ import '../features/presentation/bloc/get_question/get_question_bloc.dart'
 import '../features/presentation/bloc/network/ntwork_bloc.dart' as _i66;
 import '../features/presentation/bloc/picker/picker_bloc.dart' as _i70;
 import '../features/presentation/bloc/splash_bloc/splash_bloc.dart' as _i73;
-import 'module_injection.dart' as _i83; // ignore_for_file: unnecessary_lambdas
+import '../features/presentation/bloc/user/user_bloc.dart' as _i74;
+import 'module_injection.dart' as _i84; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -238,34 +239,35 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i72.Register>(() => _i72.Register(get<_i24.Repository>()));
   gh.factory<_i73.SplashBloc>(() => _i73.SplashBloc(
       get<_i33.CheckAuth>(), get<_i65.Logout>(), get<_i71.RefreshToken>()));
-  gh.factory<_i74.AuthBloc>(
-      () => _i74.AuthBloc(get<_i64.Login>(), get<_i72.Register>()));
-  gh.factory<_i75.BatteryBloc>(
-      () => _i75.BatteryBloc(get<_i34.CheckBattery>()));
-  gh.factory<_i76.CreateAssignmentBloc>(() => _i76.CreateAssignmentBloc(
+  gh.factory<_i74.UserBloc>(() => _i74.UserBloc(get<_i63.GetUser>()));
+  gh.factory<_i75.AuthBloc>(
+      () => _i75.AuthBloc(get<_i64.Login>(), get<_i72.Register>()));
+  gh.factory<_i76.BatteryBloc>(
+      () => _i76.BatteryBloc(get<_i34.CheckBattery>()));
+  gh.factory<_i77.CreateAssignmentBloc>(() => _i77.CreateAssignmentBloc(
       get<_i38.CreateAssignment>(),
       get<_i48.EditAssignment>(),
       get<_i43.DeleteAssignment>()));
-  gh.factory<_i77.CreateChoiceBloc>(() => _i77.CreateChoiceBloc(
+  gh.factory<_i78.CreateChoiceBloc>(() => _i78.CreateChoiceBloc(
       get<_i39.CreateChoice>(),
       get<_i49.EditChoice>(),
       get<_i44.DeleteChoice>(),
       get<_i26.SetAnswer>()));
-  gh.factory<_i78.CreateCourseBloc>(() => _i78.CreateCourseBloc(
+  gh.factory<_i79.CreateCourseBloc>(() => _i79.CreateCourseBloc(
       get<_i40.CreateCourse>(),
       get<_i50.EditCourse>(),
       get<_i45.DeleteCourse>()));
-  gh.factory<_i79.CreatePdfBloc>(() => _i79.CreatePdfBloc(
+  gh.factory<_i80.CreatePdfBloc>(() => _i80.CreatePdfBloc(
       get<_i41.CreatePdf>(), get<_i51.EditPdf>(), get<_i46.DeletePdf>()));
-  gh.factory<_i80.CreateQuestionBloc>(() => _i80.CreateQuestionBloc(
+  gh.factory<_i81.CreateQuestionBloc>(() => _i81.CreateQuestionBloc(
       get<_i42.CreateQuestion>(),
       get<_i52.EditQuestion>(),
       get<_i47.DeleteQuestion>()));
-  gh.factory<_i81.DashboardBloc>(() =>
-      _i81.DashboardBloc(get<_i57.GetCourse>(), get<_i30.UpdateCourse>()));
-  gh.factory<_i82.FileFromUrlBloc>(
-      () => _i82.FileFromUrlBloc(get<_i58.GetFileFromUrl>()));
+  gh.factory<_i82.DashboardBloc>(() =>
+      _i82.DashboardBloc(get<_i57.GetCourse>(), get<_i30.UpdateCourse>()));
+  gh.factory<_i83.FileFromUrlBloc>(
+      () => _i83.FileFromUrlBloc(get<_i58.GetFileFromUrl>()));
   return get;
 }
 
-class _$InjectionModules extends _i83.InjectionModules {}
+class _$InjectionModules extends _i84.InjectionModules {}

@@ -227,7 +227,7 @@ abstract class TeacherServiceApi extends ChopperService {
     @Field("question_id") required int questionId,
   });
 
-  @Put(path: "set_ans")
+  @Put(path: "set_ans", optionalBody: true)
   @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
   Future<Response> setAnswer({
     @Header("Authorization") required String accessToken,

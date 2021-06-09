@@ -4,16 +4,19 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kt_dart/kt.dart';
 import 'package:lottie/lottie.dart';
 import 'package:teacher/core/routes/app_router.gr.dart';
 import 'package:teacher/core/util/constant.dart';
 import 'package:teacher/di/injection.dart';
 import 'package:teacher/features/domain/entities/course.dart';
+import 'package:teacher/features/domain/entities/user.dart';
 import 'package:teacher/features/presentation/bloc/clear_prefs/clear_prefs_bloc.dart';
 import 'package:teacher/features/presentation/bloc/create_course/create_course_bloc.dart';
 import 'package:teacher/features/presentation/bloc/dashboard/dashboard_bloc.dart';
 import 'package:teacher/features/presentation/bloc/splash_bloc/splash_bloc.dart';
+import 'package:teacher/features/presentation/bloc/user/user_bloc.dart';
 import 'package:teacher/features/presentation/components/confirm_dialogue.dart';
 
 import 'widgets/add_course_widget.dart';
@@ -26,19 +29,22 @@ class TeacherHomePage extends StatefulWidget {
   _TeacherHomePageState createState() => _TeacherHomePageState();
 }
 
-final _keyRefresh = GlobalKey<RefreshIndicatorState>();
-
 class _TeacherHomePageState extends State<TeacherHomePage> {
   KtList<Course> course = new KtList.empty();
-  final _dashboardBloc = getIt<DashboardBloc>();
-  final _createCourseBloc = getIt<CreateCourseBloc>();
+  late final _dashboardBloc = getIt<DashboardBloc>();
+  late final _createCourseBloc = getIt<CreateCourseBloc>();
+  late final _userBloc = getIt<UserBloc>();
+  User? _user;
+
+  final PagingController<int, Course> _pagingController =
+      PagingController(firstPageKey: 0);
   Completer<void> _refreshCompleter = Completer<void>();
 
   @override
   void initState() {
     super.initState();
-
     _dashboardBloc.add(DashboardEvent.getCourse());
+    _userBloc.add(UserEvent.started());
   }
 
   @override
@@ -46,6 +52,8 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     super.dispose();
     _dashboardBloc.close();
     _createCourseBloc.close();
+    _pagingController.dispose();
+    _userBloc.close();
     // _title.dispose();
     // _description.dispose();
   }
@@ -56,112 +64,124 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
       providers: [
         BlocProvider(create: (context) => _dashboardBloc),
         BlocProvider(create: (create) => _createCourseBloc),
+        BlocProvider(create: (create) => _userBloc),
       ],
       child: MultiBlocListener(
         listeners: [
+          BlocListener<UserBloc, UserState>(
+            listener: (context, state) {
+              state.maybeMap(
+                orElse: () {},
+                success: (state) {
+                  _user = state.user;
+                },
+              );
+            },
+          ),
           BlocListener<CreateCourseBloc, CreateCourseState>(
-              listener: (context, state) {
-            state.maybeMap(
-              orElse: () {},
-              loading: (state) {
-                ScaffoldMessenger.maybeOf(context)!
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      duration: Duration(minutes: 10),
-                      backgroundColor: kBlackColor,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      content: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CircularProgressIndicator.adaptive(),
-                          Text(
-                            "Loading...",
-                            style: TextStyle(color: Colors.white),
+            listener: (context, state) {
+              state.maybeMap(
+                orElse: () {},
+                loading: (state) {
+                  ScaffoldMessenger.maybeOf(context)!
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        duration: Duration(minutes: 10),
+                        backgroundColor: kBlackColor,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CircularProgressIndicator.adaptive(),
+                            Text(
+                              "Loading...",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                },
+                success: (state) {
+                  ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                  context
+                      .read<DashboardBloc>()
+                      .add(DashboardEvent.update(course: course));
+                  _showSnack(context);
+                },
+                error: (state) {
+                  ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                  if (state.message == UNAUTHENTICATED_FAILURE_MESSAGE) {
+                    //you will be thrown out asf
+                    ScaffoldMessenger.maybeOf(context)
+                      ?..hideCurrentSnackBar()
+                      ..showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          behavior: SnackBarBehavior.fixed,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(5),
+                            topRight: Radius.circular(5),
+                          )),
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "ERROR",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              // SizedBox(height: 3),
+                              Text(state.message)
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-              },
-              success: (state) {
-                ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
-                context
-                    .read<DashboardBloc>()
-                    .add(DashboardEvent.update(course: course));
-                _showSnack(context);
-              },
-              error: (state) {
-                ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
-                if (state.message == UNAUTHENTICATED_FAILURE_MESSAGE) {
-                  //you will be thrown out asf
-                  ScaffoldMessenger.maybeOf(context)
-                    ?..hideCurrentSnackBar()
-                    ..showSnackBar(
-                      SnackBar(
-                        backgroundColor: Colors.red,
-                        behavior: SnackBarBehavior.fixed,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(5),
-                          topRight: Radius.circular(5),
-                        )),
-                        content: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "ERROR",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            // SizedBox(height: 3),
-                            Text(state.message)
-                          ],
                         ),
-                      ),
-                    );
-                  Future.delayed(const Duration(seconds: 3), () async {
-                    context
-                        .read<ClearPrefsBloc>()
-                        .add(ClearPrefsEvent.clearPrefs());
-                    context.router.replace(LoginRoute());
-                  });
-                } else {
-                  ScaffoldMessenger.maybeOf(context)
-                    ?..hideCurrentSnackBar()
-                    ..showSnackBar(
-                      SnackBar(
-                        backgroundColor: Colors.red,
-                        behavior: SnackBarBehavior.fixed,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(5),
-                          topRight: Radius.circular(5),
-                        )),
-                        content: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "ERROR",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                      );
+                    Future.delayed(const Duration(seconds: 3), () async {
+                      context
+                          .read<ClearPrefsBloc>()
+                          .add(ClearPrefsEvent.clearPrefs());
+                      context.router.replace(LoginRoute());
+                    });
+                  } else {
+                    ScaffoldMessenger.maybeOf(context)
+                      ?..hideCurrentSnackBar()
+                      ..showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          behavior: SnackBarBehavior.fixed,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(5),
+                            topRight: Radius.circular(5),
+                          )),
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "ERROR",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            // SizedBox(height: 3),
-                            Text(state.message)
-                          ],
+                              // SizedBox(height: 3),
+                              Text(state.message)
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                }
-              },
-            );
-          }),
+                      );
+                  }
+                },
+              );
+            },
+          ),
           BlocListener<SplashBloc, SplashState>(
             listener: (context, state) {
               state.maybeMap(
@@ -279,54 +299,60 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
               style: TextStyle(color: Colors.white),
             ),
             actions: [
-              PopupMenuButton(
-                onSelected: (value) => {
-                  if (value == 3)
-                    {
-                      showDialog(
-                        context: context,
-                        builder: (builder) => ConfirmDialogue(text: "Logout"),
-                      )
-                          .then((value) => {
-                                if (value != null && value)
-                                  {
-                                    print("Logout Msee"),
-                                  }
-                              })
-                          .catchError((e, s) {
-                        print("LOGOUT DIALOGUE ERROE: $e,$s");
-                      })
+              Builder(
+                builder: (context) {
+                  return PopupMenuButton(
+                    onSelected: (value) => {
+                      if (value == 3)
+                        {
+                          showDialog(
+                            context: context,
+                            builder: (builder) =>
+                                ConfirmDialogue(text: "Logout"),
+                          )
+                              .then((value) => {
+                                    if (value != null && value)
+                                      {
+                                        print("Logout Msee"),
+                                      }
+                                  })
+                              .catchError((e, s) {
+                            print("LOGOUT DIALOGUE ERROE: ,");
+                          })
+                        },
+                      if (value == 1) {Scaffold.maybeOf(context)?.openDrawer()}
                     },
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 1,
+                        child: Text("Profile"),
+                      ),
+                      PopupMenuItem(
+                        value: 2,
+                        child: Text("Settings"),
+                      ),
+                      PopupMenuItem(
+                        value: 3,
+                        child: Text("Log Out"),
+                      ),
+                    ],
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: SvgPicture.asset(
+                        "assets/icons/cap_yellow.svg",
+                        color: kYellowColor,
+                        fit: BoxFit.contain,
+                        colorBlendMode: BlendMode.dstATop,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                      ),
+                    ),
+                  );
                 },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 1,
-                    child: Text("Profile"),
-                  ),
-                  PopupMenuItem(
-                    value: 2,
-                    child: Text("Settings"),
-                  ),
-                  PopupMenuItem(
-                    value: 3,
-                    child: Text("Log Out"),
-                  ),
-                ],
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: SvgPicture.asset(
-                    "assets/icons/cap_yellow.svg",
-                    color: kYellowColor,
-                    fit: BoxFit.contain,
-                    colorBlendMode: BlendMode.dstATop,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                  ),
-                ),
               ),
             ],
           ),
@@ -364,38 +390,43 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
               size: 30,
             ),
           ),
+          //!Drawer
           drawer: Drawer(
             child: Container(
               color: kBlackColor,
               child: SafeArea(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 100,
-                      width: 100,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: SvgPicture.asset(
-                        "assets/icons/cap_yellow.svg",
-                        fit: BoxFit.contain,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "TEACHER DAVID",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      "david@email.com",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    SizedBox(height: 5),
-                  ],
+                child: BlocBuilder<UserBloc, UserState>(
+                  builder: (context, state) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 100,
+                          width: 100,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: SvgPicture.asset(
+                            "assets/icons/cap_yellow.svg",
+                            fit: BoxFit.contain,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "TEACHER ${_user?.name.toUpperCase() ?? ""}",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          "${_user?.email ?? ""}",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(height: 5),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
