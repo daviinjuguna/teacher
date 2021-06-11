@@ -31,6 +31,8 @@ abstract class RemoteDataSource {
   Future<void> logout({required String accessToken});
 
   Future<KtList<CourseModel>> getCourses({required String accessToken});
+  Future<KtList<CourseModel>> searchCourse(
+      {required String accessToken, required String query});
 
   Future<KtList<PdfModel>> getPdf({
     required int courseId,
@@ -268,6 +270,39 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     try {
       final response =
           await _api.getCourses(accessToken: 'Bearer $accessToken');
+
+      final status = _call.checkStatusCode(response.statusCode);
+      if (status) {
+        List<CourseModel> courses = [];
+        final body = response.body;
+        try {
+          courses = (body['course']['data'] as List)
+              .map((body) => CourseModel.fromJson(body))
+              .toList();
+        } catch (e) {
+          print(e.toString());
+          // break;
+        }
+        return courses.toImmutableList();
+      } else {
+        throw ServerException();
+      }
+    } catch (e, s) {
+      print("$e,$s");
+      rethrow;
+    }
+  }
+
+  @override
+  Future<KtList<CourseModel>> searchCourse({
+    required String accessToken,
+    required String query,
+  }) async {
+    try {
+      final response = await _api.searchCourse(
+        accessToken: 'Bearer $accessToken',
+        query: query,
+      );
 
       final status = _call.checkStatusCode(response.statusCode);
       if (status) {

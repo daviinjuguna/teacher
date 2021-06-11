@@ -63,3 +63,31 @@ class ParamsString {
     );
   }
 }
+
+class ParamsStringNullable {
+  final String? string;
+  ParamsStringNullable({
+    this.string,
+  });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ParamsStringNullable && other.string == string;
+  }
+
+  @override
+  int get hashCode => string.hashCode;
+
+  @override
+  String toString() => 'ParamsStringNullable(string: $string)';
+
+  ParamsStringNullable copyWith({
+    String? string,
+  }) {
+    return ParamsStringNullable(
+      string: string ?? this.string,
+    );
+  }
+}

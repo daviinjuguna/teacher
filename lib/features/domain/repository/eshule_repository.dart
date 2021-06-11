@@ -45,7 +45,7 @@ abstract class Repository {
   Stream<Either<String, String>> checkBattery();
 
   //Fetch Course
-  Future<Either<String, KtList<Course>>> getCourses();
+  Future<Either<String, KtList<Course>>> getCourses({String? query});
 //Update
   Future<Either<String, KtList<Course>>> updateCourse();
 

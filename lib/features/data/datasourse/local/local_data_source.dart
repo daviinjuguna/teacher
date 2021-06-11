@@ -18,7 +18,6 @@ import 'package:teacher/features/data/models/pdf_model.dart';
 import 'package:teacher/features/data/models/question_model.dart';
 import 'package:teacher/features/data/models/token_model.dart';
 import 'package:teacher/features/data/models/user_model.dart';
-import 'package:teacher/features/domain/entities/choice.dart';
 
 abstract class LocalDataSource {
   Future<void> cacheToken({required TokenModel? model});

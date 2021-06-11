@@ -90,6 +90,18 @@ class _$TeacherServiceApi extends TeacherServiceApi {
   }
 
   @override
+  Future<Response<dynamic>> searchCourse(
+      {required String accessToken, required String query}) {
+    final $url = '/teacher/search_course/$query';
+    final $headers = {
+      'Authorization': accessToken,
+    };
+
+    final $request = Request('GET', $url, client.baseUrl, headers: $headers);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> createCourse(
       {required String accessToken,
       required String title,

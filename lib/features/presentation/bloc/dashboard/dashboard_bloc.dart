@@ -27,7 +27,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     yield* event.map(
       getCourse: (e) async* {
         yield DashboardState.loading();
-        final _result = await _course.call(NoParams());
+        final _result =
+            await _course.call(ParamsStringNullable(string: e.query));
         yield _result.fold(
           (l) => DashboardState.error(message: l),
           (course) => DashboardState.success(course: course),

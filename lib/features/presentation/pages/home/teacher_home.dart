@@ -21,6 +21,7 @@ import 'package:teacher/features/presentation/components/confirm_dialogue.dart';
 
 import 'widgets/add_course_widget.dart';
 import 'widgets/home_shimmer.dart';
+import 'widgets/search_course.dart';
 
 class TeacherHomePage extends StatefulWidget {
   const TeacherHomePage({Key? key}) : super(key: key);
@@ -293,67 +294,44 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
             centerTitle: true,
             // elevation: 0, //*elevation worship
             backgroundColor: kBlackColor,
+            leading: Builder(
+              builder: (context) {
+                return GestureDetector(
+                  onTap: () => Scaffold.maybeOf(context)?.openDrawer(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      radius: 5,
+                      child: ClipOval(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: SvgPicture.asset(
+                          "assets/icons/cap_yellow.svg",
+                          color: kYellowColor,
+                          fit: BoxFit.contain,
+                          colorBlendMode: BlendMode.dstATop,
+                          // clipBehavior: Clip.antiAliasWithSaveLayer,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
             iconTheme: IconThemeData(color: Colors.white),
             title: Text(
               "TEACHER CENTER",
               style: TextStyle(color: Colors.white),
             ),
             actions: [
-              Builder(
-                builder: (context) {
-                  return PopupMenuButton(
-                    onSelected: (value) => {
-                      if (value == 3)
-                        {
-                          showDialog(
-                            context: context,
-                            builder: (builder) =>
-                                ConfirmDialogue(text: "Logout"),
-                          )
-                              .then((value) => {
-                                    if (value != null && value)
-                                      {
-                                        print("Logout Msee"),
-                                      }
-                                  })
-                              .catchError((e, s) {
-                            print("LOGOUT DIALOGUE ERROE: ,");
-                          })
-                        },
-                      if (value == 1) {Scaffold.maybeOf(context)?.openDrawer()}
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 1,
-                        child: Text("Profile"),
-                      ),
-                      PopupMenuItem(
-                        value: 2,
-                        child: Text("Settings"),
-                      ),
-                      PopupMenuItem(
-                        value: 3,
-                        child: Text("Log Out"),
-                      ),
-                    ],
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: SvgPicture.asset(
-                        "assets/icons/cap_yellow.svg",
-                        color: kYellowColor,
-                        fit: BoxFit.contain,
-                        colorBlendMode: BlendMode.dstATop,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                      ),
-                    ),
-                  );
-                },
-              ),
+              IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () => showSearch<Course?>(
+                        context: context, delegate: SearchCourse())
+                    .then((course) => {if (course != null) {}})
+                    .catchError((e, s) {
+                  print("SEARCH DELEGATE ERROR: $e,$s");
+                }),
+              )
             ],
           ),
           floatingActionButton: FloatingActionButton(

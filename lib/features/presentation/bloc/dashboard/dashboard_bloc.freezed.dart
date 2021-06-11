@@ -16,8 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$DashboardEventTearOff {
   const _$DashboardEventTearOff();
 
-  _Started getCourse() {
-    return const _Started();
+  _Started getCourse({String? query}) {
+    return _Started(
+      query: query,
+    );
   }
 
   _Update update({required KtList<Course> course}) {
@@ -34,13 +36,13 @@ const $DashboardEvent = _$DashboardEventTearOff();
 mixin _$DashboardEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() getCourse,
+    required TResult Function(String? query) getCourse,
     required TResult Function(KtList<Course> course) update,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? getCourse,
+    TResult Function(String? query)? getCourse,
     TResult Function(KtList<Course> course)? update,
     required TResult orElse(),
   }) =>
@@ -81,6 +83,7 @@ class _$DashboardEventCopyWithImpl<$Res>
 abstract class _$StartedCopyWith<$Res> {
   factory _$StartedCopyWith(_Started value, $Res Function(_Started) then) =
       __$StartedCopyWithImpl<$Res>;
+  $Res call({String? query});
 }
 
 /// @nodoc
@@ -91,44 +94,68 @@ class __$StartedCopyWithImpl<$Res> extends _$DashboardEventCopyWithImpl<$Res>
 
   @override
   _Started get _value => super._value as _Started;
+
+  @override
+  $Res call({
+    Object? query = freezed,
+  }) {
+    return _then(_Started(
+      query: query == freezed
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_Started implements _Started {
-  const _$_Started();
+  const _$_Started({this.query});
+
+  @override
+  final String? query;
 
   @override
   String toString() {
-    return 'DashboardEvent.getCourse()';
+    return 'DashboardEvent.getCourse(query: $query)';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _Started);
+    return identical(this, other) ||
+        (other is _Started &&
+            (identical(other.query, query) ||
+                const DeepCollectionEquality().equals(other.query, query)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(query);
+
+  @JsonKey(ignore: true)
+  @override
+  _$StartedCopyWith<_Started> get copyWith =>
+      __$StartedCopyWithImpl<_Started>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() getCourse,
+    required TResult Function(String? query) getCourse,
     required TResult Function(KtList<Course> course) update,
   }) {
-    return getCourse();
+    return getCourse(query);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? getCourse,
+    TResult Function(String? query)? getCourse,
     TResult Function(KtList<Course> course)? update,
     required TResult orElse(),
   }) {
     if (getCourse != null) {
-      return getCourse();
+      return getCourse(query);
     }
     return orElse();
   }
@@ -157,7 +184,12 @@ class _$_Started implements _Started {
 }
 
 abstract class _Started implements DashboardEvent {
-  const factory _Started() = _$_Started;
+  const factory _Started({String? query}) = _$_Started;
+
+  String? get query => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$StartedCopyWith<_Started> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -222,7 +254,7 @@ class _$_Update implements _Update {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() getCourse,
+    required TResult Function(String? query) getCourse,
     required TResult Function(KtList<Course> course) update,
   }) {
     return update(course);
@@ -231,7 +263,7 @@ class _$_Update implements _Update {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? getCourse,
+    TResult Function(String? query)? getCourse,
     TResult Function(KtList<Course> course)? update,
     required TResult orElse(),
   }) {

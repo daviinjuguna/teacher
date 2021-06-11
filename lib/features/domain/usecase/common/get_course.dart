@@ -6,12 +6,12 @@ import 'package:injectable/injectable.dart';
 import 'package:kt_dart/collection.dart';
 
 @lazySingleton
-class GetCourse extends UseCase<KtList<Course>, NoParams> {
+class GetCourse extends UseCase<KtList<Course>, ParamsStringNullable> {
   GetCourse(this._repository);
 
   @override
-  Future<Either<String, KtList<Course>>> call(NoParams params) {
-    return _repository.getCourses();
+  Future<Either<String, KtList<Course>>> call(ParamsStringNullable params) {
+    return _repository.getCourses(query: params.string);
   }
 
   final Repository _repository;

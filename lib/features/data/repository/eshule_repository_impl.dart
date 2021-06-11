@@ -267,11 +267,18 @@ class RepositoryImpl implements Repository {
 
   //fetch courses
   @override
-  Future<Either<String, KtList<Course>>> getCourses() async {
+  Future<Either<String, KtList<Course>>> getCourses({String? query}) async {
     try {
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
         KtList<CourseModel> model = emptyList();
+        if (query != null) {
+          model = await _remote.searchCourse(
+              accessToken: tokenModel.accessToken, query: query);
+          final entities =
+              model.map((e) => e.toEntity()).asList().toImmutableList();
+          return right(entities);
+        }
         final _localCourse = await _local.getCourse();
         if (_localCourse.isNotEmpty) {
           model = _localCourse.toImmutableList();

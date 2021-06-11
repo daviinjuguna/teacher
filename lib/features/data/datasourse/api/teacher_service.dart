@@ -69,6 +69,12 @@ abstract class TeacherServiceApi extends ChopperService {
     @Query("page") int? page,
   });
 
+  @Get(path: "search_course/{title}")
+  Future<Response> searchCourse({
+    @Header("Authorization") required String accessToken,
+    @Path("title") required String query,
+  });
+
   @Post(path: "create_course")
   @multipart
   Future<Response> createCourse({
