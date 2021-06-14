@@ -17,20 +17,23 @@ class CourseModel with _$CourseModel {
     @JsonKey(name: "application_count", required: false) int? appCount,
     @JsonKey(name: "applied", required: false) bool? applied,
     @JsonKey(name: "by", required: false) UserModel? teachedBy,
+    int? currentPage,
+    int? lastPage,
   }) = _CourseModel;
 
   factory CourseModel.fromJson(Map<String, dynamic> json) =>
       _$CourseModelFromJson(json);
 
   factory CourseModel.fromEntity(Course c) => CourseModel(
-        id: c.id,
-        title: c.title,
-        desc: c.desc,
-        photo: c.photo,
-        appCount: c.appCount,
-        applied: c.applied,
-        teachedBy: c.teachedBy?.toModel(),
-      );
+      id: c.id,
+      title: c.title,
+      desc: c.desc,
+      photo: c.photo,
+      appCount: c.appCount,
+      applied: c.applied,
+      teachedBy: c.teachedBy?.toModel(),
+      lastPage: c.lastPage,
+      currentPage: c.currentPage);
 }
 
 extension CourseModelX on CourseModel {
@@ -41,6 +44,8 @@ extension CourseModelX on CourseModel {
         photo: photo,
         appCount: appCount,
         applied: applied,
+        lastPage: lastPage,
+        currentPage: currentPage,
         teachedBy: teachedBy?.toEntity(),
       );
 }

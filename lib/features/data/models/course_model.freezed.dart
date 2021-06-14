@@ -27,7 +27,9 @@ class _$CourseModelTearOff {
       @JsonKey(name: "photo", required: true) required String photo,
       @JsonKey(name: "application_count", required: false) int? appCount,
       @JsonKey(name: "applied", required: false) bool? applied,
-      @JsonKey(name: "by", required: false) UserModel? teachedBy}) {
+      @JsonKey(name: "by", required: false) UserModel? teachedBy,
+      int? currentPage,
+      int? lastPage}) {
     return _CourseModel(
       id: id,
       title: title,
@@ -36,6 +38,8 @@ class _$CourseModelTearOff {
       appCount: appCount,
       applied: applied,
       teachedBy: teachedBy,
+      currentPage: currentPage,
+      lastPage: lastPage,
     );
   }
 
@@ -63,6 +67,8 @@ mixin _$CourseModel {
   bool? get applied => throw _privateConstructorUsedError;
   @JsonKey(name: "by", required: false)
   UserModel? get teachedBy => throw _privateConstructorUsedError;
+  int? get currentPage => throw _privateConstructorUsedError;
+  int? get lastPage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -82,7 +88,9 @@ abstract class $CourseModelCopyWith<$Res> {
       @JsonKey(name: "photo", required: true) String photo,
       @JsonKey(name: "application_count", required: false) int? appCount,
       @JsonKey(name: "applied", required: false) bool? applied,
-      @JsonKey(name: "by", required: false) UserModel? teachedBy});
+      @JsonKey(name: "by", required: false) UserModel? teachedBy,
+      int? currentPage,
+      int? lastPage});
 
   $UserModelCopyWith<$Res>? get teachedBy;
 }
@@ -104,6 +112,8 @@ class _$CourseModelCopyWithImpl<$Res> implements $CourseModelCopyWith<$Res> {
     Object? appCount = freezed,
     Object? applied = freezed,
     Object? teachedBy = freezed,
+    Object? currentPage = freezed,
+    Object? lastPage = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -134,6 +144,14 @@ class _$CourseModelCopyWithImpl<$Res> implements $CourseModelCopyWith<$Res> {
           ? _value.teachedBy
           : teachedBy // ignore: cast_nullable_to_non_nullable
               as UserModel?,
+      currentPage: currentPage == freezed
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int?,
+      lastPage: lastPage == freezed
+          ? _value.lastPage
+          : lastPage // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 
@@ -163,7 +181,9 @@ abstract class _$CourseModelCopyWith<$Res>
       @JsonKey(name: "photo", required: true) String photo,
       @JsonKey(name: "application_count", required: false) int? appCount,
       @JsonKey(name: "applied", required: false) bool? applied,
-      @JsonKey(name: "by", required: false) UserModel? teachedBy});
+      @JsonKey(name: "by", required: false) UserModel? teachedBy,
+      int? currentPage,
+      int? lastPage});
 
   @override
   $UserModelCopyWith<$Res>? get teachedBy;
@@ -188,6 +208,8 @@ class __$CourseModelCopyWithImpl<$Res> extends _$CourseModelCopyWithImpl<$Res>
     Object? appCount = freezed,
     Object? applied = freezed,
     Object? teachedBy = freezed,
+    Object? currentPage = freezed,
+    Object? lastPage = freezed,
   }) {
     return _then(_CourseModel(
       id: id == freezed
@@ -218,6 +240,14 @@ class __$CourseModelCopyWithImpl<$Res> extends _$CourseModelCopyWithImpl<$Res>
           ? _value.teachedBy
           : teachedBy // ignore: cast_nullable_to_non_nullable
               as UserModel?,
+      currentPage: currentPage == freezed
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int?,
+      lastPage: lastPage == freezed
+          ? _value.lastPage
+          : lastPage // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -232,7 +262,9 @@ class _$_CourseModel extends _CourseModel {
       @JsonKey(name: "photo", required: true) required this.photo,
       @JsonKey(name: "application_count", required: false) this.appCount,
       @JsonKey(name: "applied", required: false) this.applied,
-      @JsonKey(name: "by", required: false) this.teachedBy})
+      @JsonKey(name: "by", required: false) this.teachedBy,
+      this.currentPage,
+      this.lastPage})
       : super._();
 
   factory _$_CourseModel.fromJson(Map<String, dynamic> json) =>
@@ -259,10 +291,14 @@ class _$_CourseModel extends _CourseModel {
   @override
   @JsonKey(name: "by", required: false)
   final UserModel? teachedBy;
+  @override
+  final int? currentPage;
+  @override
+  final int? lastPage;
 
   @override
   String toString() {
-    return 'CourseModel(id: $id, title: $title, desc: $desc, photo: $photo, appCount: $appCount, applied: $applied, teachedBy: $teachedBy)';
+    return 'CourseModel(id: $id, title: $title, desc: $desc, photo: $photo, appCount: $appCount, applied: $applied, teachedBy: $teachedBy, currentPage: $currentPage, lastPage: $lastPage)';
   }
 
   @override
@@ -285,7 +321,13 @@ class _$_CourseModel extends _CourseModel {
                     .equals(other.applied, applied)) &&
             (identical(other.teachedBy, teachedBy) ||
                 const DeepCollectionEquality()
-                    .equals(other.teachedBy, teachedBy)));
+                    .equals(other.teachedBy, teachedBy)) &&
+            (identical(other.currentPage, currentPage) ||
+                const DeepCollectionEquality()
+                    .equals(other.currentPage, currentPage)) &&
+            (identical(other.lastPage, lastPage) ||
+                const DeepCollectionEquality()
+                    .equals(other.lastPage, lastPage)));
   }
 
   @override
@@ -297,7 +339,9 @@ class _$_CourseModel extends _CourseModel {
       const DeepCollectionEquality().hash(photo) ^
       const DeepCollectionEquality().hash(appCount) ^
       const DeepCollectionEquality().hash(applied) ^
-      const DeepCollectionEquality().hash(teachedBy);
+      const DeepCollectionEquality().hash(teachedBy) ^
+      const DeepCollectionEquality().hash(currentPage) ^
+      const DeepCollectionEquality().hash(lastPage);
 
   @JsonKey(ignore: true)
   @override
@@ -312,14 +356,15 @@ class _$_CourseModel extends _CourseModel {
 
 abstract class _CourseModel extends CourseModel {
   factory _CourseModel(
-          {@JsonKey(name: "id", required: true) required int id,
-          @JsonKey(name: "title", required: true) required String title,
-          @JsonKey(name: "description", required: true) required String desc,
-          @JsonKey(name: "photo", required: true) required String photo,
-          @JsonKey(name: "application_count", required: false) int? appCount,
-          @JsonKey(name: "applied", required: false) bool? applied,
-          @JsonKey(name: "by", required: false) UserModel? teachedBy}) =
-      _$_CourseModel;
+      {@JsonKey(name: "id", required: true) required int id,
+      @JsonKey(name: "title", required: true) required String title,
+      @JsonKey(name: "description", required: true) required String desc,
+      @JsonKey(name: "photo", required: true) required String photo,
+      @JsonKey(name: "application_count", required: false) int? appCount,
+      @JsonKey(name: "applied", required: false) bool? applied,
+      @JsonKey(name: "by", required: false) UserModel? teachedBy,
+      int? currentPage,
+      int? lastPage}) = _$_CourseModel;
   _CourseModel._() : super._();
 
   factory _CourseModel.fromJson(Map<String, dynamic> json) =
@@ -346,6 +391,10 @@ abstract class _CourseModel extends CourseModel {
   @override
   @JsonKey(name: "by", required: false)
   UserModel? get teachedBy => throw _privateConstructorUsedError;
+  @override
+  int? get currentPage => throw _privateConstructorUsedError;
+  @override
+  int? get lastPage => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$CourseModelCopyWith<_CourseModel> get copyWith =>

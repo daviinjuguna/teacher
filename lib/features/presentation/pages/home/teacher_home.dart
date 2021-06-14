@@ -32,7 +32,7 @@ class TeacherHomePage extends StatefulWidget {
 }
 
 class _TeacherHomePageState extends State<TeacherHomePage> {
-  KtList<Course> course = new KtList.empty();
+  KtList<Course> _course = new KtList.empty();
   late final _dashboardBloc = getIt<DashboardBloc>();
   late final _createCourseBloc = getIt<CreateCourseBloc>();
   late final _userBloc = getIt<UserBloc>();
@@ -116,7 +116,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                   ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
                   context
                       .read<DashboardBloc>()
-                      .add(DashboardEvent.update(course: course));
+                      .add(DashboardEvent.update(course: _course));
                   _showSnack(context);
                 },
                 error: (state) {
@@ -282,7 +282,10 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                   _refreshCompleter.complete();
                   _refreshCompleter = Completer();
 
-                  course = state.course;
+                  _course = state.course;
+                  // print(
+                  //     "CURRENT PAGE: ${state.course.asList().last.currentPage}");
+                  // print("LAST PAGE: ${state.course.asList().last.lastPage}");
 
                   ScaffoldMessenger.maybeOf(context)?..hideCurrentSnackBar();
                 },
@@ -370,15 +373,19 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
               IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () => showSearch<Course?>(
-                        context: context,
-                        delegate: SearchCourse(
-                          searchFieldLabel: "Search Course",
-                          getRecentCubit:
-                              BlocProvider.of<GetRecentCubit>(context),
-                          saveCubit: BlocProvider.of<SaveRecentCubit>(context),
-                        ))
-                    .then((course) => {if (course != null) {}})
-                    .catchError((e, s) {
+                    context: context,
+                    delegate: SearchCourse(
+                      saveRecentCubit: _saveRecentCubit,
+                      dashboardBloc: _dashboardBloc,
+                      searchFieldLabel: "Search Course",
+                      getRecentCubit: _getRecentCubit,
+                    )).then((course) {
+                  if (course != null) {
+                    AutoRouter.of(context)
+                        .push(TeacherCourseRoute(course: course));
+                  }
+                  _dashboardBloc.add(DashboardEvent.update(course: _course));
+                }).catchError((e, s) {
                   print("SEARCH DELEGATE ERROR: $e,$s");
                 }),
               )
@@ -522,13 +529,13 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                 // course = state.course;
                 return RefreshIndicator(
                   onRefresh: () {
-                    _dashboardBloc.add(DashboardEvent.update(course: course));
+                    _dashboardBloc.add(DashboardEvent.update(course: _course));
                     return _refreshCompleter.future;
                   },
                   child: ListView.builder(
                     physics: BouncingScrollPhysics(
                         parent: AlwaysScrollableScrollPhysics()),
-                    itemCount: course.size,
+                    itemCount: _course.size,
                     itemBuilder: (context, index) => Card(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       shape: RoundedRectangleBorder(
@@ -543,7 +550,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                             child: FadeInImage.assetNetwork(
                               fit: BoxFit.fill,
                               placeholder: "assets/images/rsz_1cap_yellow.png",
-                              image: "$FILE_URL${course[index].photo}",
+                              image: "$FILE_URL${_course[index].photo}",
                               imageErrorBuilder: (context, error, stackTrace) =>
                                   Image.asset(
                                 "assets/images/rsz_1cap_yellow.png",
@@ -556,7 +563,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                             child: Column(
                               children: [
                                 Text(
-                                  "${course[index].title}",
+                                  "${_course[index].title}",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 16,
@@ -566,7 +573,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                   height: 5,
                                 ),
                                 Text(
-                                  "${course[index].desc}",
+                                  "${_course[index].desc}",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontWeight: FontWeight.w300),
                                 ),
@@ -576,7 +583,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    "Students Applied: ${course[index].appCount}",
+                                    "Students Applied: ${_course[index].appCount}",
                                   ),
                                 ),
                                 SizedBox(
@@ -607,7 +614,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                       ),
                                       onPressed: () => AutoRouter.of(context)
                                           .push(TeacherCourseRoute(
-                                              course: course[index])),
+                                              course: _course[index])),
                                     ),
                                     Row(
                                       children: [
@@ -618,9 +625,9 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                             builder: (builder) =>
                                                 AddCourseWidget(
                                               title: "EDIT COURSE",
-                                              initDesc: course[index].desc,
-                                              initPic: course[index].photo,
-                                              initTitle: course[index].title,
+                                              initDesc: _course[index].desc,
+                                              initPic: _course[index].photo,
+                                              initTitle: _course[index].title,
                                             ),
                                           )
                                               .then(
@@ -635,7 +642,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                                       "IMAGE: ${value.imgUrl}"),
                                                   _createCourseBloc.add(
                                                       CreateCourseEvent.edit(
-                                                    courseId: course[index].id,
+                                                    courseId: _course[index].id,
                                                     title: value.title,
                                                     description: value.desc,
                                                     photo: value.imgUrl,
@@ -693,7 +700,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                                         _createCourseBloc.add(
                                                           CreateCourseEvent.delete(
                                                               courseId:
-                                                                  course[index]
+                                                                  _course[index]
                                                                       .id),
                                                         )
                                                       }

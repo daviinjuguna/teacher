@@ -18,6 +18,8 @@ _$_CourseModel _$_$_CourseModelFromJson(Map<String, dynamic> json) {
     teachedBy: json['by'] == null
         ? null
         : UserModel.fromJson(json['by'] as Map<String, dynamic>),
+    currentPage: json['currentPage'] as int?,
+    lastPage: json['lastPage'] as int?,
   );
 }
 
@@ -30,4 +32,6 @@ Map<String, dynamic> _$_$_CourseModelToJson(_$_CourseModel instance) =>
       'application_count': instance.appCount,
       'applied': instance.applied,
       'by': instance.teachedBy,
+      'currentPage': instance.currentPage,
+      'lastPage': instance.lastPage,
     };

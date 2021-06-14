@@ -14,5 +14,7 @@ class Course with _$Course {
     int? appCount,
     bool? applied,
     User? teachedBy,
+    int? currentPage,
+    int? lastPage,
   }) = _Course;
 }

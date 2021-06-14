@@ -23,7 +23,9 @@ class _$CourseTearOff {
       required String photo,
       int? appCount,
       bool? applied,
-      User? teachedBy}) {
+      User? teachedBy,
+      int? currentPage,
+      int? lastPage}) {
     return _Course(
       id: id,
       title: title,
@@ -32,6 +34,8 @@ class _$CourseTearOff {
       appCount: appCount,
       applied: applied,
       teachedBy: teachedBy,
+      currentPage: currentPage,
+      lastPage: lastPage,
     );
   }
 }
@@ -48,6 +52,8 @@ mixin _$Course {
   int? get appCount => throw _privateConstructorUsedError;
   bool? get applied => throw _privateConstructorUsedError;
   User? get teachedBy => throw _privateConstructorUsedError;
+  int? get currentPage => throw _privateConstructorUsedError;
+  int? get lastPage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CourseCopyWith<Course> get copyWith => throw _privateConstructorUsedError;
@@ -64,7 +70,9 @@ abstract class $CourseCopyWith<$Res> {
       String photo,
       int? appCount,
       bool? applied,
-      User? teachedBy});
+      User? teachedBy,
+      int? currentPage,
+      int? lastPage});
 
   $UserCopyWith<$Res>? get teachedBy;
 }
@@ -86,6 +94,8 @@ class _$CourseCopyWithImpl<$Res> implements $CourseCopyWith<$Res> {
     Object? appCount = freezed,
     Object? applied = freezed,
     Object? teachedBy = freezed,
+    Object? currentPage = freezed,
+    Object? lastPage = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -116,6 +126,14 @@ class _$CourseCopyWithImpl<$Res> implements $CourseCopyWith<$Res> {
           ? _value.teachedBy
           : teachedBy // ignore: cast_nullable_to_non_nullable
               as User?,
+      currentPage: currentPage == freezed
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int?,
+      lastPage: lastPage == freezed
+          ? _value.lastPage
+          : lastPage // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 
@@ -143,7 +161,9 @@ abstract class _$CourseCopyWith<$Res> implements $CourseCopyWith<$Res> {
       String photo,
       int? appCount,
       bool? applied,
-      User? teachedBy});
+      User? teachedBy,
+      int? currentPage,
+      int? lastPage});
 
   @override
   $UserCopyWith<$Res>? get teachedBy;
@@ -167,6 +187,8 @@ class __$CourseCopyWithImpl<$Res> extends _$CourseCopyWithImpl<$Res>
     Object? appCount = freezed,
     Object? applied = freezed,
     Object? teachedBy = freezed,
+    Object? currentPage = freezed,
+    Object? lastPage = freezed,
   }) {
     return _then(_Course(
       id: id == freezed
@@ -197,6 +219,14 @@ class __$CourseCopyWithImpl<$Res> extends _$CourseCopyWithImpl<$Res>
           ? _value.teachedBy
           : teachedBy // ignore: cast_nullable_to_non_nullable
               as User?,
+      currentPage: currentPage == freezed
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int?,
+      lastPage: lastPage == freezed
+          ? _value.lastPage
+          : lastPage // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -211,7 +241,9 @@ class _$_Course extends _Course {
       required this.photo,
       this.appCount,
       this.applied,
-      this.teachedBy})
+      this.teachedBy,
+      this.currentPage,
+      this.lastPage})
       : super._();
 
   @override
@@ -228,10 +260,14 @@ class _$_Course extends _Course {
   final bool? applied;
   @override
   final User? teachedBy;
+  @override
+  final int? currentPage;
+  @override
+  final int? lastPage;
 
   @override
   String toString() {
-    return 'Course(id: $id, title: $title, desc: $desc, photo: $photo, appCount: $appCount, applied: $applied, teachedBy: $teachedBy)';
+    return 'Course(id: $id, title: $title, desc: $desc, photo: $photo, appCount: $appCount, applied: $applied, teachedBy: $teachedBy, currentPage: $currentPage, lastPage: $lastPage)';
   }
 
   @override
@@ -254,7 +290,13 @@ class _$_Course extends _Course {
                     .equals(other.applied, applied)) &&
             (identical(other.teachedBy, teachedBy) ||
                 const DeepCollectionEquality()
-                    .equals(other.teachedBy, teachedBy)));
+                    .equals(other.teachedBy, teachedBy)) &&
+            (identical(other.currentPage, currentPage) ||
+                const DeepCollectionEquality()
+                    .equals(other.currentPage, currentPage)) &&
+            (identical(other.lastPage, lastPage) ||
+                const DeepCollectionEquality()
+                    .equals(other.lastPage, lastPage)));
   }
 
   @override
@@ -266,7 +308,9 @@ class _$_Course extends _Course {
       const DeepCollectionEquality().hash(photo) ^
       const DeepCollectionEquality().hash(appCount) ^
       const DeepCollectionEquality().hash(applied) ^
-      const DeepCollectionEquality().hash(teachedBy);
+      const DeepCollectionEquality().hash(teachedBy) ^
+      const DeepCollectionEquality().hash(currentPage) ^
+      const DeepCollectionEquality().hash(lastPage);
 
   @JsonKey(ignore: true)
   @override
@@ -282,7 +326,9 @@ abstract class _Course extends Course {
       required String photo,
       int? appCount,
       bool? applied,
-      User? teachedBy}) = _$_Course;
+      User? teachedBy,
+      int? currentPage,
+      int? lastPage}) = _$_Course;
   _Course._() : super._();
 
   @override
@@ -299,6 +345,10 @@ abstract class _Course extends Course {
   bool? get applied => throw _privateConstructorUsedError;
   @override
   User? get teachedBy => throw _privateConstructorUsedError;
+  @override
+  int? get currentPage => throw _privateConstructorUsedError;
+  @override
+  int? get lastPage => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$CourseCopyWith<_Course> get copyWith => throw _privateConstructorUsedError;
