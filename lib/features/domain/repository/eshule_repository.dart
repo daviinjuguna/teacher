@@ -138,4 +138,6 @@ abstract class Repository {
     required int choiceId,
     required int questionId,
   });
+  Future<Either<String, dynamic>> saveToRecentSearches(String? searchText);
+  Future<Either<String, List<String>?>> getRecentSearchesLike(String? query);
 }

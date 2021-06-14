@@ -351,8 +351,10 @@ class _$SplashStateTearOff {
     return const _Initial();
   }
 
-  _Load loading() {
-    return const _Load();
+  _Load loading({String? message}) {
+    return _Load(
+      message: message,
+    );
   }
 
   _Success success() {
@@ -378,7 +380,7 @@ mixin _$SplashState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(String? message) loading,
     required TResult Function() success,
     required TResult Function() loggedOut,
     required TResult Function(String message) error,
@@ -387,7 +389,7 @@ mixin _$SplashState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(String? message)? loading,
     TResult Function()? success,
     TResult Function()? loggedOut,
     TResult Function(String message)? error,
@@ -469,7 +471,7 @@ class _$_Initial implements _Initial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(String? message) loading,
     required TResult Function() success,
     required TResult Function() loggedOut,
     required TResult Function(String message) error,
@@ -481,7 +483,7 @@ class _$_Initial implements _Initial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(String? message)? loading,
     TResult Function()? success,
     TResult Function()? loggedOut,
     TResult Function(String message)? error,
@@ -530,6 +532,7 @@ abstract class _Initial implements SplashState {
 abstract class _$LoadCopyWith<$Res> {
   factory _$LoadCopyWith(_Load value, $Res Function(_Load) then) =
       __$LoadCopyWithImpl<$Res>;
+  $Res call({String? message});
 }
 
 /// @nodoc
@@ -540,50 +543,74 @@ class __$LoadCopyWithImpl<$Res> extends _$SplashStateCopyWithImpl<$Res>
 
   @override
   _Load get _value => super._value as _Load;
+
+  @override
+  $Res call({
+    Object? message = freezed,
+  }) {
+    return _then(_Load(
+      message: message == freezed
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_Load implements _Load {
-  const _$_Load();
+  const _$_Load({this.message});
+
+  @override
+  final String? message;
 
   @override
   String toString() {
-    return 'SplashState.loading()';
+    return 'SplashState.loading(message: $message)';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _Load);
+    return identical(this, other) ||
+        (other is _Load &&
+            (identical(other.message, message) ||
+                const DeepCollectionEquality().equals(other.message, message)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
+
+  @JsonKey(ignore: true)
+  @override
+  _$LoadCopyWith<_Load> get copyWith =>
+      __$LoadCopyWithImpl<_Load>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(String? message) loading,
     required TResult Function() success,
     required TResult Function() loggedOut,
     required TResult Function(String message) error,
   }) {
-    return loading();
+    return loading(message);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(String? message)? loading,
     TResult Function()? success,
     TResult Function()? loggedOut,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
-      return loading();
+      return loading(message);
     }
     return orElse();
   }
@@ -618,7 +645,11 @@ class _$_Load implements _Load {
 }
 
 abstract class _Load implements SplashState {
-  const factory _Load() = _$_Load;
+  const factory _Load({String? message}) = _$_Load;
+
+  String? get message => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$LoadCopyWith<_Load> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -659,7 +690,7 @@ class _$_Success implements _Success {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(String? message) loading,
     required TResult Function() success,
     required TResult Function() loggedOut,
     required TResult Function(String message) error,
@@ -671,7 +702,7 @@ class _$_Success implements _Success {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(String? message)? loading,
     TResult Function()? success,
     TResult Function()? loggedOut,
     TResult Function(String message)? error,
@@ -755,7 +786,7 @@ class _$_LoggedOut implements _LoggedOut {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(String? message) loading,
     required TResult Function() success,
     required TResult Function() loggedOut,
     required TResult Function(String message) error,
@@ -767,7 +798,7 @@ class _$_LoggedOut implements _LoggedOut {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(String? message)? loading,
     TResult Function()? success,
     TResult Function()? loggedOut,
     TResult Function(String message)? error,
@@ -875,7 +906,7 @@ class _$_Error implements _Error {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(String? message) loading,
     required TResult Function() success,
     required TResult Function() loggedOut,
     required TResult Function(String message) error,
@@ -887,7 +918,7 @@ class _$_Error implements _Error {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(String? message)? loading,
     TResult Function()? success,
     TResult Function()? loggedOut,
     TResult Function(String message)? error,

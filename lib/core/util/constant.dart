@@ -21,7 +21,7 @@ const kPrimarySwatch = MaterialColor(0xffffdf00, {
 });
 
 // const  BASE_URL = "eshue.herokuapp.com";
-const BASE_URL = "a1738f7a416c.ngrok.io";
+const BASE_URL = "b55b4e38c1f6.ngrok.io";
 const CHOPPER_BASE_URL = 'https://$BASE_URL';
 const FILE_URL = "https://$BASE_URL/";
 
@@ -36,6 +36,8 @@ const emailRegex =
     r"""^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+""";
 const passRegex = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$';
 const nameRegex = r"^[a-zA-Z]{2,30}$";
+
+const RECENT_SEARCH = "recentSearches";
 
 const SERVER_FAILURE_MESSAGE = "Server error please try again";
 const NETWORK_FAILURE_MESSAGE = "Please activate your internet";

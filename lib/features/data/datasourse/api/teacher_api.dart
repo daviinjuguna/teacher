@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:http_parser/http_parser.dart';
@@ -26,6 +28,8 @@ abstract class TeacherService {
 
   //* courses  //
   Future<http.Response> getCourses({required String accessToken});
+  Future<http.Response> searchCourse(
+      {required String accessToken, required String query});
 
   Future<http.Response> createCourse({
     required String title,
@@ -148,6 +152,13 @@ abstract class TeacherService {
     required int questionId,
     required String accessToken,
   });
+
+  Future<http.Response> setAnswer({
+    required int questionId,
+    required String accessToken,
+    required int choiceId,
+  });
+
   Future<http.Response> fetchFileFromUrl({required String url});
 
   //await manual choice
@@ -175,7 +186,9 @@ class TeacherApiImpl implements TeacherService {
     final String url = "/teacher/login";
     return client.post(
       Uri.https(BASE_URL, url),
-      headers: {"Accept": "application/json"},
+      headers: {
+        "Accept": "application/json",
+      },
       body: {
         "email": email,
         "password": password,
@@ -318,6 +331,19 @@ class TeacherApiImpl implements TeacherService {
   @override
   Future<http.Response> getCourses({required String accessToken}) {
     final String url = "/teacher/get_course";
+    return client.get(
+      Uri.https(BASE_URL, url),
+      headers: {
+        "Accept": "application/json",
+        'Authorization': accessToken,
+      },
+    );
+  }
+
+  @override
+  Future<http.Response> searchCourse(
+      {required String accessToken, required String query}) {
+    final String url = "/teacher/search_course/$query";
     return client.get(
       Uri.https(BASE_URL, url),
       headers: {
@@ -626,14 +652,12 @@ class TeacherApiImpl implements TeacherService {
     required String accessToken,
   }) {
     final String url = "teacher/delete_choice";
-    return client.post(
-      Uri.https(BASE_URL, url),
-      headers: {
-        "Accept": "application/json",
-        'Authorization': accessToken,
-      },
-      body: {"choice_id": "$choiceId"},
-    );
+    return client.post(Uri.https(BASE_URL, url), headers: {
+      "Accept": "application/json",
+      'Authorization': accessToken,
+    }, body: {
+      "choice_id": "$choiceId"
+    });
   }
 
   @override
@@ -642,14 +666,31 @@ class TeacherApiImpl implements TeacherService {
     required String accessToken,
   }) {
     final String url = "teacher/sort_random";
-    return client.post(
-      Uri.https(BASE_URL, url),
-      headers: {
-        "Accept": "application/json",
-        'Authorization': accessToken,
-      },
-      body: {"question_id": "$questionId"},
-    );
+    return client.post(Uri.https(BASE_URL, url), headers: {
+      "Accept": "application/json",
+      'Authorization': accessToken,
+    }, body: {
+      "question_id": "$questionId"
+    });
+  }
+
+  @override
+  Future<http.Response> setAnswer({
+    required int questionId,
+    required String accessToken,
+    required int choiceId,
+  }) {
+    final String url = "teacher/set_ans";
+    final queryParameters = {
+      "choice_id": "$choiceId",
+      "question_id": "$questionId"
+    };
+    return client.put(Uri.https(BASE_URL, url, queryParameters), headers: {
+      "Accept": "application/json",
+      'Authorization': accessToken,
+    }, body: {
+      "question_id": "$questionId"
+    });
   }
 
   @override

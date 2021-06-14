@@ -253,6 +253,14 @@ class RepositoryImpl implements Repository {
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
         await _remote.logout(accessToken: tokenModel.accessToken);
+        _local
+          ..deleteCourse()
+          ..deletePdf()
+          ..deleteAss()
+          ..deleteQuestion()
+          ..deleteChoices()
+          ..deleteUser()
+              .onError((error, stackTrace) => throw DatabaseExeption());
         return right(await _local.clearPrefs());
       } else {
         await getIt<LocalDataSource>().clearPrefs();
@@ -952,6 +960,31 @@ class RepositoryImpl implements Repository {
       } else {
         throw UnAuthenticatedException();
       }
+    } catch (e) {
+      print(e.toString());
+      final failure = returnFailure(e);
+      return left(failure);
+    }
+  }
+
+  @override
+  Future<Either<String, dynamic>> saveToRecentSearches(
+      String? searchText) async {
+    try {
+      final _res = await _local.saveToRecentSearches(searchText);
+      return right(_res);
+    } catch (e) {
+      print(e.toString());
+      final failure = returnFailure(e);
+      return left(failure);
+    }
+  }
+
+  @override
+  Future<Either<String, List<String>?>> getRecentSearchesLike(
+      String? query) async {
+    try {
+      return right(await _local.getRecentSearchesLike(query));
     } catch (e) {
       print(e.toString());
       final failure = returnFailure(e);

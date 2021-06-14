@@ -58,6 +58,10 @@ abstract class LocalDataSource {
   Future<List<ChoiceModel>> getChoice(int id);
   Future deleteChoices();
   Future deleteChoicesWhere(int id);
+
+  //*searches
+  Future saveToRecentSearches(String? searchText);
+  Future<List<String>?> getRecentSearchesLike(String? query);
 }
 
 @LazySingleton(as: LocalDataSource)
@@ -455,6 +459,31 @@ class LocalDataSourceImpl implements LocalDataSource {
     } catch (e) {
       print(e.toString());
       rethrow;
+    }
+  }
+
+  @override
+  Future saveToRecentSearches(String? searchText) async {
+    try {
+      if (searchText == null) return;
+      Set<String> allSearches =
+          _prefs.getStringList(RECENT_SEARCH)?.toSet() ?? {};
+      allSearches = {searchText, ...allSearches};
+      await _prefs.setStringList(RECENT_SEARCH, allSearches.toList());
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  Future<List<String>?> getRecentSearchesLike(String? query) async {
+    try {
+      final allSearches = _prefs.getStringList(RECENT_SEARCH);
+      return allSearches
+          ?.where((search) => search.startsWith(query ?? ""))
+          .toList();
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

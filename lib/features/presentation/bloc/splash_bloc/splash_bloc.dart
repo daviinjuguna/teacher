@@ -43,7 +43,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
         );
       },
       loggout: (e) async* {
-        yield SplashState.loading();
+        yield SplashState.loading(message: "Logging Out");
         final _out = await _logout.call(NoParams());
         yield _out.fold((l) {
           if (l == UNAUTHENTICATED_FAILURE_MESSAGE) {

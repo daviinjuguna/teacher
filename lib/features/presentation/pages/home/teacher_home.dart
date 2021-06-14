@@ -17,7 +17,6 @@ import 'package:teacher/features/presentation/bloc/create_course/create_course_b
 import 'package:teacher/features/presentation/bloc/dashboard/dashboard_bloc.dart';
 import 'package:teacher/features/presentation/bloc/splash_bloc/splash_bloc.dart';
 import 'package:teacher/features/presentation/bloc/user/user_bloc.dart';
-import 'package:teacher/features/presentation/components/confirm_dialogue.dart';
 
 import 'widgets/add_course_widget.dart';
 import 'widgets/home_shimmer.dart';
@@ -187,6 +186,42 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
             listener: (context, state) {
               state.maybeMap(
                 orElse: () {},
+                loggedOut: (state) {
+                  context.router.replace(LoginRoute());
+                },
+                success: (state) {
+                  ScaffoldMessenger.maybeOf(context)?..hideCurrentSnackBar();
+                },
+                loading: (state) {
+                  ScaffoldMessenger.maybeOf(context)
+                    ?..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        backgroundColor: kBlackColor,
+                        behavior: SnackBarBehavior.fixed,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(5),
+                          topRight: Radius.circular(5),
+                        )),
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "${state.message}",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                            // SizedBox(height: 3),
+                          ],
+                        ),
+                      ),
+                    );
+                },
                 error: (state) {
                   ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
                   if (state.message == UNAUTHENTICATED_FAILURE_MESSAGE) {
@@ -402,6 +437,54 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                           style: TextStyle(color: Colors.white),
                         ),
                         SizedBox(height: 5),
+                        MaterialButton(
+                          onPressed: () => showDialog(
+                            context: context,
+                            builder: (builder) => AlertDialog(
+                              title: Text("LOGOUT"),
+                              content: Text("Are you sure you want to logout?"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(null),
+                                  child: Text(
+                                    "CANCEL",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 1.4,
+                                      color: kBlackColor,
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(true),
+                                  child: Text(
+                                    "LOGOUT",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 1.4,
+                                      color: kBlackColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ).then((value) {
+                            if (value != null && value) {
+                              context
+                                  .read<SplashBloc>()
+                                  .add(SplashEvent.loggout());
+                            }
+                          }).catchError((e, s) {
+                            print("LOGOUT ERROR: $e,$s");
+                          }),
+                          color: Colors.yellow,
+                          child: Text(
+                            "LOGOUT",
+                            style: TextStyle(color: kBlackColor),
+                          ),
+                        )
                       ],
                     );
                   },
