@@ -967,6 +967,7 @@ class RepositoryImpl implements Repository {
     }
   }
 
+//*recent searches
   @override
   Future<Either<String, dynamic>> saveToRecentSearches(
       String? searchText) async {

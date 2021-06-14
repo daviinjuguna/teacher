@@ -15,6 +15,8 @@ import 'package:teacher/features/domain/entities/user.dart';
 import 'package:teacher/features/presentation/bloc/clear_prefs/clear_prefs_bloc.dart';
 import 'package:teacher/features/presentation/bloc/create_course/create_course_bloc.dart';
 import 'package:teacher/features/presentation/bloc/dashboard/dashboard_bloc.dart';
+import 'package:teacher/features/presentation/bloc/get_recent_searches/get_recent_cubit.dart';
+import 'package:teacher/features/presentation/bloc/save_recent_searches/save_recent_cubit.dart';
 import 'package:teacher/features/presentation/bloc/splash_bloc/splash_bloc.dart';
 import 'package:teacher/features/presentation/bloc/user/user_bloc.dart';
 
@@ -34,6 +36,8 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   late final _dashboardBloc = getIt<DashboardBloc>();
   late final _createCourseBloc = getIt<CreateCourseBloc>();
   late final _userBloc = getIt<UserBloc>();
+  late final _saveRecentCubit = getIt<SaveRecentCubit>();
+  late final _getRecentCubit = getIt<GetRecentCubit>();
   User? _user;
 
   final PagingController<int, Course> _pagingController =
@@ -54,6 +58,9 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     _createCourseBloc.close();
     _pagingController.dispose();
     _userBloc.close();
+    _saveRecentCubit.close();
+    _getRecentCubit.close();
+
     // _title.dispose();
     // _description.dispose();
   }
@@ -65,6 +72,8 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
         BlocProvider(create: (context) => _dashboardBloc),
         BlocProvider(create: (create) => _createCourseBloc),
         BlocProvider(create: (create) => _userBloc),
+        BlocProvider(create: (create) => _saveRecentCubit),
+        BlocProvider(create: (create) => _getRecentCubit),
       ],
       child: MultiBlocListener(
         listeners: [
@@ -361,7 +370,13 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
               IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () => showSearch<Course?>(
-                        context: context, delegate: SearchCourse())
+                        context: context,
+                        delegate: SearchCourse(
+                          searchFieldLabel: "Search Course",
+                          getRecentCubit:
+                              BlocProvider.of<GetRecentCubit>(context),
+                          saveCubit: BlocProvider.of<SaveRecentCubit>(context),
+                        ))
                     .then((course) => {if (course != null) {}})
                     .catchError((e, s) {
                   print("SEARCH DELEGATE ERROR: $e,$s");
