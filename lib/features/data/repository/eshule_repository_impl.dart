@@ -17,6 +17,7 @@ import 'package:teacher/features/data/datasourse/remote/remote_data_sorce.dart';
 import 'package:teacher/features/data/models/assignment_model.dart';
 import 'package:teacher/features/data/models/choice_model.dart';
 import 'package:teacher/features/data/models/course_model.dart';
+import 'package:teacher/features/data/models/course_paginated_model.dart';
 import 'package:teacher/features/data/models/pdf_model.dart';
 import 'package:teacher/features/data/models/question_model.dart';
 import 'package:teacher/features/data/models/success_model.dart';
@@ -26,6 +27,7 @@ import 'package:teacher/di/injection.dart';
 import 'package:teacher/features/domain/entities/assignment.dart';
 import 'package:teacher/features/domain/entities/choice.dart';
 import 'package:teacher/features/domain/entities/course.dart';
+import 'package:teacher/features/domain/entities/course_paginated.dart';
 import 'package:teacher/features/domain/entities/pdf.dart';
 import 'package:teacher/features/domain/entities/question.dart';
 import 'package:teacher/features/domain/entities/success.dart';
@@ -275,28 +277,45 @@ class RepositoryImpl implements Repository {
 
   //fetch courses
   @override
-  Future<Either<String, KtList<Course>>> getCourses({String? query}) async {
+  Future<Either<String, CoursePaginated>> getCourses({
+    String? query,
+    required int? page,
+  }) async {
     try {
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
-        KtList<CourseModel> model = emptyList();
+        KtList<CourseModel> _courseModel = emptyList();
         if (query != null) {
-          model = await _remote.searchCourse(
-              accessToken: tokenModel.accessToken, query: query);
-          final entities =
-              model.map((e) => e.toEntity()).asList().toImmutableList();
-          return right(entities);
+          final _model = await _remote.searchCourse(
+              page: page, accessToken: tokenModel.accessToken, query: query);
+
+          return right(_model.toEntity());
         }
-        final _localCourse = await _local.getCourse();
-        if (_localCourse.isNotEmpty) {
-          model = _localCourse.toImmutableList();
-        } else {
-          model = await _remote.getCourses(accessToken: tokenModel.accessToken);
-          await _local.insertCourse(model.asList());
+        if (page == null) {
+          final _localCourse = await _local.getCourse();
+          if (_localCourse.isNotEmpty) {
+            _courseModel = _localCourse.toImmutableList();
+            return right(CoursePaginated(
+              currentPage: 1,
+              course: _courseModel.map((e) => e.toEntity()).asList(),
+              lastPage: 2,
+            ));
+          }
         }
-        final entities =
-            model.map((e) => e.toEntity()).asList().toImmutableList();
-        return right(entities);
+        final _model = await _remote.getCourses(
+          page: page,
+          accessToken: tokenModel.accessToken,
+        );
+        await _local.insertCourse(_model.course);
+
+        return right(_model.toEntity());
+        // } else {
+        //   model = await _remote.getCourses(accessToken: tokenModel.accessToken);
+        //   await _local.insertCourse(model.asList());
+        // }
+        // final entities =
+        //     model.map((e) => e.toEntity()).asList().toImmutableList();
+        // return right(entities);
       } else {
         await getIt<LocalDataSource>().clearPrefs();
         throw UnAuthenticatedException();
@@ -310,17 +329,18 @@ class RepositoryImpl implements Repository {
 
   //update
   @override
-  Future<Either<String, KtList<Course>>> updateCourse() async {
+  Future<Either<String, CoursePaginated>> updateCourse() async {
     try {
       await _local.deleteCourse();
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
-        final model =
-            await _remote.getCourses(accessToken: tokenModel.accessToken);
-        final entities =
-            model.map((e) => e.toEntity()).asList().toImmutableList();
-        await _local.insertCourse(model.asList());
-        return right(entities);
+        final _model = await _remote.getCourses(
+          page: 1,
+          accessToken: tokenModel.accessToken,
+        );
+        await _local.insertCourse(_model.course);
+
+        return right(_model.toEntity());
       } else {
         await getIt<LocalDataSource>().clearPrefs();
         throw UnAuthenticatedException();

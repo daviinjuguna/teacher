@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:injectable/injectable.dart';
@@ -27,9 +29,15 @@ abstract class TeacherService {
   Future<http.Response> logout({required String accessToken});
 
   //* courses  //
-  Future<http.Response> getCourses({required String accessToken});
-  Future<http.Response> searchCourse(
-      {required String accessToken, required String query});
+  Future<http.Response> getCourses({
+    required String accessToken,
+    required int? page,
+  });
+  Future<http.Response> searchCourse({
+    required String accessToken,
+    required String query,
+    required int? page,
+  });
 
   Future<http.Response> createCourse({
     required String title,
@@ -166,12 +174,14 @@ abstract class TeacherService {
 
 @LazySingleton(as: TeacherService)
 class TeacherApiImpl implements TeacherService {
-  http.Client client = HttpClientWithInterceptor.build(
-    interceptors: [
-      LoggingInterceptor(),
-    ],
-    requestTimeout: Duration(seconds: 60),
-  );
+  http.Client client = InterceptedClient.build(
+      interceptors: [
+        LoggingInterceptor(),
+      ],
+      requestTimeout: Duration(seconds: 60),
+      client: IOClient(
+        HttpClient()..idleTimeout = Duration(seconds: 15),
+      ));
 
   //!trials sjui kama itawai
   // http.MultipartRequest multipart = HttpWithInterceptor.build(interceptors: [
@@ -329,10 +339,12 @@ class TeacherApiImpl implements TeacherService {
   }
 
   @override
-  Future<http.Response> getCourses({required String accessToken}) {
+  Future<http.Response> getCourses(
+      {required String accessToken, required int? page}) {
     final String url = "/teacher/get_course";
+    final _query = {"page": page?.toString() ?? ""};
     return client.get(
-      Uri.https(BASE_URL, url),
+      Uri.https(BASE_URL, url, _query),
       headers: {
         "Accept": "application/json",
         'Authorization': accessToken,
@@ -341,11 +353,15 @@ class TeacherApiImpl implements TeacherService {
   }
 
   @override
-  Future<http.Response> searchCourse(
-      {required String accessToken, required String query}) {
+  Future<http.Response> searchCourse({
+    required String accessToken,
+    required String query,
+    required int? page,
+  }) {
     final String url = "/teacher/search_course/$query";
+    final _query = {"page": page?.toString() ?? ""};
     return client.get(
-      Uri.https(BASE_URL, url),
+      Uri.https(BASE_URL, url, _query),
       headers: {
         "Accept": "application/json",
         'Authorization': accessToken,

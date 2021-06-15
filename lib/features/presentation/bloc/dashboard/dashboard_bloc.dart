@@ -28,18 +28,43 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       getCourse: (e) async* {
         yield DashboardState.loading();
         final _result =
-            await _course.call(ParamsStringNullable(string: e.query));
+            await _course.call(GetCourseParams(query: e.query, page: e.page));
         yield _result.fold(
           (l) => DashboardState.error(message: l),
-          (course) => DashboardState.success(course: course),
+          (course) => DashboardState.success(
+            course: course.course.toImmutableList(),
+            currentPage: course.currentPage,
+            lastPage: course.lastPage,
+          ),
+        );
+      },
+      getCoursePaginate: (e) async* {
+        yield DashboardState.paginating();
+        final _result =
+            await _course.call(GetCourseParams(query: e.query, page: e.page));
+        yield _result.fold(
+          (l) => DashboardState.error(message: l),
+          (course) => DashboardState.success(
+            course: [...e.course, ...course.course].toImmutableList(),
+            currentPage: course.currentPage,
+            lastPage: course.lastPage,
+          ),
         );
       },
       update: (e) async* {
         yield DashboardState.updating(course: e.course);
         final _result = await _update.call(NoParams());
         yield _result.fold(
-          (error) => DashboardState.success(course: e.course),
-          (course) => DashboardState.success(course: course),
+          (error) => DashboardState.success(
+            course: e.course,
+            currentPage: 0,
+            lastPage: 1,
+          ),
+          (course) => DashboardState.success(
+            course: course.course.toImmutableList(),
+            currentPage: course.currentPage,
+            lastPage: course.lastPage,
+          ),
         );
       },
     );

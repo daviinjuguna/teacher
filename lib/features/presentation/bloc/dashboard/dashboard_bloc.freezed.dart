@@ -16,9 +16,19 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$DashboardEventTearOff {
   const _$DashboardEventTearOff();
 
-  _Started getCourse({String? query}) {
+  _Started getCourse({String? query, int? page}) {
     return _Started(
       query: query,
+      page: page,
+    );
+  }
+
+  _Paginate getCoursePaginate(
+      {String? query, int? page, required List<Course> course}) {
+    return _Paginate(
+      query: query,
+      page: page,
+      course: course,
     );
   }
 
@@ -36,13 +46,17 @@ const $DashboardEvent = _$DashboardEventTearOff();
 mixin _$DashboardEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? query) getCourse,
+    required TResult Function(String? query, int? page) getCourse,
+    required TResult Function(String? query, int? page, List<Course> course)
+        getCoursePaginate,
     required TResult Function(KtList<Course> course) update,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query)? getCourse,
+    TResult Function(String? query, int? page)? getCourse,
+    TResult Function(String? query, int? page, List<Course> course)?
+        getCoursePaginate,
     TResult Function(KtList<Course> course)? update,
     required TResult orElse(),
   }) =>
@@ -50,12 +64,14 @@ mixin _$DashboardEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) getCourse,
+    required TResult Function(_Paginate value) getCoursePaginate,
     required TResult Function(_Update value) update,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? getCourse,
+    TResult Function(_Paginate value)? getCoursePaginate,
     TResult Function(_Update value)? update,
     required TResult orElse(),
   }) =>
@@ -83,7 +99,7 @@ class _$DashboardEventCopyWithImpl<$Res>
 abstract class _$StartedCopyWith<$Res> {
   factory _$StartedCopyWith(_Started value, $Res Function(_Started) then) =
       __$StartedCopyWithImpl<$Res>;
-  $Res call({String? query});
+  $Res call({String? query, int? page});
 }
 
 /// @nodoc
@@ -98,12 +114,17 @@ class __$StartedCopyWithImpl<$Res> extends _$DashboardEventCopyWithImpl<$Res>
   @override
   $Res call({
     Object? query = freezed,
+    Object? page = freezed,
   }) {
     return _then(_Started(
       query: query == freezed
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String?,
+      page: page == freezed
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -111,14 +132,16 @@ class __$StartedCopyWithImpl<$Res> extends _$DashboardEventCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Started implements _Started {
-  const _$_Started({this.query});
+  const _$_Started({this.query, this.page});
 
   @override
   final String? query;
+  @override
+  final int? page;
 
   @override
   String toString() {
-    return 'DashboardEvent.getCourse(query: $query)';
+    return 'DashboardEvent.getCourse(query: $query, page: $page)';
   }
 
   @override
@@ -126,12 +149,16 @@ class _$_Started implements _Started {
     return identical(this, other) ||
         (other is _Started &&
             (identical(other.query, query) ||
-                const DeepCollectionEquality().equals(other.query, query)));
+                const DeepCollectionEquality().equals(other.query, query)) &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(query);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(query) ^
+      const DeepCollectionEquality().hash(page);
 
   @JsonKey(ignore: true)
   @override
@@ -141,21 +168,25 @@ class _$_Started implements _Started {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? query) getCourse,
+    required TResult Function(String? query, int? page) getCourse,
+    required TResult Function(String? query, int? page, List<Course> course)
+        getCoursePaginate,
     required TResult Function(KtList<Course> course) update,
   }) {
-    return getCourse(query);
+    return getCourse(query, page);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query)? getCourse,
+    TResult Function(String? query, int? page)? getCourse,
+    TResult Function(String? query, int? page, List<Course> course)?
+        getCoursePaginate,
     TResult Function(KtList<Course> course)? update,
     required TResult orElse(),
   }) {
     if (getCourse != null) {
-      return getCourse(query);
+      return getCourse(query, page);
     }
     return orElse();
   }
@@ -164,6 +195,7 @@ class _$_Started implements _Started {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) getCourse,
+    required TResult Function(_Paginate value) getCoursePaginate,
     required TResult Function(_Update value) update,
   }) {
     return getCourse(this);
@@ -173,6 +205,7 @@ class _$_Started implements _Started {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? getCourse,
+    TResult Function(_Paginate value)? getCoursePaginate,
     TResult Function(_Update value)? update,
     required TResult orElse(),
   }) {
@@ -184,11 +217,155 @@ class _$_Started implements _Started {
 }
 
 abstract class _Started implements DashboardEvent {
-  const factory _Started({String? query}) = _$_Started;
+  const factory _Started({String? query, int? page}) = _$_Started;
 
   String? get query => throw _privateConstructorUsedError;
+  int? get page => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$StartedCopyWith<_Started> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$PaginateCopyWith<$Res> {
+  factory _$PaginateCopyWith(_Paginate value, $Res Function(_Paginate) then) =
+      __$PaginateCopyWithImpl<$Res>;
+  $Res call({String? query, int? page, List<Course> course});
+}
+
+/// @nodoc
+class __$PaginateCopyWithImpl<$Res> extends _$DashboardEventCopyWithImpl<$Res>
+    implements _$PaginateCopyWith<$Res> {
+  __$PaginateCopyWithImpl(_Paginate _value, $Res Function(_Paginate) _then)
+      : super(_value, (v) => _then(v as _Paginate));
+
+  @override
+  _Paginate get _value => super._value as _Paginate;
+
+  @override
+  $Res call({
+    Object? query = freezed,
+    Object? page = freezed,
+    Object? course = freezed,
+  }) {
+    return _then(_Paginate(
+      query: query == freezed
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String?,
+      page: page == freezed
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int?,
+      course: course == freezed
+          ? _value.course
+          : course // ignore: cast_nullable_to_non_nullable
+              as List<Course>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_Paginate implements _Paginate {
+  const _$_Paginate({this.query, this.page, required this.course});
+
+  @override
+  final String? query;
+  @override
+  final int? page;
+  @override
+  final List<Course> course;
+
+  @override
+  String toString() {
+    return 'DashboardEvent.getCoursePaginate(query: $query, page: $page, course: $course)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _Paginate &&
+            (identical(other.query, query) ||
+                const DeepCollectionEquality().equals(other.query, query)) &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)) &&
+            (identical(other.course, course) ||
+                const DeepCollectionEquality().equals(other.course, course)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(query) ^
+      const DeepCollectionEquality().hash(page) ^
+      const DeepCollectionEquality().hash(course);
+
+  @JsonKey(ignore: true)
+  @override
+  _$PaginateCopyWith<_Paginate> get copyWith =>
+      __$PaginateCopyWithImpl<_Paginate>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? query, int? page) getCourse,
+    required TResult Function(String? query, int? page, List<Course> course)
+        getCoursePaginate,
+    required TResult Function(KtList<Course> course) update,
+  }) {
+    return getCoursePaginate(query, page, course);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? query, int? page)? getCourse,
+    TResult Function(String? query, int? page, List<Course> course)?
+        getCoursePaginate,
+    TResult Function(KtList<Course> course)? update,
+    required TResult orElse(),
+  }) {
+    if (getCoursePaginate != null) {
+      return getCoursePaginate(query, page, course);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) getCourse,
+    required TResult Function(_Paginate value) getCoursePaginate,
+    required TResult Function(_Update value) update,
+  }) {
+    return getCoursePaginate(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? getCourse,
+    TResult Function(_Paginate value)? getCoursePaginate,
+    TResult Function(_Update value)? update,
+    required TResult orElse(),
+  }) {
+    if (getCoursePaginate != null) {
+      return getCoursePaginate(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Paginate implements DashboardEvent {
+  const factory _Paginate(
+      {String? query, int? page, required List<Course> course}) = _$_Paginate;
+
+  String? get query => throw _privateConstructorUsedError;
+  int? get page => throw _privateConstructorUsedError;
+  List<Course> get course => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$PaginateCopyWith<_Paginate> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -254,7 +431,9 @@ class _$_Update implements _Update {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? query) getCourse,
+    required TResult Function(String? query, int? page) getCourse,
+    required TResult Function(String? query, int? page, List<Course> course)
+        getCoursePaginate,
     required TResult Function(KtList<Course> course) update,
   }) {
     return update(course);
@@ -263,7 +442,9 @@ class _$_Update implements _Update {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query)? getCourse,
+    TResult Function(String? query, int? page)? getCourse,
+    TResult Function(String? query, int? page, List<Course> course)?
+        getCoursePaginate,
     TResult Function(KtList<Course> course)? update,
     required TResult orElse(),
   }) {
@@ -277,6 +458,7 @@ class _$_Update implements _Update {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) getCourse,
+    required TResult Function(_Paginate value) getCoursePaginate,
     required TResult Function(_Update value) update,
   }) {
     return update(this);
@@ -286,6 +468,7 @@ class _$_Update implements _Update {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? getCourse,
+    TResult Function(_Paginate value)? getCoursePaginate,
     TResult Function(_Update value)? update,
     required TResult orElse(),
   }) {
@@ -316,9 +499,18 @@ class _$DashboardStateTearOff {
     return const _Load();
   }
 
-  _Success success({required KtList<Course> course}) {
+  _Page paginating() {
+    return const _Page();
+  }
+
+  _Success success(
+      {required KtList<Course> course,
+      required int currentPage,
+      required int lastPage}) {
     return _Success(
       course: course,
+      currentPage: currentPage,
+      lastPage: lastPage,
     );
   }
 
@@ -344,7 +536,10 @@ mixin _$DashboardState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(KtList<Course> course) success,
+    required TResult Function() paginating,
+    required TResult Function(
+            KtList<Course> course, int currentPage, int lastPage)
+        success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
   }) =>
@@ -353,7 +548,9 @@ mixin _$DashboardState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(KtList<Course> course)? success,
+    TResult Function()? paginating,
+    TResult Function(KtList<Course> course, int currentPage, int lastPage)?
+        success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -363,6 +560,7 @@ mixin _$DashboardState {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
+    required TResult Function(_Page value) paginating,
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
@@ -372,6 +570,7 @@ mixin _$DashboardState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
+    TResult Function(_Page value)? paginating,
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,
@@ -436,7 +635,10 @@ class _$_Initial implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(KtList<Course> course) success,
+    required TResult Function() paginating,
+    required TResult Function(
+            KtList<Course> course, int currentPage, int lastPage)
+        success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
   }) {
@@ -448,7 +650,9 @@ class _$_Initial implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(KtList<Course> course)? success,
+    TResult Function()? paginating,
+    TResult Function(KtList<Course> course, int currentPage, int lastPage)?
+        success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -464,6 +668,7 @@ class _$_Initial implements _Initial {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
+    required TResult Function(_Page value) paginating,
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
@@ -476,6 +681,7 @@ class _$_Initial implements _Initial {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
+    TResult Function(_Page value)? paginating,
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,
@@ -531,7 +737,10 @@ class _$_Load implements _Load {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(KtList<Course> course) success,
+    required TResult Function() paginating,
+    required TResult Function(
+            KtList<Course> course, int currentPage, int lastPage)
+        success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
   }) {
@@ -543,7 +752,9 @@ class _$_Load implements _Load {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(KtList<Course> course)? success,
+    TResult Function()? paginating,
+    TResult Function(KtList<Course> course, int currentPage, int lastPage)?
+        success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -559,6 +770,7 @@ class _$_Load implements _Load {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
+    required TResult Function(_Page value) paginating,
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
@@ -571,6 +783,7 @@ class _$_Load implements _Load {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
+    TResult Function(_Page value)? paginating,
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,
@@ -588,10 +801,112 @@ abstract class _Load implements DashboardState {
 }
 
 /// @nodoc
+abstract class _$PageCopyWith<$Res> {
+  factory _$PageCopyWith(_Page value, $Res Function(_Page) then) =
+      __$PageCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$PageCopyWithImpl<$Res> extends _$DashboardStateCopyWithImpl<$Res>
+    implements _$PageCopyWith<$Res> {
+  __$PageCopyWithImpl(_Page _value, $Res Function(_Page) _then)
+      : super(_value, (v) => _then(v as _Page));
+
+  @override
+  _Page get _value => super._value as _Page;
+}
+
+/// @nodoc
+
+class _$_Page implements _Page {
+  const _$_Page();
+
+  @override
+  String toString() {
+    return 'DashboardState.paginating()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _Page);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() paginating,
+    required TResult Function(
+            KtList<Course> course, int currentPage, int lastPage)
+        success,
+    required TResult Function(KtList<Course> course) updating,
+    required TResult Function(String message) error,
+  }) {
+    return paginating();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? paginating,
+    TResult Function(KtList<Course> course, int currentPage, int lastPage)?
+        success,
+    TResult Function(KtList<Course> course)? updating,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (paginating != null) {
+      return paginating();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Load value) loading,
+    required TResult Function(_Page value) paginating,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Updating value) updating,
+    required TResult Function(_Error value) error,
+  }) {
+    return paginating(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Load value)? loading,
+    TResult Function(_Page value)? paginating,
+    TResult Function(_Success value)? success,
+    TResult Function(_Updating value)? updating,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (paginating != null) {
+      return paginating(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Page implements DashboardState {
+  const factory _Page() = _$_Page;
+}
+
+/// @nodoc
 abstract class _$SuccessCopyWith<$Res> {
   factory _$SuccessCopyWith(_Success value, $Res Function(_Success) then) =
       __$SuccessCopyWithImpl<$Res>;
-  $Res call({KtList<Course> course});
+  $Res call({KtList<Course> course, int currentPage, int lastPage});
 }
 
 /// @nodoc
@@ -606,12 +921,22 @@ class __$SuccessCopyWithImpl<$Res> extends _$DashboardStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? course = freezed,
+    Object? currentPage = freezed,
+    Object? lastPage = freezed,
   }) {
     return _then(_Success(
       course: course == freezed
           ? _value.course
           : course // ignore: cast_nullable_to_non_nullable
               as KtList<Course>,
+      currentPage: currentPage == freezed
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastPage: lastPage == freezed
+          ? _value.lastPage
+          : lastPage // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -619,14 +944,21 @@ class __$SuccessCopyWithImpl<$Res> extends _$DashboardStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Success implements _Success {
-  const _$_Success({required this.course});
+  const _$_Success(
+      {required this.course,
+      required this.currentPage,
+      required this.lastPage});
 
   @override
   final KtList<Course> course;
+  @override
+  final int currentPage;
+  @override
+  final int lastPage;
 
   @override
   String toString() {
-    return 'DashboardState.success(course: $course)';
+    return 'DashboardState.success(course: $course, currentPage: $currentPage, lastPage: $lastPage)';
   }
 
   @override
@@ -634,12 +966,21 @@ class _$_Success implements _Success {
     return identical(this, other) ||
         (other is _Success &&
             (identical(other.course, course) ||
-                const DeepCollectionEquality().equals(other.course, course)));
+                const DeepCollectionEquality().equals(other.course, course)) &&
+            (identical(other.currentPage, currentPage) ||
+                const DeepCollectionEquality()
+                    .equals(other.currentPage, currentPage)) &&
+            (identical(other.lastPage, lastPage) ||
+                const DeepCollectionEquality()
+                    .equals(other.lastPage, lastPage)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(course);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(course) ^
+      const DeepCollectionEquality().hash(currentPage) ^
+      const DeepCollectionEquality().hash(lastPage);
 
   @JsonKey(ignore: true)
   @override
@@ -651,11 +992,14 @@ class _$_Success implements _Success {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(KtList<Course> course) success,
+    required TResult Function() paginating,
+    required TResult Function(
+            KtList<Course> course, int currentPage, int lastPage)
+        success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
   }) {
-    return success(course);
+    return success(course, currentPage, lastPage);
   }
 
   @override
@@ -663,13 +1007,15 @@ class _$_Success implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(KtList<Course> course)? success,
+    TResult Function()? paginating,
+    TResult Function(KtList<Course> course, int currentPage, int lastPage)?
+        success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(course);
+      return success(course, currentPage, lastPage);
     }
     return orElse();
   }
@@ -679,6 +1025,7 @@ class _$_Success implements _Success {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
+    required TResult Function(_Page value) paginating,
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
@@ -691,6 +1038,7 @@ class _$_Success implements _Success {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
+    TResult Function(_Page value)? paginating,
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,
@@ -704,9 +1052,14 @@ class _$_Success implements _Success {
 }
 
 abstract class _Success implements DashboardState {
-  const factory _Success({required KtList<Course> course}) = _$_Success;
+  const factory _Success(
+      {required KtList<Course> course,
+      required int currentPage,
+      required int lastPage}) = _$_Success;
 
   KtList<Course> get course => throw _privateConstructorUsedError;
+  int get currentPage => throw _privateConstructorUsedError;
+  int get lastPage => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$SuccessCopyWith<_Success> get copyWith =>
       throw _privateConstructorUsedError;
@@ -776,7 +1129,10 @@ class _$_Updating implements _Updating {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(KtList<Course> course) success,
+    required TResult Function() paginating,
+    required TResult Function(
+            KtList<Course> course, int currentPage, int lastPage)
+        success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
   }) {
@@ -788,7 +1144,9 @@ class _$_Updating implements _Updating {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(KtList<Course> course)? success,
+    TResult Function()? paginating,
+    TResult Function(KtList<Course> course, int currentPage, int lastPage)?
+        success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -804,6 +1162,7 @@ class _$_Updating implements _Updating {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
+    required TResult Function(_Page value) paginating,
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
@@ -816,6 +1175,7 @@ class _$_Updating implements _Updating {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
+    TResult Function(_Page value)? paginating,
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,
@@ -901,7 +1261,10 @@ class _$_Error implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(KtList<Course> course) success,
+    required TResult Function() paginating,
+    required TResult Function(
+            KtList<Course> course, int currentPage, int lastPage)
+        success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
   }) {
@@ -913,7 +1276,9 @@ class _$_Error implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(KtList<Course> course)? success,
+    TResult Function()? paginating,
+    TResult Function(KtList<Course> course, int currentPage, int lastPage)?
+        success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -929,6 +1294,7 @@ class _$_Error implements _Error {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
+    required TResult Function(_Page value) paginating,
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
@@ -941,6 +1307,7 @@ class _$_Error implements _Error {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
+    TResult Function(_Page value)? paginating,
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,

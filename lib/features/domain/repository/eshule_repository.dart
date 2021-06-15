@@ -6,6 +6,7 @@ import 'package:kt_dart/kt.dart';
 import 'package:teacher/features/domain/entities/assignment.dart';
 import 'package:teacher/features/domain/entities/choice.dart';
 import 'package:teacher/features/domain/entities/course.dart';
+import 'package:teacher/features/domain/entities/course_paginated.dart';
 import 'package:teacher/features/domain/entities/pdf.dart';
 import 'package:teacher/features/domain/entities/question.dart';
 import 'package:teacher/features/domain/entities/success.dart';
@@ -45,9 +46,12 @@ abstract class Repository {
   Stream<Either<String, String>> checkBattery();
 
   //Fetch Course
-  Future<Either<String, KtList<Course>>> getCourses({String? query});
+  Future<Either<String, CoursePaginated>> getCourses({
+    String? query,
+    required int? page,
+  });
 //Update
-  Future<Either<String, KtList<Course>>> updateCourse();
+  Future<Either<String, CoursePaginated>> updateCourse();
 
   Future<Either<String, KtList<Pdf>>> getPdf({required int courseId});
   Future<Either<String, KtList<Pdf>>> updatePdf({required int courseId});

@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kt_dart/kt.dart';
 import 'package:lottie/lottie.dart';
 import 'package:teacher/core/routes/app_router.gr.dart';
@@ -38,17 +37,22 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   late final _userBloc = getIt<UserBloc>();
   late final _saveRecentCubit = getIt<SaveRecentCubit>();
   late final _getRecentCubit = getIt<GetRecentCubit>();
+  late final _scrollController = ScrollController();
+  int _currentPage = 0;
+  int _lastPage = 1;
+
   User? _user;
 
-  final PagingController<int, Course> _pagingController =
-      PagingController(firstPageKey: 0);
   Completer<void> _refreshCompleter = Completer<void>();
 
   @override
   void initState() {
     super.initState();
-    _dashboardBloc.add(DashboardEvent.getCourse());
-    _userBloc.add(UserEvent.started());
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      _scrollController.addListener(_onsCroll);
+      _dashboardBloc.add(DashboardEvent.getCourse());
+      _userBloc.add(UserEvent.started());
+    });
   }
 
   @override
@@ -56,13 +60,28 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     super.dispose();
     _dashboardBloc.close();
     _createCourseBloc.close();
-    _pagingController.dispose();
     _userBloc.close();
     _saveRecentCubit.close();
     _getRecentCubit.close();
+    _scrollController.dispose();
 
     // _title.dispose();
     // _description.dispose();
+  }
+
+  void _onsCroll() {
+    late final _maxScroll = _scrollController.position.maxScrollExtent;
+    late final _currentScroll = _scrollController.position.pixels;
+    if (_currentScroll == _maxScroll) {
+      if (_currentPage < _lastPage) {
+        _dashboardBloc.add(
+          DashboardEvent.getCoursePaginate(
+            page: _currentPage + 1,
+            course: _course.asList(),
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -281,8 +300,11 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                 success: (state) {
                   _refreshCompleter.complete();
                   _refreshCompleter = Completer();
-
+                  _currentPage = state.currentPage;
+                  _lastPage = state.lastPage;
                   _course = state.course;
+                  print("LAST PAGE:${state.lastPage}");
+                  print("CURRENT PAGE:${state.currentPage}");
                   // print(
                   //     "CURRENT PAGE: ${state.course.asList().last.currentPage}");
                   // print("LAST PAGE: ${state.course.asList().last.lastPage}");
@@ -533,6 +555,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                     return _refreshCompleter.future;
                   },
                   child: ListView.builder(
+                    controller: _scrollController,
                     physics: BouncingScrollPhysics(
                         parent: AlwaysScrollableScrollPhysics()),
                     itemCount: _course.size,

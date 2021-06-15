@@ -9,6 +9,7 @@ import 'package:teacher/features/data/datasourse/api/teacher_api.dart';
 import 'package:teacher/features/data/models/assignment_model.dart';
 import 'package:teacher/features/data/models/choice_model.dart';
 import 'package:teacher/features/data/models/course_model.dart';
+import 'package:teacher/features/data/models/course_paginated_model.dart';
 import 'package:teacher/features/data/models/pdf_model.dart';
 import 'package:teacher/features/data/models/question_model.dart';
 import 'package:teacher/features/data/models/success_model.dart';
@@ -29,9 +30,15 @@ abstract class RemoteDataSource {
   Future<UserModel> getUser({required String accessToken});
   Future<void> logout({required String accessToken});
 
-  Future<KtList<CourseModel>> getCourses({required String accessToken});
-  Future<KtList<CourseModel>> searchCourse(
-      {required String accessToken, required String query});
+  Future<CoursePaginatedModel> getCourses({
+    required String accessToken,
+    required int? page,
+  });
+  Future<CoursePaginatedModel> searchCourse({
+    required String accessToken,
+    required String query,
+    required int? page,
+  });
 
   Future<KtList<PdfModel>> getPdf({
     required int courseId,
@@ -266,24 +273,26 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   //*studentis also teacher
   @override
-  Future<KtList<CourseModel>> getCourses({required String accessToken}) async {
+  Future<CoursePaginatedModel> getCourses(
+      {required int? page, required String accessToken}) async {
     try {
-      final response =
-          await _teacher.getCourses(accessToken: 'Bearer $accessToken');
+      final response = await _teacher.getCourses(
+          accessToken: 'Bearer $accessToken', page: page);
 
       late final status = _call.checkStatusCode(response.statusCode);
       if (status) {
-        List<CourseModel> courses = [];
+        // List<CourseModel> courses = [];
         late final Map<String, dynamic> body = jsonDecode(response.body);
-        try {
-          courses = (body['course']['data'] as List)
-              .map((body) => CourseModel.fromJson(body))
-              .toList();
-        } catch (e) {
-          print(e.toString());
-          // break;
-        }
-        return courses.toImmutableList();
+        // try {
+        //   courses = (body['course']['data'] as List)
+        //       .map((body) => CourseModel.fromJson(body))
+        //       .toList();
+        // } catch (e) {
+        //   print(e.toString());
+        //   // break;
+        // }
+        // return courses.toImmutableList();
+        return CoursePaginatedModel.fromJson(body['course']);
       } else {
         throw ServerException();
       }
@@ -294,29 +303,32 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<KtList<CourseModel>> searchCourse({
+  Future<CoursePaginatedModel> searchCourse({
     required String accessToken,
     required String query,
+    required int? page,
   }) async {
     try {
       final response = await _teacher.searchCourse(
         accessToken: 'Bearer $accessToken',
         query: query,
+        page: page,
       );
 
       late final status = _call.checkStatusCode(response.statusCode);
       if (status) {
-        List<CourseModel> courses = [];
+        // List<CourseModel> courses = [];
         late final Map<String, dynamic> body = jsonDecode(response.body);
-        try {
-          courses = (body['course']['data'] as List)
-              .map((body) => CourseModel.fromJson(body))
-              .toList();
-        } catch (e) {
-          print(e.toString());
-          // break;
-        }
-        return courses.toImmutableList();
+        // try {
+        //   courses = (body['course']['data'] as List)
+        //       .map((body) => CourseModel.fromJson(body))
+        //       .toList();
+        // } catch (e) {
+        //   print(e.toString());
+        //   // break;
+        // }
+        // return courses.toImmutableList();
+        return CoursePaginatedModel.fromJson(body['course']);
       } else {
         throw ServerException();
       }

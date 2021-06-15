@@ -57,6 +57,9 @@ class SearchCourse extends SearchDelegate<Course?> {
       },
       builder: (context, DashboardState state) {
         return state.map(
+          paginating: (state) => Center(
+            child: CircularProgressIndicator(),
+          ),
           initial: (state) => Container(),
           loading: (state) => Center(
             child: CircularProgressIndicator(),

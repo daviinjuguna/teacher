@@ -4,9 +4,11 @@ part of 'dashboard_bloc.dart';
 class DashboardState with _$DashboardState {
   const factory DashboardState.initial() = _Initial;
   const factory DashboardState.loading() = _Load;
-
-  const factory DashboardState.success({required KtList<Course> course}) =
-      _Success;
+  const factory DashboardState.paginating() = _Page;
+  const factory DashboardState.success(
+      {required KtList<Course> course,
+      required int currentPage,
+      required int lastPage}) = _Success;
   const factory DashboardState.updating({required KtList<Course> course}) =
       _Updating;
   const factory DashboardState.error({required String message}) = _Error;
