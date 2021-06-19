@@ -18,6 +18,7 @@ import 'package:teacher/features/presentation/bloc/get_recent_searches/get_recen
 import 'package:teacher/features/presentation/bloc/save_recent_searches/save_recent_cubit.dart';
 import 'package:teacher/features/presentation/bloc/splash_bloc/splash_bloc.dart';
 import 'package:teacher/features/presentation/bloc/user/user_bloc.dart';
+import 'package:teacher/features/presentation/components/refresh_widget.dart';
 
 import 'widgets/add_course_widget.dart';
 import 'widgets/home_shimmer.dart';
@@ -38,7 +39,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   late final _saveRecentCubit = getIt<SaveRecentCubit>();
   late final _getRecentCubit = getIt<GetRecentCubit>();
   late final _scrollController = ScrollController();
-  int _currentPage = 0;
+  int _currentPage = 1;
   int _lastPage = 1;
 
   User? _user;
@@ -50,7 +51,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       _scrollController.addListener(_onsCroll);
-      _dashboardBloc.add(DashboardEvent.getCourse());
+      _dashboardBloc.add(DashboardEvent.getCourse(page: 1));
       _userBloc.add(UserEvent.started());
     });
   }
@@ -549,14 +550,14 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
               orElse: () {
                 // _keyRefresh.currentState?.;
                 // course = state.course;
-                return RefreshIndicator(
+                return RefreshWidget(
                   onRefresh: () {
                     _dashboardBloc.add(DashboardEvent.update(course: _course));
                     return _refreshCompleter.future;
                   },
                   child: ListView.builder(
                     controller: _scrollController,
-                    physics: BouncingScrollPhysics(
+                    physics: AlwaysScrollableScrollPhysics(
                         parent: AlwaysScrollableScrollPhysics()),
                     itemCount: _course.size,
                     itemBuilder: (context, index) => Card(
@@ -568,17 +569,42 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                       child: Column(
                         children: [
                           Container(
-                            constraints: BoxConstraints(minHeight: 200),
+                            constraints: BoxConstraints(
+                              minHeight: 200,
+                              maxHeight: 400,
+                            ),
                             width: double.infinity,
-                            child: FadeInImage.assetNetwork(
+                            child: Image.network(
+                              "$FILE_URL${_course[index].photo}",
                               fit: BoxFit.fill,
-                              placeholder: "assets/images/rsz_1cap_yellow.png",
-                              image: "$FILE_URL${_course[index].photo}",
-                              imageErrorBuilder: (context, error, stackTrace) =>
-                                  Image.asset(
-                                "assets/images/rsz_1cap_yellow.png",
-                                fit: BoxFit.fill,
-                              ),
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor:
+                                        AlwaysStoppedAnimation(kBlackColor),
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, exception, stackTrace) {
+                                // Appropriate logging or analytics, e.g.
+                                print(
+                                  'An error occurred loading "$FILE_URL${_course[index].photo}": ' +
+                                      "$exception, " +
+                                      "$stackTrace",
+                                );
+                                return Image.asset(
+                                  "assets/images/flutter.jpeg",
+                                  fit: BoxFit.fill,
+                                );
+                              },
                             ),
                           ),
                           Container(

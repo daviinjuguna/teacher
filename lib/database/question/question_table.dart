@@ -1,5 +1,4 @@
 import 'package:moor/moor.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 import 'package:teacher/features/data/models/choice_model.dart';
 import 'dart:convert';
 
@@ -21,19 +20,14 @@ class ListChoiceModelConverter
   const ListChoiceModelConverter();
   @override
   List<ChoiceModel>? mapToDart(String? fromDb) {
-    if (fromDb == null) {
-      return null;
-    }
+    if (fromDb == null) return null;
     final _choice = json.decode(fromDb);
     return (_choice as List).map((e) => ChoiceModel.fromJson(e)).toList();
   }
 
   @override
   String? mapToSql(List<ChoiceModel>? value) {
-    if (value == null) {
-      return null;
-    }
-    return json.encode(value.toList());
+    if (value != null) return json.encode(value.toList());
   }
 }
 
@@ -41,17 +35,12 @@ class ChoiceModelConverter extends TypeConverter<ChoiceModel, String> {
   const ChoiceModelConverter();
   @override
   ChoiceModel? mapToDart(String? fromDb) {
-    if (fromDb == null) {
-      return null;
-    }
-    return ChoiceModel.fromJson(json.decode(fromDb) as Map<String, dynamic>);
+    if (fromDb != null)
+      return ChoiceModel.fromJson(json.decode(fromDb) as Map<String, dynamic>);
   }
 
   @override
   String? mapToSql(ChoiceModel? value) {
-    if (value == null) {
-      return null;
-    }
-    return json.encode(value.toJson());
+    if (value != null) return json.encode(value.toJson());
   }
 }

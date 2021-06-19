@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:moor/moor.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 import 'package:teacher/core/errors/exeptions.dart';
 import 'package:teacher/database/app_database.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'assignment_table.dart';
 
@@ -15,16 +15,16 @@ class AssignmentDao extends DatabaseAccessor<AppDatabase>
   AssignmentDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
   Future insertAss(AssignmentDataClass ass) => into(assignmentTable)
-          .insert(ass, mode: InsertMode.insertOrIgnore)
+          .insert(ass, mode: InsertMode.insertOrReplace)
           .onError((error, stackTrace) {
         print("FAILED INSERT ASS: $error, $stackTrace");
         throw DatabaseExeption();
       });
 
-  Future<List<AssignmentDataClass>> getAss(int id) =>
+  Stream<List<AssignmentDataClass>> getAss(int id) =>
       (select(assignmentTable)..where((tbl) => tbl.courseId.equals(id)))
-          .get()
-          .onError((error, stackTrace) {
+          .watch()
+          .onErrorReturnWith((error, stackTrace) {
         print("FAILED GET ASS: $error, $stackTrace");
         throw DatabaseExeption();
       });

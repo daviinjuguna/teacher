@@ -29,10 +29,10 @@ bool _isOpen = false;
 final _appRouter = AppRouter(_navigatorKey);
 
 class _EshuleState extends State<Eshule> {
-  final _ntworkBloc = getIt<NtworkBloc>();
-  final _splashBloc = getIt<SplashBloc>();
-  final _batteryBloc = getIt<BatteryBloc>();
-  final _prefsBloc = getIt<ClearPrefsBloc>();
+  late final _ntworkBloc = getIt<NtworkBloc>();
+  late final _splashBloc = getIt<SplashBloc>();
+  late final _batteryBloc = getIt<BatteryBloc>();
+  late final _prefsBloc = getIt<ClearPrefsBloc>();
 
   @override
   void initState() {

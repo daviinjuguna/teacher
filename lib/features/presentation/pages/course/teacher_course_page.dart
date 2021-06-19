@@ -19,6 +19,7 @@ import 'package:teacher/features/presentation/bloc/get_assignment/get_assignment
 import 'package:teacher/features/presentation/bloc/get_pdf/get_pdf_bloc.dart';
 import 'package:teacher/features/presentation/components/error_card.dart';
 import 'package:teacher/core/routes/app_router.gr.dart';
+import 'package:teacher/features/presentation/components/refresh_widget.dart';
 
 import 'widgets/add_assignment_widget.dart';
 import 'widgets/add_pdf_widget.dart';
@@ -309,7 +310,7 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
             automaticallyImplyLeading: true,
             centerTitle: true,
           ),
-          body: RefreshIndicator(
+          body: RefreshWidget(
             onRefresh: () {
               _pdfBloc.add(GetPdfEvent.update(id: widget._course.id));
               _assignmentBloc
@@ -317,7 +318,7 @@ class _TeacherCoursePageState extends State<TeacherCoursePage> {
               return _refreshCompleter.future;
             },
             child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(
+              physics: AlwaysScrollableScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
               child: Container(
                 // height: (height < 780) ? 780 : height,

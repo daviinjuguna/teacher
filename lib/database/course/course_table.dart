@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:moor/moor.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 import 'package:teacher/features/data/models/user_model.dart';
 
 @DataClassName("CourseDataClass")
@@ -24,17 +23,12 @@ class UserModelConverter extends TypeConverter<UserModel, String> {
 
   @override
   UserModel? mapToDart(String? fromDb) {
-    if (fromDb == null) {
-      return null;
-    }
-    return UserModel.fromJson(json.decode(fromDb) as Map<String, dynamic>);
+    if (fromDb != null)
+      return UserModel.fromJson(json.decode(fromDb) as Map<String, dynamic>);
   }
 
   @override
   String? mapToSql(UserModel? user) {
-    if (user == null) {
-      return null;
-    }
-    return json.encode(user.toJson());
+    if (user != null) return json.encode(user.toJson());
   }
 }

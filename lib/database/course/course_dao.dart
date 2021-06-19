@@ -1,9 +1,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:moor/moor.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 import 'package:teacher/core/errors/exeptions.dart';
 import 'package:teacher/database/app_database.dart';
 import 'package:teacher/database/course/course_table.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'course_dao.g.dart';
 
@@ -13,14 +13,14 @@ class CourseDao extends DatabaseAccessor<AppDatabase> with _$CourseDaoMixin {
   CourseDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
   Future insertCourse(CourseDataClass course) => into(courseTable)
-          .insert(course, mode: InsertMode.insertOrIgnore)
+          .insert(course, mode: InsertMode.insertOrReplace)
           .onError((error, stackTrace) {
         print("FAILED INSERT COURSE: $error, $stackTrace");
         throw DatabaseExeption();
       });
 
-  Future<List<CourseDataClass>> getCourse() =>
-      select(courseTable).get().onError((error, stackTrace) {
+  Stream<List<CourseDataClass>> getCourse() =>
+      select(courseTable).watch().onErrorReturnWith((error, stackTrace) {
         print("FAILED GET COURSE: $error, $stackTrace");
         throw DatabaseExeption();
       });

@@ -14,9 +14,9 @@ import 'package:teacher/features/domain/entities/question.dart';
 import 'package:teacher/features/presentation/bloc/clear_prefs/clear_prefs_bloc.dart';
 import 'package:teacher/features/presentation/bloc/create_choice/create_choice_bloc.dart';
 import 'package:teacher/features/presentation/bloc/create_question/create_question_bloc.dart';
-import 'package:teacher/features/presentation/bloc/get_choice/get_choice_bloc.dart';
 import 'package:teacher/features/presentation/bloc/get_question/get_question_bloc.dart';
 import 'package:teacher/features/presentation/components/error_card.dart';
+import 'package:teacher/features/presentation/components/refresh_widget.dart';
 import 'package:teacher/features/presentation/pages/assignment/widgets/add_question_widget.dart';
 
 import 'widgets/question_card.dart';
@@ -211,14 +211,14 @@ class _AssignmentPageState extends State<TeacherAssignmentPage> {
                     child: CupertinoActivityIndicator(),
                   ),
                   orElse: () {
-                    return RefreshIndicator(
+                    return RefreshWidget(
                       onRefresh: () {
                         _getQuestionBloc.add(
                             GetQuestionEvent.update(id: widget._assignment.id));
                         return _refreshCompleter.future;
                       },
                       child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(
+                        physics: AlwaysScrollableScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics(),
                         ),
                         child: Column(

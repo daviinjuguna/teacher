@@ -1,5 +1,4 @@
 import 'package:moor/moor.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 
 @DataClassName("PdfDataClass")
 class PdfTable extends Table {

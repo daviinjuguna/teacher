@@ -19,6 +19,8 @@ import 'package:teacher/features/data/models/question_model.dart';
 import 'package:teacher/features/data/models/token_model.dart';
 import 'package:teacher/features/data/models/user_model.dart';
 
+import 'package:rxdart/rxdart.dart';
+
 abstract class LocalDataSource {
   Future<void> cacheToken({required TokenModel? model});
   Future<TokenModel>? getToken();
@@ -32,30 +34,30 @@ abstract class LocalDataSource {
 
   //*COURSE
   Future<dynamic> insertCourse(List<CourseModel> course);
-  Future<List<CourseModel>> getCourse();
+  Stream<List<CourseModel>> watchCourse();
   Future<dynamic> deleteCourse();
 
   //*PDF
   Future insertPdf(List<PdfModel> pdf);
-  Future<List<PdfModel>> getPdf(int id);
+  Stream<List<PdfModel>> watchPdf(int id);
   Future<dynamic> deletePdf();
   Future deletePdfWhere(int id);
 
   //*ASSIGNMENT
   Future insertAss(List<AssignmentModel> ass);
-  Future<List<AssignmentModel>> getAss(int id);
+  Stream<List<AssignmentModel>> watchAss(int id);
   Future deleteAss();
   Future deleteAssWhere(int id);
 
   //*QUESTION
   Future insertQuestion(List<QuestionModel> question);
-  Future<List<QuestionModel>> getQuestion(int id);
+  Stream<List<QuestionModel>> watchQuestion(int id);
   Future deleteQuestion();
   Future deleteQuestionWhere(int id);
 
   //*CHOICE
   Future insertChoice(List<ChoiceModel> choice);
-  Future<List<ChoiceModel>> getChoice(int id);
+  Stream<List<ChoiceModel>> watchChoice(int id);
   Future deleteChoices();
   Future deleteChoicesWhere(int id);
 
@@ -201,25 +203,23 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<List<CourseModel>> getCourse() async {
-    try {
-      final _data = await _courseDao.getCourse();
-      List<CourseModel> _course = _data
-          .map((e) => CourseModel(
-                id: e.id,
-                title: e.title,
-                desc: e.desc,
-                photo: e.photo,
-                appCount: e.appCount,
-                applied: e.applied,
-                teachedBy: e.teachedBy,
-              ))
-          .toList();
-      return _course;
-    } catch (e) {
-      print(e.toString());
-      rethrow;
-    }
+  Stream<List<CourseModel>> watchCourse() async* {
+    yield* _courseDao
+        .getCourse()
+        .map((event) => event
+            .map((e) => CourseModel(
+                  id: e.id,
+                  title: e.title,
+                  desc: e.desc,
+                  photo: e.photo,
+                  appCount: e.appCount,
+                  applied: e.applied,
+                  teachedBy: e.teachedBy,
+                ))
+            .toList())
+        .onErrorReturnWith((error, stackTrace) {
+      throw DatabaseExeption();
+    });
   }
 
   @override
@@ -251,22 +251,20 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<List<PdfModel>> getPdf(int id) async {
-    try {
-      final _data = await _pdfDao.getPdf(id);
-
-      return _data
-          .map((e) => PdfModel(
-                id: e.id,
-                name: e.name,
-                pdfDoc: e.pdfDoc,
-                courseId: e.courseId,
-              ))
-          .toList();
-    } catch (e) {
-      print(e.toString());
-      rethrow;
-    }
+  Stream<List<PdfModel>> watchPdf(int id) async* {
+    yield* _pdfDao
+        .getPdf(id)
+        .map((event) => event
+            .map((e) => PdfModel(
+                  id: e.id,
+                  name: e.name,
+                  pdfDoc: e.pdfDoc,
+                  courseId: e.courseId,
+                ))
+            .toList())
+        .onErrorReturnWith((error, stackTrace) {
+      throw DatabaseExeption();
+    });
   }
 
   @override
@@ -309,22 +307,9 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<List<AssignmentModel>> getAss(int id) async {
-    try {
-      final _data = await _assignmentDao.getAss(id);
-      return _data
-          .map((e) => AssignmentModel(
-                id: e.id,
-                title: e.title,
-                attempted: e.attempted,
-                courseId: e.courseId,
-                questions: e.questions ?? 0,
-              ))
-          .toList();
-    } catch (e) {
-      print(e.toString());
-      rethrow;
-    }
+  Stream<List<AssignmentModel>> watchAss(int id) {
+    // TODO: implement watchAss
+    throw UnimplementedError();
   }
 
   @override
@@ -368,22 +353,9 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<List<QuestionModel>> getQuestion(int id) async {
-    try {
-      final _data = await _questionDao.getQuestion(id);
-      return _data
-          .map((e) => QuestionModel(
-                id: e.id,
-                question: e.question,
-                choices: e.choices ?? [],
-                assignmentId: e.assignmentId,
-                answer: e.answer ?? ChoiceModel(id: 0, title: "title"),
-              ))
-          .toList();
-    } catch (e) {
-      print(e.toString());
-      rethrow;
-    }
+  Stream<List<QuestionModel>> watchQuestion(int id) {
+    // TODO: implement watchQuestion
+    throw UnimplementedError();
   }
 
   @override
@@ -425,21 +397,9 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<List<ChoiceModel>> getChoice(int id) async {
-    try {
-      final _data = await _choiceDao.getChoice(id);
-      return _data
-          .map((e) => ChoiceModel(
-                id: e.id,
-                title: e.title,
-                questionId: e.questionId,
-                sort: e.sort,
-              ))
-          .toList();
-    } catch (e) {
-      print(e.toString());
-      rethrow;
-    }
+  Stream<List<ChoiceModel>> watchChoice(int id) {
+    // TODO: implement watchChoice
+    throw UnimplementedError();
   }
 
   @override

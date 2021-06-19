@@ -281,17 +281,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
       late final status = _call.checkStatusCode(response.statusCode);
       if (status) {
-        // List<CourseModel> courses = [];
         late final Map<String, dynamic> body = jsonDecode(response.body);
-        // try {
-        //   courses = (body['course']['data'] as List)
-        //       .map((body) => CourseModel.fromJson(body))
-        //       .toList();
-        // } catch (e) {
-        //   print(e.toString());
-        //   // break;
-        // }
-        // return courses.toImmutableList();
         return CoursePaginatedModel.fromJson(body['course']);
       } else {
         throw ServerException();

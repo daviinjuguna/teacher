@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:moor/moor.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 import 'package:teacher/features/data/models/attempted_model.dart';
 
 @DataClassName("AssignmentDataClass")
@@ -21,17 +20,13 @@ class AttemptedModelConverter extends TypeConverter<AttemptedModel, String> {
 
   @override
   AttemptedModel? mapToDart(String? fromDb) {
-    if (fromDb == null) {
-      return null;
-    }
-    return AttemptedModel.fromJson(json.decode(fromDb) as Map<String, dynamic>);
+    if (fromDb != null)
+      return AttemptedModel.fromJson(
+          json.decode(fromDb) as Map<String, dynamic>);
   }
 
   @override
   String? mapToSql(AttemptedModel? user) {
-    if (user == null) {
-      return null;
-    }
-    return json.encode(user.toJson());
+    if (user != null) return json.encode(user.toJson());
   }
 }

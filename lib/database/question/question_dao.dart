@@ -2,8 +2,8 @@ import 'package:injectable/injectable.dart';
 import 'package:moor/moor.dart';
 import 'package:teacher/core/errors/exeptions.dart';
 import 'package:teacher/database/app_database.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 import 'package:teacher/database/question/question_table.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'question_dao.g.dart';
 
@@ -14,16 +14,16 @@ class QuestionDao extends DatabaseAccessor<AppDatabase>
   QuestionDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
   Future insertQuestion(QuestionDataClass quesion) => into(questionTable)
-          .insert(quesion, mode: InsertMode.insertOrIgnore)
+          .insert(quesion, mode: InsertMode.insertOrReplace)
           .onError((error, stackTrace) {
         print("FAILED INSERT QUESTION: $error, $stackTrace");
         throw DatabaseExeption();
       });
 
-  Future<List<QuestionDataClass>> getQuestion(int id) =>
+  Stream<List<QuestionDataClass>> getQuestion(int id) =>
       (select(questionTable)..where((tbl) => tbl.assignmentId.equals(id)))
-          .get()
-          .onError((error, stackTrace) {
+          .watch()
+          .onErrorReturnWith((error, stackTrace) {
         print("FAILED GET QUESTION: $error, $stackTrace");
         throw DatabaseExeption();
       });
