@@ -393,23 +393,23 @@ class _RegisterPageState extends State<RegisterPage> {
                                       ),
                                     ),
                                     onPressed: () {
-                                      // if (_key.currentState!.validate()) {
-                                      print("is valid");
+                                      if (_formKey.currentState!.validate()) {
+                                        print("is valid");
 
-                                      //*call register bloc
-                                      _bloc.add(
-                                        AuthEvent.register(
-                                          email: _emailController.text
-                                              .trim()
-                                              .toLowerCase(),
-                                          password:
-                                              _passwordController.text.trim(),
-                                          confirmPassword:
-                                              _confirmController.text.trim(),
-                                          name: _nameController.text.trim(),
-                                        ),
-                                      );
-                                      // }
+                                        //*call register bloc
+                                        _bloc.add(
+                                          AuthEvent.register(
+                                            email: _emailController.text
+                                                .trim()
+                                                .toLowerCase(),
+                                            password:
+                                                _passwordController.text.trim(),
+                                            confirmPassword:
+                                                _confirmController.text.trim(),
+                                            name: _nameController.text.trim(),
+                                          ),
+                                        );
+                                      }
                                     },
                                   );
                                 },
