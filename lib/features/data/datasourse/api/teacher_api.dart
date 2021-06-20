@@ -183,11 +183,6 @@ class TeacherApiImpl implements TeacherService {
         HttpClient()..idleTimeout = Duration(seconds: 15),
       ));
 
-  //!trials sjui kama itawai
-  // http.MultipartRequest multipart = HttpWithInterceptor.build(interceptors: [
-  //   LoggingInterceptor(),
-  // ]) as http.MultipartRequest;
-
   @override
   Future<http.Response> login({
     required String email,

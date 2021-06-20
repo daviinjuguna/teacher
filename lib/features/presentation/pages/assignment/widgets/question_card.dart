@@ -29,7 +29,7 @@ class _QuestionCardState extends State<QuestionCard> {
   void initState() {
     super.initState();
     _choice = widget._question.choices;
-    _getChoiceBloc.add(GetChoiceEvent.started(id: widget._question.id));
+    // _getChoiceBloc.add(GetChoiceEvent.started(id: widget._question.id));
   }
 
   @override
@@ -49,46 +49,46 @@ class _QuestionCardState extends State<QuestionCard> {
           BlocListener<CreateChoiceBloc, CreateChoiceState>(
             listener: (context, state) {
               state.maybeMap(
-                  orElse: () {},
-                  success: (state) {
-                    _getChoiceBloc
-                        .add(GetChoiceEvent.update(id: widget._question.id));
-                  });
-            },
-          ),
-          BlocListener<GetChoiceBloc, GetChoiceState>(
-            listener: (context, state) {
-              state.maybeMap(
-                orElse: () {},
-                success: (state) {
-                  _choice = state.course;
-                  ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
-                },
-                error: (s) {
-                  ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
-                },
-                updating: (state) {
+                error: (state) {
                   ScaffoldMessenger.maybeOf(context)!
                     ..hideCurrentSnackBar()
                     ..showSnackBar(
                       SnackBar(
-                        duration: Duration(minutes: 10),
-                        backgroundColor: kBlackColor,
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        content: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        backgroundColor: Colors.red,
+                        behavior: SnackBarBehavior.fixed,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(5),
+                          topRight: Radius.circular(5),
+                        )),
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            CircularProgressIndicator.adaptive(),
                             Text(
-                              "Updating...",
-                              style: TextStyle(color: Colors.white),
+                              "OOPS! 😥️",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
+                            // SizedBox(height: 3),
+                            Text(
+                              "Something went wrong",
+                              style: TextStyle(
+                                // fontSize: 16,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            )
                           ],
                         ),
                       ),
                     );
                 },
-                loading: (state) {
+                orElse: () {
+                  // ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                },
+                load: (state) {
                   ScaffoldMessenger.maybeOf(context)!
                     ..hideCurrentSnackBar()
                     ..showSnackBar(
@@ -108,6 +108,103 @@ class _QuestionCardState extends State<QuestionCard> {
                         ),
                       ),
                     );
+                },
+                success: (state) {
+                  ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                  _getChoiceBloc
+                      .add(GetChoiceEvent.update(id: widget._question.id));
+                },
+              );
+            },
+          ),
+          BlocListener<GetChoiceBloc, GetChoiceState>(
+            listener: (context, state) {
+              state.maybeMap(
+                orElse: () {
+                  // ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                },
+                success: (state) {
+                  ScaffoldMessenger.maybeOf(context)?..hideCurrentSnackBar();
+                  _choice = state.course;
+                  ScaffoldMessenger.maybeOf(context)?..hideCurrentSnackBar();
+                },
+                error: (s) {
+                  ScaffoldMessenger.maybeOf(context)
+                    ?..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red,
+                        behavior: SnackBarBehavior.fixed,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(5),
+                          topRight: Radius.circular(5),
+                        )),
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "OOPS! 😥️",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            // SizedBox(height: 3),
+                            Text(
+                              "${s.message}",
+                              style: TextStyle(
+                                // fontSize: 16,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                },
+                sorting: (state) {
+                  ScaffoldMessenger.maybeOf(context)
+                    ?..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        duration: Duration(minutes: 10),
+                        backgroundColor: kBlackColor,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CircularProgressIndicator.adaptive(),
+                            Text(
+                              "Rearranging...",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                },
+                updating: (state) {
+                  // ScaffoldMessenger.maybeOf(context)
+                  //   ?..hideCurrentSnackBar()
+                  //   ..showSnackBar(
+                  //     SnackBar(
+                  //       duration: Duration(minutes: 10),
+                  //       backgroundColor: kBlackColor,
+                  //       padding: EdgeInsets.symmetric(horizontal: 20),
+                  //       content: Row(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         children: [
+                  //           CircularProgressIndicator.adaptive(),
+                  //           Text(
+                  //             "Updating...",
+                  //             style: TextStyle(color: Colors.white),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   );
                 },
               );
             },

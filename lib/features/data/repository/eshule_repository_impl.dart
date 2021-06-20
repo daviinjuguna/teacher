@@ -225,15 +225,7 @@ class RepositoryImpl implements Repository {
     try {
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
-        UserModel user;
-        final _localUser = await _local.getUser();
-        if (_localUser != null) {
-          user = _localUser;
-        } else {
-          user = await _remote.getUser(accessToken: tokenModel.accessToken);
-          await _local.insertUser(user);
-        }
-
+        final user = await _remote.getUser(accessToken: tokenModel.accessToken);
         return right(user.toEntity());
       } else {
         await getIt<LocalDataSource>().clearPrefs();
@@ -253,14 +245,7 @@ class RepositoryImpl implements Repository {
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
         await _remote.logout(accessToken: tokenModel.accessToken);
-        _local
-          ..deleteCourse()
-          ..deletePdf()
-          ..deleteAss()
-          ..deleteQuestion()
-          ..deleteChoices()
-          ..deleteUser()
-              .onError((error, stackTrace) => throw DatabaseExeption());
+
         return right(await _local.clearPrefs());
       } else {
         await getIt<LocalDataSource>().clearPrefs();
@@ -292,7 +277,6 @@ class RepositoryImpl implements Repository {
           page: page,
           accessToken: tokenModel.accessToken,
         );
-        await _local.insertCourse(_model.course);
         return right(_model.toEntity());
       } else {
         await getIt<LocalDataSource>().clearPrefs();
@@ -315,7 +299,6 @@ class RepositoryImpl implements Repository {
           page: 1,
           accessToken: tokenModel.accessToken,
         );
-        await _local.insertCourse(_model.course);
 
         return right(_model.toEntity());
       } else {
@@ -339,7 +322,6 @@ class RepositoryImpl implements Repository {
           courseId: courseId,
           accessToken: tokenModel.accessToken,
         );
-        await _local.insertAss(model.asList());
 
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
@@ -367,7 +349,6 @@ class RepositoryImpl implements Repository {
         );
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
-        await _local.insertAss(model.asList());
         return right(entities);
       } else {
         throw UnAuthenticatedException();
@@ -389,7 +370,6 @@ class RepositoryImpl implements Repository {
           courseId: courseId,
           accessToken: tokenModel.accessToken,
         );
-        await _local.insertPdf(model.asList());
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
         return right(entities);
@@ -415,7 +395,6 @@ class RepositoryImpl implements Repository {
         );
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
-        await _local.insertPdf(model.asList());
         return right(entities);
       } else {
         throw UnAuthenticatedException();
@@ -438,7 +417,6 @@ class RepositoryImpl implements Repository {
           assignmentId: assignmentId,
           accessToken: tokenModel.accessToken,
         );
-        await _local.insertQuestion(model.asList());
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
         return right(entities);
@@ -465,7 +443,6 @@ class RepositoryImpl implements Repository {
         );
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
-        await _local.insertQuestion(model.asList());
         return right(entities);
       } else {
         throw UnAuthenticatedException();
@@ -488,7 +465,6 @@ class RepositoryImpl implements Repository {
           questionId: questionId,
           accessToken: tokenModel.accessToken,
         );
-        await _local.insertChoice(model.asList());
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
         return right(entities);
@@ -515,7 +491,6 @@ class RepositoryImpl implements Repository {
         );
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
-        await _local.insertChoice(model.asList());
         return right(entities);
       } else {
         throw UnAuthenticatedException();
@@ -901,14 +876,12 @@ class RepositoryImpl implements Repository {
   Future<Either<String, KtList<Choice>>> sortChoice(
       {required int questionId}) async {
     try {
-      await _local.deleteChoicesWhere(questionId);
       final tokenModel = await _local.getToken();
       if (tokenModel != null) {
         final model = await _remote.sortChoices(
             questionId: questionId, accessToken: tokenModel.accessToken);
         final entities =
             model.map((e) => e.toEntity()).asList().toImmutableList();
-        await _local.insertChoice(model.asList());
         return right(entities);
       } else {
         throw UnAuthenticatedException();

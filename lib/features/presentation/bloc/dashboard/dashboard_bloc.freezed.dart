@@ -525,6 +525,12 @@ class _$DashboardStateTearOff {
       message: message,
     );
   }
+
+  _ErrorPaginated paginatedError({required String message}) {
+    return _ErrorPaginated(
+      message: message,
+    );
+  }
 }
 
 /// @nodoc
@@ -542,6 +548,7 @@ mixin _$DashboardState {
         success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
+    required TResult Function(String message) paginatedError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -553,6 +560,7 @@ mixin _$DashboardState {
         success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
+    TResult Function(String message)? paginatedError,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -564,6 +572,7 @@ mixin _$DashboardState {
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
+    required TResult Function(_ErrorPaginated value) paginatedError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -574,6 +583,7 @@ mixin _$DashboardState {
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,
+    TResult Function(_ErrorPaginated value)? paginatedError,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -641,6 +651,7 @@ class _$_Initial implements _Initial {
         success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
+    required TResult Function(String message) paginatedError,
   }) {
     return initial();
   }
@@ -655,6 +666,7 @@ class _$_Initial implements _Initial {
         success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
+    TResult Function(String message)? paginatedError,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -672,6 +684,7 @@ class _$_Initial implements _Initial {
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
+    required TResult Function(_ErrorPaginated value) paginatedError,
   }) {
     return initial(this);
   }
@@ -685,6 +698,7 @@ class _$_Initial implements _Initial {
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,
+    TResult Function(_ErrorPaginated value)? paginatedError,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -743,6 +757,7 @@ class _$_Load implements _Load {
         success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
+    required TResult Function(String message) paginatedError,
   }) {
     return loading();
   }
@@ -757,6 +772,7 @@ class _$_Load implements _Load {
         success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
+    TResult Function(String message)? paginatedError,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -774,6 +790,7 @@ class _$_Load implements _Load {
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
+    required TResult Function(_ErrorPaginated value) paginatedError,
   }) {
     return loading(this);
   }
@@ -787,6 +804,7 @@ class _$_Load implements _Load {
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,
+    TResult Function(_ErrorPaginated value)? paginatedError,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -845,6 +863,7 @@ class _$_Page implements _Page {
         success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
+    required TResult Function(String message) paginatedError,
   }) {
     return paginating();
   }
@@ -859,6 +878,7 @@ class _$_Page implements _Page {
         success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
+    TResult Function(String message)? paginatedError,
     required TResult orElse(),
   }) {
     if (paginating != null) {
@@ -876,6 +896,7 @@ class _$_Page implements _Page {
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
+    required TResult Function(_ErrorPaginated value) paginatedError,
   }) {
     return paginating(this);
   }
@@ -889,6 +910,7 @@ class _$_Page implements _Page {
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,
+    TResult Function(_ErrorPaginated value)? paginatedError,
     required TResult orElse(),
   }) {
     if (paginating != null) {
@@ -998,6 +1020,7 @@ class _$_Success implements _Success {
         success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
+    required TResult Function(String message) paginatedError,
   }) {
     return success(course, currentPage, lastPage);
   }
@@ -1012,6 +1035,7 @@ class _$_Success implements _Success {
         success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
+    TResult Function(String message)? paginatedError,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -1029,6 +1053,7 @@ class _$_Success implements _Success {
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
+    required TResult Function(_ErrorPaginated value) paginatedError,
   }) {
     return success(this);
   }
@@ -1042,6 +1067,7 @@ class _$_Success implements _Success {
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,
+    TResult Function(_ErrorPaginated value)? paginatedError,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -1135,6 +1161,7 @@ class _$_Updating implements _Updating {
         success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
+    required TResult Function(String message) paginatedError,
   }) {
     return updating(course);
   }
@@ -1149,6 +1176,7 @@ class _$_Updating implements _Updating {
         success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
+    TResult Function(String message)? paginatedError,
     required TResult orElse(),
   }) {
     if (updating != null) {
@@ -1166,6 +1194,7 @@ class _$_Updating implements _Updating {
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
+    required TResult Function(_ErrorPaginated value) paginatedError,
   }) {
     return updating(this);
   }
@@ -1179,6 +1208,7 @@ class _$_Updating implements _Updating {
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,
+    TResult Function(_ErrorPaginated value)? paginatedError,
     required TResult orElse(),
   }) {
     if (updating != null) {
@@ -1267,6 +1297,7 @@ class _$_Error implements _Error {
         success,
     required TResult Function(KtList<Course> course) updating,
     required TResult Function(String message) error,
+    required TResult Function(String message) paginatedError,
   }) {
     return error(message);
   }
@@ -1281,6 +1312,7 @@ class _$_Error implements _Error {
         success,
     TResult Function(KtList<Course> course)? updating,
     TResult Function(String message)? error,
+    TResult Function(String message)? paginatedError,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -1298,6 +1330,7 @@ class _$_Error implements _Error {
     required TResult Function(_Success value) success,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Error value) error,
+    required TResult Function(_ErrorPaginated value) paginatedError,
   }) {
     return error(this);
   }
@@ -1311,6 +1344,7 @@ class _$_Error implements _Error {
     TResult Function(_Success value)? success,
     TResult Function(_Updating value)? updating,
     TResult Function(_Error value)? error,
+    TResult Function(_ErrorPaginated value)? paginatedError,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -1326,4 +1360,143 @@ abstract class _Error implements DashboardState {
   String get message => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$ErrorCopyWith<_Error> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$ErrorPaginatedCopyWith<$Res> {
+  factory _$ErrorPaginatedCopyWith(
+          _ErrorPaginated value, $Res Function(_ErrorPaginated) then) =
+      __$ErrorPaginatedCopyWithImpl<$Res>;
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$ErrorPaginatedCopyWithImpl<$Res>
+    extends _$DashboardStateCopyWithImpl<$Res>
+    implements _$ErrorPaginatedCopyWith<$Res> {
+  __$ErrorPaginatedCopyWithImpl(
+      _ErrorPaginated _value, $Res Function(_ErrorPaginated) _then)
+      : super(_value, (v) => _then(v as _ErrorPaginated));
+
+  @override
+  _ErrorPaginated get _value => super._value as _ErrorPaginated;
+
+  @override
+  $Res call({
+    Object? message = freezed,
+  }) {
+    return _then(_ErrorPaginated(
+      message: message == freezed
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_ErrorPaginated implements _ErrorPaginated {
+  const _$_ErrorPaginated({required this.message});
+
+  @override
+  final String message;
+
+  @override
+  String toString() {
+    return 'DashboardState.paginatedError(message: $message)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _ErrorPaginated &&
+            (identical(other.message, message) ||
+                const DeepCollectionEquality().equals(other.message, message)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
+
+  @JsonKey(ignore: true)
+  @override
+  _$ErrorPaginatedCopyWith<_ErrorPaginated> get copyWith =>
+      __$ErrorPaginatedCopyWithImpl<_ErrorPaginated>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() paginating,
+    required TResult Function(
+            KtList<Course> course, int currentPage, int lastPage)
+        success,
+    required TResult Function(KtList<Course> course) updating,
+    required TResult Function(String message) error,
+    required TResult Function(String message) paginatedError,
+  }) {
+    return paginatedError(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? paginating,
+    TResult Function(KtList<Course> course, int currentPage, int lastPage)?
+        success,
+    TResult Function(KtList<Course> course)? updating,
+    TResult Function(String message)? error,
+    TResult Function(String message)? paginatedError,
+    required TResult orElse(),
+  }) {
+    if (paginatedError != null) {
+      return paginatedError(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Load value) loading,
+    required TResult Function(_Page value) paginating,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Updating value) updating,
+    required TResult Function(_Error value) error,
+    required TResult Function(_ErrorPaginated value) paginatedError,
+  }) {
+    return paginatedError(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Load value)? loading,
+    TResult Function(_Page value)? paginating,
+    TResult Function(_Success value)? success,
+    TResult Function(_Updating value)? updating,
+    TResult Function(_Error value)? error,
+    TResult Function(_ErrorPaginated value)? paginatedError,
+    required TResult orElse(),
+  }) {
+    if (paginatedError != null) {
+      return paginatedError(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ErrorPaginated implements DashboardState {
+  const factory _ErrorPaginated({required String message}) = _$_ErrorPaginated;
+
+  String get message => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$ErrorPaginatedCopyWith<_ErrorPaginated> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -1,11 +1,9 @@
 import 'dart:io';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:kt_dart/kt.dart';
 import 'package:teacher/features/domain/entities/assignment.dart';
 import 'package:teacher/features/domain/entities/choice.dart';
-import 'package:teacher/features/domain/entities/course.dart';
 import 'package:teacher/features/domain/entities/course_paginated.dart';
 import 'package:teacher/features/domain/entities/pdf.dart';
 import 'package:teacher/features/domain/entities/question.dart';

@@ -41,6 +41,14 @@ class GetQuestionBloc extends Bloc<GetQuestionEvent, GetQuestionState> {
           (r) => GetQuestionState.success(question: r),
         );
       },
+      refresh: (e) async* {
+        yield GetQuestionState.refreshing();
+        final _questions = await _updateQuestion.call(ParamsId(id: e.id));
+        yield _questions.fold(
+          (l) => GetQuestionState.error(message: l),
+          (r) => GetQuestionState.success(question: r),
+        );
+      },
     );
   }
 }

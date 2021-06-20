@@ -12,4 +12,6 @@ class DashboardState with _$DashboardState {
   const factory DashboardState.updating({required KtList<Course> course}) =
       _Updating;
   const factory DashboardState.error({required String message}) = _Error;
+  const factory DashboardState.paginatedError({required String message}) =
+      _ErrorPaginated;
 }

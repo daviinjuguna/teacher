@@ -224,6 +224,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Form(
                           key: _formKey,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 "Name",
@@ -340,17 +341,23 @@ class _RegisterPageState extends State<RegisterPage> {
                                 controller: _confirmController,
                                 keyboardType: TextInputType.visiblePassword,
                                 onFieldSubmitted: (value) {
-                                  _bloc.add(
-                                    AuthEvent.register(
-                                      email: _emailController.text
-                                          .trim()
-                                          .toLowerCase(),
-                                      password: _passwordController.text.trim(),
-                                      confirmPassword:
-                                          _confirmController.text.trim(),
-                                      name: _nameController.text.trim(),
-                                    ),
-                                  );
+                                  if (_formKey.currentState!.validate()) {
+                                    print("is valid");
+
+                                    //*call register bloc
+                                    _bloc.add(
+                                      AuthEvent.register(
+                                        email: _emailController.text
+                                            .trim()
+                                            .toLowerCase(),
+                                        password:
+                                            _passwordController.text.trim(),
+                                        confirmPassword:
+                                            _confirmController.text.trim(),
+                                        name: _nameController.text.trim(),
+                                      ),
+                                    );
+                                  }
                                 },
                                 validator: (value) {
                                   if (value!.trim() ==

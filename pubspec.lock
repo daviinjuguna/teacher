@@ -15,13 +15,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.1"
-  analyzer_plugin_fork:
-    dependency: transitive
-    description:
-      name: analyzer_plugin_fork
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.1"
   animated_text_kit:
     dependency: "direct main"
     description:
@@ -576,20 +569,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  moor:
-    dependency: "direct main"
-    description:
-      name: moor
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.3.2"
-  moor_generator:
-    dependency: "direct dev"
-    description:
-      name: moor_generator
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.3.1"
   nested:
     dependency: transitive
     description:
@@ -605,7 +584,7 @@ packages:
     source: hosted
     version: "2.0.0"
   path:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path
       url: "https://pub.dartlang.org"
@@ -626,7 +605,7 @@ packages:
     source: hosted
     version: "0.2.1"
   path_provider:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
@@ -723,13 +702,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  recase:
-    dependency: transitive
-    description:
-      name: recase
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.0"
   rxdart:
     dependency: "direct main"
     description:
@@ -833,27 +805,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0+2"
-  sqlite3:
-    dependency: transitive
-    description:
-      name: sqlite3
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.2"
-  sqlite3_flutter_libs:
-    dependency: "direct main"
-    description:
-      name: sqlite3_flutter_libs
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.0"
-  sqlparser:
-    dependency: transitive
-    description:
-      name: sqlparser
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.16.0"
   stack_trace:
     dependency: transitive
     description:

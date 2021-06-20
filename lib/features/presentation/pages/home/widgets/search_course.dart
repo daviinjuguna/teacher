@@ -169,6 +169,7 @@ class SearchCourse extends SearchDelegate<Course?> {
           updating: (state) => Center(
             child: CircularProgressIndicator(),
           ),
+          paginatedError: (value) => Container(),
         );
       },
     );

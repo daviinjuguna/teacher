@@ -27,6 +27,12 @@ class _$GetQuestionEventTearOff {
       id: id,
     );
   }
+
+  _Refresh refresh({required int id}) {
+    return _Refresh(
+      id: id,
+    );
+  }
 }
 
 /// @nodoc
@@ -40,12 +46,14 @@ mixin _$GetQuestionEvent {
   TResult when<TResult extends Object?>({
     required TResult Function(int id) started,
     required TResult Function(int id) update,
+    required TResult Function(int id) refresh,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int id)? started,
     TResult Function(int id)? update,
+    TResult Function(int id)? refresh,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -53,12 +61,14 @@ mixin _$GetQuestionEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_Update value) update,
+    required TResult Function(_Refresh value) refresh,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_Update value)? update,
+    TResult Function(_Refresh value)? refresh,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -164,6 +174,7 @@ class _$_Started implements _Started {
   TResult when<TResult extends Object?>({
     required TResult Function(int id) started,
     required TResult Function(int id) update,
+    required TResult Function(int id) refresh,
   }) {
     return started(id);
   }
@@ -173,6 +184,7 @@ class _$_Started implements _Started {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int id)? started,
     TResult Function(int id)? update,
+    TResult Function(int id)? refresh,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -186,6 +198,7 @@ class _$_Started implements _Started {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_Update value) update,
+    required TResult Function(_Refresh value) refresh,
   }) {
     return started(this);
   }
@@ -195,6 +208,7 @@ class _$_Started implements _Started {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_Update value)? update,
+    TResult Function(_Refresh value)? refresh,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -281,6 +295,7 @@ class _$_Update implements _Update {
   TResult when<TResult extends Object?>({
     required TResult Function(int id) started,
     required TResult Function(int id) update,
+    required TResult Function(int id) refresh,
   }) {
     return update(id);
   }
@@ -290,6 +305,7 @@ class _$_Update implements _Update {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int id)? started,
     TResult Function(int id)? update,
+    TResult Function(int id)? refresh,
     required TResult orElse(),
   }) {
     if (update != null) {
@@ -303,6 +319,7 @@ class _$_Update implements _Update {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_Update value) update,
+    required TResult Function(_Refresh value) refresh,
   }) {
     return update(this);
   }
@@ -312,6 +329,7 @@ class _$_Update implements _Update {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_Update value)? update,
+    TResult Function(_Refresh value)? refresh,
     required TResult orElse(),
   }) {
     if (update != null) {
@@ -332,6 +350,127 @@ abstract class _Update implements GetQuestionEvent {
 }
 
 /// @nodoc
+abstract class _$RefreshCopyWith<$Res>
+    implements $GetQuestionEventCopyWith<$Res> {
+  factory _$RefreshCopyWith(_Refresh value, $Res Function(_Refresh) then) =
+      __$RefreshCopyWithImpl<$Res>;
+  @override
+  $Res call({int id});
+}
+
+/// @nodoc
+class __$RefreshCopyWithImpl<$Res> extends _$GetQuestionEventCopyWithImpl<$Res>
+    implements _$RefreshCopyWith<$Res> {
+  __$RefreshCopyWithImpl(_Refresh _value, $Res Function(_Refresh) _then)
+      : super(_value, (v) => _then(v as _Refresh));
+
+  @override
+  _Refresh get _value => super._value as _Refresh;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+  }) {
+    return _then(_Refresh(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_Refresh implements _Refresh {
+  const _$_Refresh({required this.id});
+
+  @override
+  final int id;
+
+  @override
+  String toString() {
+    return 'GetQuestionEvent.refresh(id: $id)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _Refresh &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(id);
+
+  @JsonKey(ignore: true)
+  @override
+  _$RefreshCopyWith<_Refresh> get copyWith =>
+      __$RefreshCopyWithImpl<_Refresh>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int id) started,
+    required TResult Function(int id) update,
+    required TResult Function(int id) refresh,
+  }) {
+    return refresh(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int id)? started,
+    TResult Function(int id)? update,
+    TResult Function(int id)? refresh,
+    required TResult orElse(),
+  }) {
+    if (refresh != null) {
+      return refresh(id);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_Update value) update,
+    required TResult Function(_Refresh value) refresh,
+  }) {
+    return refresh(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_Update value)? update,
+    TResult Function(_Refresh value)? refresh,
+    required TResult orElse(),
+  }) {
+    if (refresh != null) {
+      return refresh(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Refresh implements GetQuestionEvent {
+  const factory _Refresh({required int id}) = _$_Refresh;
+
+  @override
+  int get id => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$RefreshCopyWith<_Refresh> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 class _$GetQuestionStateTearOff {
   const _$GetQuestionStateTearOff();
 
@@ -345,6 +484,10 @@ class _$GetQuestionStateTearOff {
 
   _Updating updating() {
     return const _Updating();
+  }
+
+  _Refreshings refreshing() {
+    return const _Refreshings();
   }
 
   _Success success({required KtList<Question> question}) {
@@ -370,6 +513,7 @@ mixin _$GetQuestionState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() updating,
+    required TResult Function() refreshing,
     required TResult Function(KtList<Question> question) success,
     required TResult Function(String message) error,
   }) =>
@@ -379,6 +523,7 @@ mixin _$GetQuestionState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? updating,
+    TResult Function()? refreshing,
     TResult Function(KtList<Question> question)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -389,6 +534,7 @@ mixin _$GetQuestionState {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
     required TResult Function(_Updating value) updating,
+    required TResult Function(_Refreshings value) refreshing,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) =>
@@ -398,6 +544,7 @@ mixin _$GetQuestionState {
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
     TResult Function(_Updating value)? updating,
+    TResult Function(_Refreshings value)? refreshing,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -462,6 +609,7 @@ class _$_Initial implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() updating,
+    required TResult Function() refreshing,
     required TResult Function(KtList<Question> question) success,
     required TResult Function(String message) error,
   }) {
@@ -474,6 +622,7 @@ class _$_Initial implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? updating,
+    TResult Function()? refreshing,
     TResult Function(KtList<Question> question)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -490,6 +639,7 @@ class _$_Initial implements _Initial {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
     required TResult Function(_Updating value) updating,
+    required TResult Function(_Refreshings value) refreshing,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -502,6 +652,7 @@ class _$_Initial implements _Initial {
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
     TResult Function(_Updating value)? updating,
+    TResult Function(_Refreshings value)? refreshing,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -557,6 +708,7 @@ class _$_Load implements _Load {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() updating,
+    required TResult Function() refreshing,
     required TResult Function(KtList<Question> question) success,
     required TResult Function(String message) error,
   }) {
@@ -569,6 +721,7 @@ class _$_Load implements _Load {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? updating,
+    TResult Function()? refreshing,
     TResult Function(KtList<Question> question)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -585,6 +738,7 @@ class _$_Load implements _Load {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
     required TResult Function(_Updating value) updating,
+    required TResult Function(_Refreshings value) refreshing,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -597,6 +751,7 @@ class _$_Load implements _Load {
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
     TResult Function(_Updating value)? updating,
+    TResult Function(_Refreshings value)? refreshing,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -652,6 +807,7 @@ class _$_Updating implements _Updating {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() updating,
+    required TResult Function() refreshing,
     required TResult Function(KtList<Question> question) success,
     required TResult Function(String message) error,
   }) {
@@ -664,6 +820,7 @@ class _$_Updating implements _Updating {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? updating,
+    TResult Function()? refreshing,
     TResult Function(KtList<Question> question)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -680,6 +837,7 @@ class _$_Updating implements _Updating {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
     required TResult Function(_Updating value) updating,
+    required TResult Function(_Refreshings value) refreshing,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -692,6 +850,7 @@ class _$_Updating implements _Updating {
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
     TResult Function(_Updating value)? updating,
+    TResult Function(_Refreshings value)? refreshing,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -705,6 +864,108 @@ class _$_Updating implements _Updating {
 
 abstract class _Updating implements GetQuestionState {
   const factory _Updating() = _$_Updating;
+}
+
+/// @nodoc
+abstract class _$RefreshingsCopyWith<$Res> {
+  factory _$RefreshingsCopyWith(
+          _Refreshings value, $Res Function(_Refreshings) then) =
+      __$RefreshingsCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$RefreshingsCopyWithImpl<$Res>
+    extends _$GetQuestionStateCopyWithImpl<$Res>
+    implements _$RefreshingsCopyWith<$Res> {
+  __$RefreshingsCopyWithImpl(
+      _Refreshings _value, $Res Function(_Refreshings) _then)
+      : super(_value, (v) => _then(v as _Refreshings));
+
+  @override
+  _Refreshings get _value => super._value as _Refreshings;
+}
+
+/// @nodoc
+
+class _$_Refreshings implements _Refreshings {
+  const _$_Refreshings();
+
+  @override
+  String toString() {
+    return 'GetQuestionState.refreshing()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _Refreshings);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() updating,
+    required TResult Function() refreshing,
+    required TResult Function(KtList<Question> question) success,
+    required TResult Function(String message) error,
+  }) {
+    return refreshing();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? updating,
+    TResult Function()? refreshing,
+    TResult Function(KtList<Question> question)? success,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (refreshing != null) {
+      return refreshing();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Load value) loading,
+    required TResult Function(_Updating value) updating,
+    required TResult Function(_Refreshings value) refreshing,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Error value) error,
+  }) {
+    return refreshing(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Load value)? loading,
+    TResult Function(_Updating value)? updating,
+    TResult Function(_Refreshings value)? refreshing,
+    TResult Function(_Success value)? success,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (refreshing != null) {
+      return refreshing(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Refreshings implements GetQuestionState {
+  const factory _Refreshings() = _$_Refreshings;
 }
 
 /// @nodoc
@@ -773,6 +1034,7 @@ class _$_Success implements _Success {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() updating,
+    required TResult Function() refreshing,
     required TResult Function(KtList<Question> question) success,
     required TResult Function(String message) error,
   }) {
@@ -785,6 +1047,7 @@ class _$_Success implements _Success {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? updating,
+    TResult Function()? refreshing,
     TResult Function(KtList<Question> question)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -801,6 +1064,7 @@ class _$_Success implements _Success {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
     required TResult Function(_Updating value) updating,
+    required TResult Function(_Refreshings value) refreshing,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -813,6 +1077,7 @@ class _$_Success implements _Success {
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
     TResult Function(_Updating value)? updating,
+    TResult Function(_Refreshings value)? refreshing,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -898,6 +1163,7 @@ class _$_Error implements _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() updating,
+    required TResult Function() refreshing,
     required TResult Function(KtList<Question> question) success,
     required TResult Function(String message) error,
   }) {
@@ -910,6 +1176,7 @@ class _$_Error implements _Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? updating,
+    TResult Function()? refreshing,
     TResult Function(KtList<Question> question)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -926,6 +1193,7 @@ class _$_Error implements _Error {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
     required TResult Function(_Updating value) updating,
+    required TResult Function(_Refreshings value) refreshing,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -938,6 +1206,7 @@ class _$_Error implements _Error {
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
     TResult Function(_Updating value)? updating,
+    TResult Function(_Refreshings value)? refreshing,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),

@@ -43,7 +43,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         final _result =
             await _course.call(GetCourseParams(query: e.query, page: e.page));
         yield _result.fold(
-          (l) => DashboardState.error(message: l),
+          (l) => DashboardState.paginatedError(message: l),
           (course) => DashboardState.success(
             course: [...e.course, ...course.course].toImmutableList(),
             currentPage: course.currentPage,

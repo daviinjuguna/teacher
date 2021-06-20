@@ -66,42 +66,9 @@ class _AssignmentPageState extends State<TeacherAssignmentPage> {
           BlocListener<CreateChoiceBloc, CreateChoiceState>(
             listener: (context, state) {
               state.maybeMap(
-                  orElse: () {},
-                  success: (state) {
-                    ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
-                    _getQuestionBloc.add(
-                        GetQuestionEvent.update(id: widget._assignment.id));
-                  },
-                  error: (state) {
-                    ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
-                  },
-                  load: (state) {
-                    ScaffoldMessenger.maybeOf(context)!
-                      ..hideCurrentSnackBar()
-                      ..showSnackBar(
-                        SnackBar(
-                          duration: Duration(minutes: 10),
-                          backgroundColor: kBlackColor,
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CircularProgressIndicator.adaptive(),
-                              Text(
-                                "Loading...",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                  });
-            },
-          ),
-          BlocListener<CreateQuestionBloc, CreateQuestionState>(
-            listener: (context, state) {
-              state.maybeMap(
-                orElse: () {},
+                orElse: () {
+                  // ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                },
                 success: (state) {
                   ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
                   _getQuestionBloc
@@ -110,9 +77,18 @@ class _AssignmentPageState extends State<TeacherAssignmentPage> {
                 error: (state) {
                   ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
                 },
-                load: (state) {
-                  ScaffoldMessenger.maybeOf(context)!
-                    ..hideCurrentSnackBar()
+              );
+            },
+          ),
+          BlocListener<GetQuestionBloc, GetQuestionState>(
+            listener: (context, state) {
+              state.maybeMap(
+                orElse: () {
+                  // ScaffoldMessenger.maybeOf(context)?..hideCurrentSnackBar();
+                },
+                updating: (s) {
+                  ScaffoldMessenger.maybeOf(context)
+                    ?..hideCurrentSnackBar()
                     ..showSnackBar(
                       SnackBar(
                         duration: Duration(minutes: 10),
@@ -123,7 +99,7 @@ class _AssignmentPageState extends State<TeacherAssignmentPage> {
                           children: [
                             CircularProgressIndicator.adaptive(),
                             Text(
-                              "Loading...",
+                              "Updating...",
                               style: TextStyle(color: Colors.white),
                             ),
                           ],
@@ -131,23 +107,16 @@ class _AssignmentPageState extends State<TeacherAssignmentPage> {
                       ),
                     );
                 },
-              );
-            },
-          ),
-          BlocListener<GetQuestionBloc, GetQuestionState>(
-            listener: (context, state) {
-              state.maybeMap(
-                orElse: () {},
                 success: (state) {
                   _refreshCompleter.complete();
                   _refreshCompleter = Completer();
-                  ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                  ScaffoldMessenger.maybeOf(context)?..hideCurrentSnackBar();
                   _question = state.question;
                 },
                 error: (state) {
                   _refreshCompleter.complete();
                   _refreshCompleter = Completer();
-                  ScaffoldMessenger.maybeOf(context)!..hideCurrentSnackBar();
+                  ScaffoldMessenger.maybeOf(context)?..hideCurrentSnackBar();
                   if (state.message == UNAUTHENTICATED_FAILURE_MESSAGE) {
                     //you will be thrown out asf
                     ScaffoldMessenger.maybeOf(context)
@@ -208,13 +177,15 @@ class _AssignmentPageState extends State<TeacherAssignmentPage> {
                 return state.maybeMap(
                   initial: (_) => Container(),
                   loading: (_) => Center(
-                    child: CupertinoActivityIndicator(),
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(kBlackColor),
+                    ),
                   ),
                   orElse: () {
                     return RefreshWidget(
                       onRefresh: () {
-                        _getQuestionBloc.add(
-                            GetQuestionEvent.update(id: widget._assignment.id));
+                        _getQuestionBloc.add(GetQuestionEvent.refresh(
+                            id: widget._assignment.id));
                         return _refreshCompleter.future;
                       },
                       child: SingleChildScrollView(

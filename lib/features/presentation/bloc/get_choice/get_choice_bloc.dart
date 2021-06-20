@@ -44,7 +44,7 @@ class GetChoiceBloc extends Bloc<GetChoiceEvent, GetChoiceState> {
         );
       },
       sort: (e) async* {
-        yield GetChoiceState.loading();
+        yield GetChoiceState.sorting();
         final _choices = await _sort.call(ParamsId(id: e.questionId));
         yield _choices.fold(
           (l) => GetChoiceState.error(message: l),

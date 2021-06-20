@@ -23,6 +23,9 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = new TextEditingController();
   final _passwordController = new TextEditingController();
 
+  //* form
+  late final _formKey = GlobalKey<FormState>();
+
   //*initializing bloc
   final _bloc = getIt<AuthBloc>();
 
@@ -111,24 +114,23 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 25,
                   ),
-                  Text(
-                    "Email",
-                    style: TextStyle(
-                      color: kGreyColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Platform.isIOS
-                      ? CupertinoTextField(
-                          placeholder: "email@example.com",
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                        )
-                      : TextFormField(
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Email",
+                          style: TextStyle(
+                            color: kGreyColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
@@ -145,48 +147,41 @@ class _LoginPageState extends State<LoginPage> {
                             }
                           },
                         ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Text(
-                    "Password",
-                    style: TextStyle(
-                      color: kGreyColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Platform.isIOS
-                      ? CupertinoTextField(
-                          textInputAction: TextInputAction.go,
-                          placeholder: "enter your password",
-                          onSubmitted: (value) {},
-                          controller: _passwordController,
-                          keyboardType: TextInputType.visiblePassword,
-                          obscureText: _isHidden,
-                          suffix: IconButton(
-                            icon: Icon(
-                              _isHidden
-                                  ? CupertinoIcons.eye_slash
-                                  : CupertinoIcons.eye,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isHidden = !_isHidden;
-                              });
-                            },
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Text(
+                          "Password",
+                          style: TextStyle(
+                            color: kGreyColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
                           ),
-                        )
-                      : TextFormField(
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: _passwordController,
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.go,
                           obscureText: _isHidden,
-                          onFieldSubmitted: (_) {},
+                          onFieldSubmitted: (_) {
+                            if (_formKey.currentState!.validate()) {
+                              print("is valid");
+
+                              //*call login bloc
+                              _bloc.add(
+                                AuthEvent.login(
+                                  email: _emailController.text
+                                      .trim()
+                                      .toLowerCase(),
+                                  password: _passwordController.text.trim(),
+                                ),
+                              );
+                            }
+                          },
                           decoration: InputDecoration(
                             border: UnderlineInputBorder(),
                             hintText: "enter your password",
@@ -211,84 +206,19 @@ class _LoginPageState extends State<LoginPage> {
                             }
                           },
                         ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      String? text;
-                      state.maybeMap(orElse: () {
-                        text = "Login";
-                      }, loading: (e) {
-                        text = "Please Wait";
-                      });
+                        SizedBox(
+                          height: 25,
+                        ),
+                        BlocBuilder<AuthBloc, AuthState>(
+                          builder: (context, state) {
+                            String? text;
+                            state.maybeMap(orElse: () {
+                              text = "Login";
+                            }, loading: (e) {
+                              text = "Please Wait";
+                            });
 
-                      return Platform.isIOS
-                          ? CupertinoButton(
-                              color: kYellowColor,
-                              child: Container(
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                height: 50,
-                                child: Text(
-                                  text!,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {
-                                if (_emailController.text.isNotEmpty ||
-                                    _passwordController.text.isNotEmpty) {
-                                  print("is valid");
-
-                                  //*call login bloc
-                                  _bloc.add(
-                                    AuthEvent.login(
-                                      email: _emailController.text
-                                          .trim()
-                                          .toLowerCase(),
-                                      password: _passwordController.text.trim(),
-                                    ),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.maybeOf(context)
-                                    ?..hideCurrentSnackBar()
-                                    ..showSnackBar(
-                                      SnackBar(
-                                        backgroundColor: Colors.red,
-                                        behavior: SnackBarBehavior.fixed,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(5),
-                                          topRight: Radius.circular(5),
-                                        )),
-                                        content: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              "LOGIN ERROR",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            // SizedBox(height: 3),
-                                            Text("Please check your inputs")
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  // print(email);
-                                  // print(password);
-                                }
-                              },
-                            )
-                          : MaterialButton(
+                            return MaterialButton(
                               elevation: 0,
                               color: kYellowColor,
                               child: Container(
@@ -305,9 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               onPressed: () {
-                                // if (_key.currentState!.validate()) {
-                                if (_emailController.text.isNotEmpty ||
-                                    _passwordController.text.isNotEmpty) {
+                                if (_formKey.currentState!.validate()) {
                                   print("is valid");
 
                                   //*call login bloc
@@ -319,42 +247,13 @@ class _LoginPageState extends State<LoginPage> {
                                       password: _passwordController.text.trim(),
                                     ),
                                   );
-                                } else {
-                                  ScaffoldMessenger.maybeOf(context)
-                                    ?..hideCurrentSnackBar()
-                                    ..showSnackBar(
-                                      SnackBar(
-                                        backgroundColor: Colors.red,
-                                        behavior: SnackBarBehavior.fixed,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(5),
-                                          topRight: Radius.circular(5),
-                                        )),
-                                        content: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              "LOGIN ERROR",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            // SizedBox(height: 3),
-                                            Text("Please check your inputs")
-                                          ],
-                                        ),
-                                      ),
-                                    );
                                 }
-
-                                // }
                               },
                             );
-                    },
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 25,

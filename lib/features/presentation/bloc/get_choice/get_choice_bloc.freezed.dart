@@ -451,6 +451,10 @@ class _$GetChoiceStateTearOff {
     return const _Load();
   }
 
+  _Sorting sorting() {
+    return const _Sorting();
+  }
+
   _Updating updating() {
     return const _Updating();
   }
@@ -477,6 +481,7 @@ mixin _$GetChoiceState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() sorting,
     required TResult Function() updating,
     required TResult Function(KtList<Choice> course) success,
     required TResult Function(String message) error,
@@ -486,6 +491,7 @@ mixin _$GetChoiceState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? sorting,
     TResult Function()? updating,
     TResult Function(KtList<Choice> course)? success,
     TResult Function(String message)? error,
@@ -496,6 +502,7 @@ mixin _$GetChoiceState {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
+    required TResult Function(_Sorting value) sorting,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
@@ -505,6 +512,7 @@ mixin _$GetChoiceState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
+    TResult Function(_Sorting value)? sorting,
     TResult Function(_Updating value)? updating,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
@@ -569,6 +577,7 @@ class _$_Initial implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() sorting,
     required TResult Function() updating,
     required TResult Function(KtList<Choice> course) success,
     required TResult Function(String message) error,
@@ -581,6 +590,7 @@ class _$_Initial implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? sorting,
     TResult Function()? updating,
     TResult Function(KtList<Choice> course)? success,
     TResult Function(String message)? error,
@@ -597,6 +607,7 @@ class _$_Initial implements _Initial {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
+    required TResult Function(_Sorting value) sorting,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
@@ -609,6 +620,7 @@ class _$_Initial implements _Initial {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
+    TResult Function(_Sorting value)? sorting,
     TResult Function(_Updating value)? updating,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
@@ -664,6 +676,7 @@ class _$_Load implements _Load {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() sorting,
     required TResult Function() updating,
     required TResult Function(KtList<Choice> course) success,
     required TResult Function(String message) error,
@@ -676,6 +689,7 @@ class _$_Load implements _Load {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? sorting,
     TResult Function()? updating,
     TResult Function(KtList<Choice> course)? success,
     TResult Function(String message)? error,
@@ -692,6 +706,7 @@ class _$_Load implements _Load {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
+    required TResult Function(_Sorting value) sorting,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
@@ -704,6 +719,7 @@ class _$_Load implements _Load {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
+    TResult Function(_Sorting value)? sorting,
     TResult Function(_Updating value)? updating,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
@@ -718,6 +734,105 @@ class _$_Load implements _Load {
 
 abstract class _Load implements GetChoiceState {
   const factory _Load() = _$_Load;
+}
+
+/// @nodoc
+abstract class _$SortingCopyWith<$Res> {
+  factory _$SortingCopyWith(_Sorting value, $Res Function(_Sorting) then) =
+      __$SortingCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$SortingCopyWithImpl<$Res> extends _$GetChoiceStateCopyWithImpl<$Res>
+    implements _$SortingCopyWith<$Res> {
+  __$SortingCopyWithImpl(_Sorting _value, $Res Function(_Sorting) _then)
+      : super(_value, (v) => _then(v as _Sorting));
+
+  @override
+  _Sorting get _value => super._value as _Sorting;
+}
+
+/// @nodoc
+
+class _$_Sorting implements _Sorting {
+  const _$_Sorting();
+
+  @override
+  String toString() {
+    return 'GetChoiceState.sorting()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _Sorting);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() sorting,
+    required TResult Function() updating,
+    required TResult Function(KtList<Choice> course) success,
+    required TResult Function(String message) error,
+  }) {
+    return sorting();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? sorting,
+    TResult Function()? updating,
+    TResult Function(KtList<Choice> course)? success,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (sorting != null) {
+      return sorting();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Load value) loading,
+    required TResult Function(_Sorting value) sorting,
+    required TResult Function(_Updating value) updating,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Error value) error,
+  }) {
+    return sorting(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Load value)? loading,
+    TResult Function(_Sorting value)? sorting,
+    TResult Function(_Updating value)? updating,
+    TResult Function(_Success value)? success,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (sorting != null) {
+      return sorting(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Sorting implements GetChoiceState {
+  const factory _Sorting() = _$_Sorting;
 }
 
 /// @nodoc
@@ -759,6 +874,7 @@ class _$_Updating implements _Updating {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() sorting,
     required TResult Function() updating,
     required TResult Function(KtList<Choice> course) success,
     required TResult Function(String message) error,
@@ -771,6 +887,7 @@ class _$_Updating implements _Updating {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? sorting,
     TResult Function()? updating,
     TResult Function(KtList<Choice> course)? success,
     TResult Function(String message)? error,
@@ -787,6 +904,7 @@ class _$_Updating implements _Updating {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
+    required TResult Function(_Sorting value) sorting,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
@@ -799,6 +917,7 @@ class _$_Updating implements _Updating {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
+    TResult Function(_Sorting value)? sorting,
     TResult Function(_Updating value)? updating,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
@@ -879,6 +998,7 @@ class _$_Success implements _Success {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() sorting,
     required TResult Function() updating,
     required TResult Function(KtList<Choice> course) success,
     required TResult Function(String message) error,
@@ -891,6 +1011,7 @@ class _$_Success implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? sorting,
     TResult Function()? updating,
     TResult Function(KtList<Choice> course)? success,
     TResult Function(String message)? error,
@@ -907,6 +1028,7 @@ class _$_Success implements _Success {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
+    required TResult Function(_Sorting value) sorting,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
@@ -919,6 +1041,7 @@ class _$_Success implements _Success {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
+    TResult Function(_Sorting value)? sorting,
     TResult Function(_Updating value)? updating,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
@@ -1004,6 +1127,7 @@ class _$_Error implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() sorting,
     required TResult Function() updating,
     required TResult Function(KtList<Choice> course) success,
     required TResult Function(String message) error,
@@ -1016,6 +1140,7 @@ class _$_Error implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? sorting,
     TResult Function()? updating,
     TResult Function(KtList<Choice> course)? success,
     TResult Function(String message)? error,
@@ -1032,6 +1157,7 @@ class _$_Error implements _Error {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Load value) loading,
+    required TResult Function(_Sorting value) sorting,
     required TResult Function(_Updating value) updating,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
@@ -1044,6 +1170,7 @@ class _$_Error implements _Error {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Load value)? loading,
+    TResult Function(_Sorting value)? sorting,
     TResult Function(_Updating value)? updating,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,

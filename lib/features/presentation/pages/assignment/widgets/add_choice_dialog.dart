@@ -33,7 +33,7 @@ class _AddChoiceDialogState extends State<AddChoiceDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("ADD CHOICE"),
+      title: widget._isAdd ? Text("ADD CHOICE") : Text("EDIT CHOICE"),
       content: TextField(
         keyboardType: TextInputType.text,
         style: TextStyle(
