@@ -20,8 +20,7 @@ const kPrimarySwatch = MaterialColor(0xffffdf00, {
   900: const Color(0xe6ffdf00),
 });
 
-// const  BASE_URL = "eshue.herokuapp.com";
-const BASE_URL = "ea0d564eff88.ngrok.io";
+const BASE_URL = "eshule.herokuapp.com";
 const CHOPPER_BASE_URL = 'https://$BASE_URL';
 const FILE_URL = "https://$BASE_URL/";
 

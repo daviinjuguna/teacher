@@ -7,6 +7,7 @@ import 'package:http_interceptor/http_interceptor.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:injectable/injectable.dart';
 import 'package:teacher/core/util/constant.dart';
+import 'package:teacher/core/util/headers_interceptors.dart';
 import 'package:teacher/core/util/logging_interceptor.dart';
 
 abstract class TeacherService {
@@ -177,6 +178,7 @@ class TeacherApiImpl implements TeacherService {
   http.Client client = InterceptedClient.build(
       interceptors: [
         LoggingInterceptor(),
+        HeadersInterceptors(),
       ],
       requestTimeout: Duration(seconds: 60),
       client: IOClient(
@@ -194,10 +196,10 @@ class TeacherApiImpl implements TeacherService {
       headers: {
         "Accept": "application/json",
       },
-      body: {
+      body: jsonEncode({
         "email": email,
         "password": password,
-      },
+      }),
     );
   }
 
@@ -209,16 +211,16 @@ class TeacherApiImpl implements TeacherService {
     required String confirmPassword,
   }) {
     final String url = "/teacher/register";
-    return client.post(
-      Uri.https(BASE_URL, url),
-      headers: {"Accept": "application/json"},
-      body: {
-        "name": name,
-        "email": email,
-        "password": password,
-        "password_confirmation": confirmPassword
-      },
-    );
+    return client.post(Uri.https(BASE_URL, url),
+        headers: {"Accept": "application/json"},
+        body: jsonEncode(
+          {
+            "name": name,
+            "email": email,
+            "password": password,
+            "password_confirmation": confirmPassword
+          },
+        ));
   }
 
   @override
@@ -251,7 +253,7 @@ class TeacherApiImpl implements TeacherService {
     return client.post(
       Uri.https(BASE_URL, url),
       headers: {"Accept": "application/json"},
-      body: {"refresh_token": refreshToken},
+      body: jsonEncode({"refresh_token": refreshToken}),
     );
   }
 
@@ -329,7 +331,7 @@ class TeacherApiImpl implements TeacherService {
         "Accept": "application/json",
         'Authorization': accessToken,
       },
-      body: {"course_id": "$courseId"},
+      body: jsonEncode({"course_id": "$courseId"}),
     );
   }
 
@@ -452,7 +454,7 @@ class TeacherApiImpl implements TeacherService {
         "Accept": "application/json",
         'Authorization': accessToken,
       },
-      body: {"pdf_id": "$pdfId"},
+      body: jsonEncode({"pdf_id": "$pdfId"}),
     );
   }
 
@@ -482,10 +484,10 @@ class TeacherApiImpl implements TeacherService {
         "Accept": "application/json",
         'Authorization': accessToken,
       },
-      body: {
+      body: jsonEncode({
         "course_id": "$courseId",
         "title": title,
-      },
+      }),
     );
   }
 
@@ -502,10 +504,10 @@ class TeacherApiImpl implements TeacherService {
         "Accept": "application/json",
         'Authorization': accessToken,
       },
-      body: {
+      body: jsonEncode({
         "assignment_id": "$assignmentId",
         "title": title,
-      },
+      }),
     );
   }
 
@@ -521,9 +523,9 @@ class TeacherApiImpl implements TeacherService {
         "Accept": "application/json",
         'Authorization': accessToken,
       },
-      body: {
+      body: jsonEncode({
         "assignment_id": "$assignmentId",
-      },
+      }),
     );
   }
 
@@ -554,11 +556,11 @@ class TeacherApiImpl implements TeacherService {
         "Accept": "application/json",
         'Authorization': accessToken,
       },
-      body: {
+      body: jsonEncode({
         "assignment_id": "$assignmentId",
         "question": question,
         "answer": answer,
-      },
+      }),
     );
   }
 
@@ -576,11 +578,11 @@ class TeacherApiImpl implements TeacherService {
         "Accept": "application/json",
         'Authorization': accessToken,
       },
-      body: {
+      body: jsonEncode({
         "question_id": "$questionId",
         "question": question ?? "",
         "answer": answer ?? "",
-      },
+      }),
     );
   }
 
@@ -596,9 +598,9 @@ class TeacherApiImpl implements TeacherService {
         "Accept": "application/json",
         'Authorization': accessToken,
       },
-      body: {
+      body: jsonEncode({
         "question_id": "$questionId",
-      },
+      }),
     );
   }
 
@@ -630,10 +632,10 @@ class TeacherApiImpl implements TeacherService {
         "Accept": "application/json",
         'Authorization': accessToken,
       },
-      body: {
+      body: jsonEncode({
         "question_id": "$questionId",
         "title": title,
-      },
+      }),
     );
   }
 
@@ -650,10 +652,10 @@ class TeacherApiImpl implements TeacherService {
         "Accept": "application/json",
         'Authorization': accessToken,
       },
-      body: {
+      body: jsonEncode({
         "choice_id": "$choiceId",
         "title": title,
-      },
+      }),
     );
   }
 
@@ -663,12 +665,14 @@ class TeacherApiImpl implements TeacherService {
     required String accessToken,
   }) {
     final String url = "teacher/delete_choice";
-    return client.post(Uri.https(BASE_URL, url), headers: {
-      "Accept": "application/json",
-      'Authorization': accessToken,
-    }, body: {
-      "choice_id": "$choiceId"
-    });
+    return client.post(
+      Uri.https(BASE_URL, url),
+      headers: {
+        "Accept": "application/json",
+        'Authorization': accessToken,
+      },
+      body: jsonEncode({"choice_id": "$choiceId"}),
+    );
   }
 
   @override
@@ -677,12 +681,14 @@ class TeacherApiImpl implements TeacherService {
     required String accessToken,
   }) {
     final String url = "teacher/sort_random";
-    return client.post(Uri.https(BASE_URL, url), headers: {
-      "Accept": "application/json",
-      'Authorization': accessToken,
-    }, body: {
-      "question_id": "$questionId"
-    });
+    return client.post(
+      Uri.https(BASE_URL, url),
+      headers: {
+        "Accept": "application/json",
+        'Authorization': accessToken,
+      },
+      body: jsonEncode({"question_id": "$questionId"}),
+    );
   }
 
   @override
@@ -696,12 +702,14 @@ class TeacherApiImpl implements TeacherService {
       "choice_id": "$choiceId",
       "question_id": "$questionId"
     };
-    return client.put(Uri.https(BASE_URL, url, queryParameters), headers: {
-      "Accept": "application/json",
-      'Authorization': accessToken,
-    }, body: {
-      "question_id": "$questionId"
-    });
+    return client.put(
+      Uri.https(BASE_URL, url, queryParameters),
+      headers: {
+        "Accept": "application/json",
+        'Authorization': accessToken,
+      },
+      body: jsonEncode({"question_id": "$questionId"}),
+    );
   }
 
   @override
